@@ -1,6 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ParticlesBackground } from "@/components/ParticlesBackground";
+import { TiltCard } from "@/components/TiltCard";
+import { StatCounter } from "@/components/StatCounter";
+import { BetTicker } from "@/components/BetTicker";
 
 const DOTA = "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes";
 
@@ -78,11 +82,11 @@ const betTypes = [
 ];
 
 const stats = [
-  { value: "2.4K+", label: "Jogadores" },
-  { value: "R$1.2M", label: "Apostado" },
-  { value: "1.80x", label: "Odds máximas" },
-  { value: "< 1s", label: "Liquidação" },
-];
+  { to: 2.4,  decimals: 1, prefix: "",    suffix: "K+", label: "Jogadores" },
+  { to: 1.2,  decimals: 1, prefix: "R$",  suffix: "M",  label: "Apostado" },
+  { to: 1.80, decimals: 2, prefix: "",    suffix: "x",  label: "Odds máximas" },
+  { to: null, static: "< 1s",             label: "Liquidação" },
+] as const;
 
 const faqs = [
   {
@@ -111,7 +115,8 @@ export default function LandingPage() {
   return (
     <div className="relative min-h-screen flex flex-col overflow-x-hidden bg-[var(--bg)]">
 
-      {/* ── Ambient glows ─────────────────────────────────────────────── */}
+      {/* ── Particles + ambient glows ─────────────────────────────────── */}
+      <ParticlesBackground />
       <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full bg-[var(--neon)] opacity-[0.05] blur-[140px]" />
         <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full bg-[#9d4edd] opacity-[0.04] blur-[120px]" />
@@ -149,6 +154,9 @@ export default function LandingPage() {
         </div>
       </nav>
 
+      {/* ── Live bet ticker ────────────────────────────────────────────── */}
+      <BetTicker />
+
       {/* ── Hero ───────────────────────────────────────────────────────── */}
       <section className="relative z-10 flex-1 flex items-center min-h-[calc(100vh-65px)]">
         <div className="w-full max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -167,7 +175,8 @@ export default function LandingPage() {
                 Aposte em
               </div>
               <div
-                className="text-5xl md:text-7xl tracking-tighter neon-text"
+                className="text-5xl md:text-7xl tracking-tighter neon-text glitch-text"
+                data-text="Você Mesmo"
                 style={{ textShadow: "0 0 40px rgba(0,128,255,0.6), 0 0 80px rgba(0,128,255,0.25)" }}
               >
                 Você Mesmo
@@ -209,7 +218,7 @@ export default function LandingPage() {
           {/* Right — floating bet cards */}
           <div className="hidden lg:block relative h-[460px]">
             {betCards.map((card, i) => (
-              <div
+              <TiltCard
                 key={card.hero}
                 className={`absolute w-[272px] ${card.floatClass}`}
                 style={{
@@ -290,7 +299,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </TiltCard>
             ))}
           </div>
         </div>
@@ -309,7 +318,17 @@ export default function LandingPage() {
                 className="font-mono text-2xl font-bold text-[var(--neon)]"
                 style={{ textShadow: "0 0 12px rgba(0,128,255,0.5)" }}
               >
-                {s.value}
+                {"static" in s ? (
+                  s.static
+                ) : (
+                  <StatCounter
+                    to={s.to}
+                    decimals={s.decimals}
+                    prefix={s.prefix}
+                    suffix={s.suffix}
+                    duration={1600}
+                  />
+                )}
               </div>
               <div className="font-display text-[9px] tracking-[0.25em] text-[var(--text-muted)] uppercase mt-1">
                 {s.label}
@@ -414,7 +433,7 @@ export default function LandingPage() {
           ▸ Conecte seu herói favorito
         </div>
         <div className="flex items-center justify-center gap-4 px-6 flex-wrap">
-          {["invoker", "pudge", "crystal_maiden", "phantom_assassin", "axe", "juggernaut", "lion", "anti_mage"].map((hero) => (
+          {["invoker", "pudge", "crystal_maiden", "phantom_assassin", "axe", "juggernaut", "lion", "antimage"].map((hero) => (
             <div
               key={hero}
               className="relative w-[72px] h-[72px] border border-[var(--border)] overflow-hidden hover:border-[var(--neon)] transition-colors duration-200 group"

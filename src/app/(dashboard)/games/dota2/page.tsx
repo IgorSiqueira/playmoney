@@ -249,93 +249,12 @@ export default function Dota2Page() {
         </div>
       </div>
 
-      {/* Seletor de tipo de evento */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-0.5 h-4 bg-[var(--neon)]" />
-          <span className="font-display text-[10px] tracking-widest text-[var(--text-bright)] uppercase font-bold">Tipo de Aposta</span>
-        </div>
-        <div className="grid grid-cols-5 gap-1.5">
-          {(Object.entries(EVENT_TYPES) as [EventType, typeof EVENT_TYPES[EventType]][]).map(([key, cfg]) => (
-            <button key={key} onClick={() => setEventType(key)}
-              className={`py-2.5 px-1 border font-display text-[11px] tracking-widest uppercase text-center transition-all leading-tight ${
-                eventType === key
-                  ? "border-[var(--neon)] bg-[var(--neon-dim)] text-[var(--neon)]"
-                  : "border-[var(--border)] bg-[var(--surface-2)] text-[var(--text-muted)] hover:border-[var(--border-mid)]"
-              }`}>
-              {cfg.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Odds card */}
-      {eventType === "WIN_LOSS" && odds ? (
-        <div className="relative border border-[var(--neon)] bg-[var(--neon-dim)] p-5 overflow-hidden"
-          style={{ boxShadow: "0 0 20px rgba(0,128,255,0.15)" }}>
-          <div className="flex items-center gap-2 mb-3">
-            <Trophy size={13} style={{ color: "var(--neon)" }} />
-            <span className="font-display text-[11px] tracking-[0.25em] uppercase text-[var(--neon)]">Apostar em Vitória</span>
-            <ChevronRight size={10} className="ml-auto" style={{ color: "var(--neon)" }} />
-          </div>
-          <div className="font-mono text-4xl font-black text-[var(--neon)]"
-            style={{ textShadow: "0 0 20px var(--neon)99" }}>
-            {odds.winOdds}x
-          </div>
-          <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mt-1">
-            Prob. · {(odds.winProbability * 100).toFixed(0)}%
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 h-0.5"
-            style={{ background: "linear-gradient(90deg, transparent, var(--neon), transparent)" }} />
-        </div>
-      ) : eventType !== "WIN_LOSS" ? (
-        <div className="bracket border border-[var(--border)] bg-[var(--surface-2)] p-5 space-y-4">
-          <div className="flex items-center gap-2">
-            <Target size={13} className="text-[var(--neon)]" />
-            <span className="font-display text-[10px] tracking-widest text-[var(--text-bright)] uppercase font-bold">
-              {EVENT_TYPES[eventType].label} — Over / Under
-            </span>
-          </div>
-
-          <div className="space-y-2">
-            <Label>Valor alvo ({EVENT_TYPES[eventType].unit})</Label>
-            <Input type="number" placeholder={`Ex: ${liveOdds ? Math.round(liveOdds.averageStat) : 0}`}
-              value={targetValue} onChange={(e) => setTargetValue(e.target.value)} min={0} step={eventType === "GPM" ? 50 : 1} />
-            {liveOdds && (
-              <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
-                Sua média: {liveOdds.averageStat} {EVENT_TYPES[eventType].unit}
-              </p>
-            )}
-          </div>
-
-          {liveOdds && targetValue && (
-            <div className="grid grid-cols-2 gap-2">
-              {([
-                { pred: "OVER" as Prediction, oddsVal: liveOdds.overOdds, prob: liveOdds.overProbability, color: "var(--neon)", border: "border-[var(--neon)]", bg: "bg-[var(--neon-dim)]" },
-                { pred: "UNDER" as Prediction, oddsVal: liveOdds.underOdds, prob: liveOdds.underProbability, color: "var(--danger)", border: "border-[var(--danger)]", bg: "bg-[var(--danger-dim)]" },
-              ]).map(({ pred, oddsVal, prob, color, border, bg }) => {
-                const active = betPrediction === pred;
-                return (
-                  <button key={pred} onClick={() => setBetPrediction(pred)}
-                    className={`p-4 border text-left transition-all ${active ? `${border} ${bg}` : "border-[var(--border)] bg-[var(--surface-1)] hover:border-[var(--border-mid)]"}`}>
-                    <div className="font-display text-[11px] tracking-widest uppercase mb-2" style={{ color: active ? color : "var(--text-muted)" }}>
-                      {pred === "OVER" ? `Acima de ${targetValue}` : `Abaixo de ${targetValue}`}
-                    </div>
-                    <div className="font-mono text-3xl font-black" style={{ color: active ? color : "var(--text)" }}>{oddsVal}x</div>
-                    <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mt-1">Prob. · {(prob * 100).toFixed(0)}%</div>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      ) : null}
-
-      {/* Bet terminal */}
+      {/* Bet terminal — event selector, odds and form unified */}
       <div className="bracket relative border border-[var(--border)] bg-[var(--surface-2)]">
         <div className="h-0.5 bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent" />
-        <div className="p-5">
-          <div className="flex items-center gap-2 mb-4">
+        <div className="p-5 space-y-5">
+          {/* Terminal header */}
+          <div className="flex items-center gap-2">
             <Target size={13} className="text-[var(--gold)]" />
             <span className="font-display text-sm font-bold uppercase tracking-widest text-[var(--text-bright)]">Terminal de Apostas</span>
             {balance !== null && (
@@ -344,6 +263,81 @@ export default function Dota2Page() {
               </span>
             )}
           </div>
+
+          {/* Event type selector */}
+          <div>
+            <div className="font-display text-[10px] tracking-widest text-[var(--text-muted)] uppercase mb-2">Tipo de Aposta</div>
+            <div className="grid grid-cols-5 gap-1.5">
+              {(Object.entries(EVENT_TYPES) as [EventType, typeof EVENT_TYPES[EventType]][]).map(([key, cfg]) => (
+                <button key={key} onClick={() => setEventType(key)}
+                  className={`py-2.5 px-1 border font-display text-[11px] tracking-widest uppercase text-center transition-all leading-tight ${
+                    eventType === key
+                      ? "border-[var(--neon)] bg-[var(--neon-dim)] text-[var(--neon)]"
+                      : "border-[var(--border)] bg-[var(--surface-1)] text-[var(--text-muted)] hover:border-[var(--border-mid)]"
+                  }`}>
+                  {cfg.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Odds display */}
+          {eventType === "WIN_LOSS" && odds ? (
+            <div className="relative border border-[var(--neon)] bg-[var(--neon-dim)] p-4 overflow-hidden flex items-center gap-5">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <Trophy size={12} style={{ color: "var(--neon)" }} />
+                  <span className="font-display text-[10px] tracking-[0.25em] uppercase text-[var(--neon)]">Vitória na próxima partida</span>
+                </div>
+                <div className="font-mono text-4xl font-black text-[var(--neon)]"
+                  style={{ textShadow: "0 0 20px var(--neon)99" }}>
+                  {odds.winOdds}x
+                </div>
+                <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mt-0.5">
+                  Prob. · {(odds.winProbability * 100).toFixed(0)}%
+                </div>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 h-0.5"
+                style={{ background: "linear-gradient(90deg, transparent, var(--neon), transparent)" }} />
+            </div>
+          ) : eventType !== "WIN_LOSS" ? (
+            <div className="space-y-3">
+              <div className="space-y-2">
+                <Label>Valor alvo ({EVENT_TYPES[eventType].unit})</Label>
+                <Input type="number" placeholder={`Ex: ${liveOdds ? Math.round(liveOdds.averageStat) : 0}`}
+                  value={targetValue} onChange={(e) => setTargetValue(e.target.value)} min={0} step={eventType === "GPM" ? 50 : 1} />
+                {liveOdds && (
+                  <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
+                    Sua média: {liveOdds.averageStat} {EVENT_TYPES[eventType].unit}
+                  </p>
+                )}
+              </div>
+
+              {liveOdds && targetValue && (
+                <div className="grid grid-cols-2 gap-2">
+                  {([
+                    { pred: "OVER" as Prediction, oddsVal: liveOdds.overOdds, prob: liveOdds.overProbability, color: "var(--neon)", border: "border-[var(--neon)]", bg: "bg-[var(--neon-dim)]" },
+                    { pred: "UNDER" as Prediction, oddsVal: liveOdds.underOdds, prob: liveOdds.underProbability, color: "var(--danger)", border: "border-[var(--danger)]", bg: "bg-[var(--danger-dim)]" },
+                  ]).map(({ pred, oddsVal, prob, color, border, bg }) => {
+                    const active = betPrediction === pred;
+                    return (
+                      <button key={pred} onClick={() => setBetPrediction(pred)}
+                        className={`p-4 border text-left transition-all ${active ? `${border} ${bg}` : "border-[var(--border)] bg-[var(--surface-1)] hover:border-[var(--border-mid)]"}`}>
+                        <div className="font-display text-[11px] tracking-widest uppercase mb-2" style={{ color: active ? color : "var(--text-muted)" }}>
+                          {pred === "OVER" ? `Acima de ${targetValue}` : `Abaixo de ${targetValue}`}
+                        </div>
+                        <div className="font-mono text-3xl font-black" style={{ color: active ? color : "var(--text)" }}>{oddsVal}x</div>
+                        <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mt-1">Prob. · {(prob * 100).toFixed(0)}%</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ) : null}
+
+          {/* Separator */}
+          <div className="border-t border-[var(--border)]" />
 
           {balance !== null && balance < 5 && (
             <AlertBox variant="error" className="mb-4">

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import {
@@ -26,6 +27,7 @@ const navItems = [
 
 export function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   return (
     <aside className="relative flex flex-col w-56 shrink-0 bg-[var(--surface-1)] border-r border-[var(--border)] h-full z-10">
@@ -143,13 +145,32 @@ export function Sidebar({ user }: SidebarProps) {
             <div className="font-ui text-[12px] text-[var(--text-muted)] truncate">{user.email}</div>
           </div>
         </div>
-        <button
-          onClick={() => signOut({ callbackUrl: "/" })}
-          className="group w-full flex items-center gap-2 px-2 py-1.5 text-[var(--text-muted)] hover:text-[var(--danger)] hover:bg-[var(--danger-dim)] transition-all duration-150"
-        >
-          <LogOut size={12} />
-          <span className="font-ui text-[12px] font-semibold">Sair</span>
-        </button>
+        {confirmLogout ? (
+          <div className="flex items-center gap-1.5 px-2 py-1.5">
+            <span className="font-ui text-[11px] text-[var(--danger)] flex-1">Confirmar saída?</span>
+            <button
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="font-ui text-[11px] font-semibold text-[var(--danger)] hover:underline"
+            >
+              Sim
+            </button>
+            <span className="text-[var(--border-mid)]">·</span>
+            <button
+              onClick={() => setConfirmLogout(false)}
+              className="font-ui text-[11px] text-[var(--text-muted)] hover:text-[var(--text)]"
+            >
+              Não
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setConfirmLogout(true)}
+            className="group w-full flex items-center gap-2 px-2 py-1.5 text-[var(--text-muted)] hover:text-[var(--danger)] hover:bg-[var(--danger-dim)] transition-all duration-150"
+          >
+            <LogOut size={12} />
+            <span className="font-ui text-[12px] font-semibold">Sair</span>
+          </button>
+        )}
       </div>
     </aside>
   );

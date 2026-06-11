@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AlertBox } from "@/components/ui/alert-box";
 import { UserPlus, Zap } from "lucide-react";
 
 export default function RegisterPage() {
@@ -29,7 +30,7 @@ export default function RegisterPage() {
     });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error || "Erro ao criar conta");
+      setError(data.error || "Erro ao criar conta. Tente novamente.");
       setLoading(false);
       return;
     }
@@ -39,7 +40,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 relative">
       <div className="pointer-events-none fixed inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[var(--neon)] opacity-[0.03] blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[var(--neon)] opacity-[0.04] blur-[120px]" />
       </div>
 
       <div className="relative z-10 w-full max-w-sm animate-glow-in">
@@ -64,8 +65,8 @@ export default function RegisterPage() {
                 Criar Conta
               </h1>
             </div>
-            <p className="font-display text-[9px] tracking-[0.2em] text-[var(--text-muted)] uppercase mb-6">
-              Entre na arena
+            <p className="font-ui text-sm text-[var(--text-muted)] mb-6">
+              Gratuito · Comece a apostar em minutos
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -89,25 +90,16 @@ export default function RegisterPage() {
                 />
               </div>
 
-              {error && (
-                <div className="border border-[var(--danger)] bg-[var(--danger-dim)] px-3 py-2">
-                  <span className="font-display text-[10px] tracking-widest text-[var(--danger)] uppercase">
-                    ✕ {error}
-                  </span>
-                </div>
-              )}
+              {error && <AlertBox variant="error">{error}</AlertBox>}
 
               <Button type="submit" className="w-full mt-2" disabled={loading}>
-                {loading ? "Criando conta..." : "Entrar na Arena"}
+                {loading ? "Criando conta..." : "Criar Conta"}
               </Button>
             </form>
 
             <div className="mt-5 pt-5 border-t border-[var(--border)] flex items-center justify-between">
-              <span className="font-mono text-[10px] text-[var(--text-muted)]">Já tem conta?</span>
-              <Link
-                href="/login"
-                className="font-display text-[10px] uppercase tracking-widest text-[var(--neon)] hover:underline"
-              >
+              <span className="font-ui text-sm text-[var(--text-muted)]">Já tem conta?</span>
+              <Link href="/login" className="font-ui text-sm text-[var(--neon)] hover:underline">
                 Fazer login →
               </Link>
             </div>
@@ -115,7 +107,7 @@ export default function RegisterPage() {
 
           <div className="border-t border-[var(--border)] px-4 py-2 flex items-center gap-2">
             <Zap size={10} className="text-[var(--neon)]" />
-            <span className="font-mono text-[9px] tracking-widest text-[var(--text-muted)] uppercase">
+            <span className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
               Gratuito · Sem taxas de cadastro
             </span>
           </div>

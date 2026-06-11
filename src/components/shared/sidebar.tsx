@@ -53,15 +53,7 @@ export function Sidebar({ user }: SidebarProps) {
         <div className="font-display text-[9px] tracking-[0.25em] text-[var(--text-muted)] px-3 mb-3 uppercase">
           Navegação
         </div>
-        {[
-          ...navItems,
-          ...(user.role === "ADMIN" ? [
-            { href: "/admin",              label: "Admin",        icon: ShieldAlert },
-            { href: "/admin/users",        label: "Usuários",     icon: Users },
-            { href: "/admin/settlements",  label: "Liquidações",  icon: Trophy },
-            { href: "/admin/risk",         label: "Risk Flags",   icon: Flag },
-          ] : []),
-        ].map(({ href, label, icon: Icon }) => {
+        {navItems.map(({ href, label, icon: Icon }) => {
           // exact match para / e /dashboard, prefix match para sub-rotas
           const active = href === "/dashboard" ? pathname === href : pathname === href || pathname.startsWith(href + "/");
           return (
@@ -93,6 +85,43 @@ export function Sidebar({ user }: SidebarProps) {
             </Link>
           );
         })}
+
+        {/* Admin section */}
+        {user.role === "ADMIN" && (
+          <>
+            <div className="mx-3 my-3 border-t border-[var(--border)]" />
+            <div className="font-display text-[9px] tracking-[0.25em] text-[var(--danger)] px-3 mb-2 uppercase flex items-center gap-1.5">
+              <ShieldAlert size={9} />
+              Admin
+            </div>
+            {[
+              { href: "/admin",             label: "Painel",       icon: ShieldAlert },
+              { href: "/admin/users",       label: "Usuários",     icon: Users },
+              { href: "/admin/settlements", label: "Liquidações",  icon: Trophy },
+              { href: "/admin/risk",        label: "Risk Flags",   icon: Flag },
+            ].map(({ href, label, icon: Icon }) => {
+              const active = pathname === href || pathname.startsWith(href + "/");
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className={cn(
+                    "group flex items-center gap-3 px-3 py-2 transition-all duration-150 relative",
+                    active
+                      ? "bg-[var(--danger-dim)] text-[var(--danger)]"
+                      : "text-[var(--text-muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)]"
+                  )}
+                >
+                  {active && (
+                    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-[var(--danger)]" />
+                  )}
+                  <Icon size={14} className="shrink-0" style={{ color: active ? "var(--danger)" : undefined }} />
+                  <span className="font-ui text-sm font-semibold tracking-wide">{label}</span>
+                </Link>
+              );
+            })}
+          </>
+        )}
       </nav>
 
       {/* Status bar */}

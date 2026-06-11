@@ -12,6 +12,7 @@ import {
   Activity, Gamepad2, TrendingUp, TrendingDown,
 } from "lucide-react";
 import { describeEventBet } from "@/lib/bet-events";
+import { AlertBox } from "@/components/ui/alert-box";
 
 interface Bet {
   id: string;
@@ -380,14 +381,7 @@ function ActiveBetCard({
                 </p>
               </div>
 
-              {settleError && (
-                <div className="border border-[var(--danger)] bg-[var(--danger-dim)] px-3 py-2 flex items-center gap-2">
-                  <XCircle size={11} className="text-[var(--danger)]" />
-                  <span className="font-display text-[10px] tracking-widest text-[var(--danger)] uppercase">
-                    {settleError}
-                  </span>
-                </div>
-              )}
+              {settleError && <AlertBox variant="error">{settleError}</AlertBox>}
 
               <div className="flex gap-2">
                 <Button

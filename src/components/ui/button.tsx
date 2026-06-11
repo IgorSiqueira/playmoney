@@ -9,11 +9,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-[var(--neon)] text-[#030508] hud-clip shadow-[0_0_16px_rgba(0,255,157,0.4)] hover:shadow-[0_0_28px_rgba(0,255,157,0.7)] hover:brightness-110 active:scale-[0.97]",
+          "bg-[var(--neon)] text-white hud-clip shadow-[0_0_16px_rgba(0,128,255,0.45)] hover:shadow-[0_0_28px_rgba(0,128,255,0.7)] hover:brightness-110 active:scale-[0.97]",
         destructive:
           "bg-[var(--danger)] text-white hud-clip shadow-[0_0_16px_rgba(255,58,110,0.35)] hover:shadow-[0_0_28px_rgba(255,58,110,0.6)] active:scale-[0.97]",
         outline:
-          "border border-[var(--neon)] text-[var(--neon)] bg-transparent hover:bg-[var(--neon-dim)] hover:shadow-[0_0_16px_rgba(0,255,157,0.2)] active:scale-[0.97]",
+          "border border-[var(--neon)] text-[var(--neon)] bg-transparent hover:bg-[var(--neon-dim)] hover:shadow-[0_0_16px_rgba(0,128,255,0.2)] active:scale-[0.97]",
         secondary:
           "border border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] hover:border-[var(--border-mid)] hover:text-[var(--neon)] active:scale-[0.97]",
         ghost:

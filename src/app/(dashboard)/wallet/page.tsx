@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { CreditCard, TrendingUp, TrendingDown, History, Zap, CheckCircle2, ArrowDownToLine, XCircle } from "lucide-react";
+import { CreditCard, TrendingUp, TrendingDown, History, Zap, ArrowDownToLine } from "lucide-react";
+import { AlertBox } from "@/components/ui/alert-box";
 
 interface Transaction {
   id: string; type: string; amount: number;
@@ -174,20 +175,8 @@ export default function WalletPage() {
                 value={amount} onChange={(e) => setAmount(e.target.value)} />
             </div>
 
-            {error && (
-              <div className="border border-[var(--danger)] bg-[var(--danger-dim)] px-3 py-2">
-                <span className="font-display text-[10px] tracking-widest text-[var(--danger)] uppercase">✕ {error}</span>
-              </div>
-            )}
-
-            {success && (
-              <div className="border border-[var(--neon)] bg-[var(--neon-dim)] px-3 py-2 flex items-center gap-2">
-                <CheckCircle2 size={11} className="text-[var(--neon)]" />
-                <span className="font-display text-[10px] tracking-widest text-[var(--neon)] uppercase">
-                  +{success} creditado com sucesso
-                </span>
-              </div>
-            )}
+            {error && <AlertBox variant="error">{error}</AlertBox>}
+            {success && <AlertBox variant="success">+{success} creditado com sucesso</AlertBox>}
 
             <Button type="submit" className="w-full" variant="gold" disabled={loading || !amount}>
               {loading ? "Processando..." : "Depositar"}
@@ -202,7 +191,7 @@ export default function WalletPage() {
         <div className="p-5">
           <div className="flex items-center gap-2 mb-4">
             <ArrowDownToLine size={13} className="text-[var(--danger)]" />
-            <span className="font-display text-[10px] tracking-widest text-[var(--text-muted)] uppercase">Sacar via PIX</span>
+            <span className="font-display text-sm font-bold uppercase tracking-widest text-[var(--text-bright)]">Sacar via PIX</span>
           </div>
 
           <form onSubmit={handleWithdraw} className="space-y-4">
@@ -230,20 +219,8 @@ export default function WalletPage() {
               </div>
             </div>
 
-            {withdrawError && (
-              <div className="border border-[var(--danger)] bg-[var(--danger-dim)] px-3 py-2 flex items-center gap-2">
-                <XCircle size={11} className="text-[var(--danger)]" />
-                <span className="font-display text-[10px] tracking-widest text-[var(--danger)] uppercase">{withdrawError}</span>
-              </div>
-            )}
-            {withdrawSuccess && (
-              <div className="border border-[var(--neon)] bg-[var(--neon-dim)] px-3 py-2 flex items-center gap-2">
-                <CheckCircle2 size={11} className="text-[var(--neon)]" />
-                <span className="font-display text-[10px] tracking-widest text-[var(--neon)] uppercase">
-                  {withdrawSuccess} solicitado — PIX em até 1 dia útil
-                </span>
-              </div>
-            )}
+            {withdrawError && <AlertBox variant="error">{withdrawError}</AlertBox>}
+            {withdrawSuccess && <AlertBox variant="success">{withdrawSuccess} solicitado — PIX em até 1 dia útil</AlertBox>}
 
             <div className="flex items-center justify-between">
               <Button

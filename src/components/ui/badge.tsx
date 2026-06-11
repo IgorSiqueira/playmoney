@@ -8,7 +8,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "border border-[var(--neon)] bg-[var(--neon-dim)] text-[var(--neon)] shadow-[0_0_8px_rgba(0,255,157,0.2)]",
+          "border border-[var(--neon)] bg-[var(--neon-dim)] text-[var(--neon)] shadow-[0_0_8px_rgba(0,128,255,0.2)]",
         secondary:
           "border border-[var(--border)] bg-[var(--surface-3)] text-[var(--text-muted)]",
         destructive:

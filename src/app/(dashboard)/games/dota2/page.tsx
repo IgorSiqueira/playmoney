@@ -13,6 +13,7 @@ import {
   Target, BarChart3, ChevronRight, AlertTriangle,
   TrendingUp, TrendingDown, Crosshair, Zap,
 } from "lucide-react";
+import { AlertBox } from "@/components/ui/alert-box";
 
 interface GameProfile {
   id: string; externalId: string; displayName: string | null; avatarUrl: string | null;
@@ -175,12 +176,7 @@ export default function Dota2Page() {
                 <Input placeholder="Ex: 86745912 ou 76561198..." value={steamId} onChange={(e) => setSteamId(e.target.value)} required />
                 <p className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">Encontre em: steamidfinder.com</p>
               </div>
-              {error && (
-                <div className="border border-[var(--danger)] bg-[var(--danger-dim)] px-3 py-2 flex items-center gap-2">
-                  <AlertTriangle size={10} className="text-[var(--danger)] shrink-0" />
-                  <span className="font-display text-[10px] tracking-widest text-[var(--danger)] uppercase">{error}</span>
-                </div>
-              )}
+              {error && <AlertBox variant="error">{error}</AlertBox>}
               <Button type="submit" disabled={loading} className="w-full">
                 {loading ? "Buscando perfil..." : "Conectar"}
               </Button>
@@ -235,9 +231,9 @@ export default function Dota2Page() {
                   { icon: TrendingUp,  label: "GPM Médio", value: String(Math.round(profile.stats.averageGPM ?? 0)),               color: "var(--gold)" },
                 ].map(({ icon: Icon, label, value, color }) => (
                   <div key={label} className="border border-[var(--border)] bg-[var(--surface-1)] p-2.5">
-                    <div className="flex items-center gap-1 mb-1">
-                      <Icon size={9} style={{ color }} />
-                      <span className="font-display text-[7px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
+                    <div className="flex items-center gap-1 mb-1.5">
+                      <Icon size={10} style={{ color }} />
+                      <span className="font-display text-[10px] tracking-wide text-[var(--text-muted)] uppercase">{label}</span>
                     </div>
                     <div className="font-mono text-sm font-bold" style={{ color }}>{value}</div>
                   </div>
@@ -345,12 +341,9 @@ export default function Dota2Page() {
           </div>
 
           {balance !== null && balance < 5 && (
-            <div className="border border-[var(--danger)] bg-[var(--danger-dim)] px-3 py-2.5 flex items-center gap-2 mb-4">
-              <AlertTriangle size={10} className="text-[var(--danger)] shrink-0" />
-              <span className="font-display text-[10px] tracking-widest text-[var(--danger)] uppercase">
-                Saldo insuficiente — deposite para apostar
-              </span>
-            </div>
+            <AlertBox variant="error" className="mb-4">
+              Saldo insuficiente. <a href="/wallet" className="underline">Deposite aqui</a> para apostar.
+            </AlertBox>
           )}
 
           <form onSubmit={handleBet} className="space-y-4">
@@ -381,18 +374,8 @@ export default function Dota2Page() {
               </div>
             )}
 
-            {betError && (
-              <div className="border border-[var(--danger)] bg-[var(--danger-dim)] px-3 py-2 flex items-center gap-2">
-                <AlertTriangle size={10} className="text-[var(--danger)] shrink-0" />
-                <span className="font-display text-[10px] tracking-widest text-[var(--danger)] uppercase">{betError}</span>
-              </div>
-            )}
-            {betSuccess && (
-              <div className="border border-[var(--neon)] bg-[var(--neon-dim)] px-3 py-2 flex items-center gap-2">
-                <Zap size={10} className="text-[var(--neon)] shrink-0" />
-                <span className="font-display text-[10px] tracking-widest text-[var(--neon)] uppercase">{betSuccess}</span>
-              </div>
-            )}
+            {betError && <AlertBox variant="error">{betError}</AlertBox>}
+            {betSuccess && <AlertBox variant="success">{betSuccess}</AlertBox>}
 
             <Button type="submit"
               disabled={

@@ -124,15 +124,10 @@ export function Sidebar({ user }: SidebarProps) {
         )}
       </nav>
 
-      {/* Status bar */}
-      <div className="mx-3 mb-3 border border-[var(--border)] bg-[var(--surface-2)] p-2.5">
-        <div className="flex items-center gap-1.5 mb-1">
-          <Zap size={10} className="text-[var(--neon)]" />
-          <span className="font-ui text-[11px] font-semibold text-[var(--neon)]">Sistema Online</span>
-        </div>
-        <div className="h-1 bg-[var(--surface-1)] rounded-full overflow-hidden">
-          <div className="h-full w-full bg-[var(--neon)] shadow-[0_0_6px_var(--neon)]" style={{ width: "92%" }} />
-        </div>
+      {/* Status indicator */}
+      <div className="mx-3 mb-3 flex items-center gap-2 px-2.5 py-2">
+        <div className="w-1.5 h-1.5 rounded-full bg-[var(--neon)] shadow-[0_0_6px_var(--neon)] animate-pulse shrink-0" />
+        <span className="font-ui text-[11px] text-[var(--text-muted)]">Sistema Online</span>
       </div>
 
       {/* User */}

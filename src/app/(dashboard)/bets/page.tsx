@@ -14,6 +14,7 @@ import {
 import { describeEventBet } from "@/lib/bet-events";
 import { AlertBox } from "@/components/ui/alert-box";
 import { EmptyState } from "@/components/shared/empty-state";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 
 interface Bet {
   id: string;
@@ -95,6 +96,10 @@ export default function BetsPage() {
 
   return (
     <div className="space-y-8">
+      <Breadcrumb
+        pageTitle="Apostas"
+        crumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Apostas" }]}
+      />
       {/* Header */}
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--neon)] uppercase mb-1">▸ Arena</div>

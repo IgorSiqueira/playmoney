@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { CreditCard, TrendingUp, TrendingDown, History, Zap, ArrowDownToLine, Receipt } from "lucide-react";
 import { EmptyState } from "@/components/shared/empty-state";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { AlertBox } from "@/components/ui/alert-box";
 
 interface Transaction {
@@ -115,6 +116,10 @@ export default function WalletPage() {
 
   return (
     <div className="space-y-8">
+      <Breadcrumb
+        pageTitle="Carteira"
+        crumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Carteira" }]}
+      />
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--neon)] uppercase mb-1">▸ Financeiro</div>
         <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Carteira</h1>

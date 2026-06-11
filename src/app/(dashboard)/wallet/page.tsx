@@ -263,7 +263,7 @@ export default function WalletPage() {
               return (
                 <div
                   key={tx.id}
-                  className="flex items-center justify-between border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 hover:border-[var(--border-mid)] transition-colors"
+                  className="flex items-center justify-between border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 hover:border-[var(--border-mid)] hover:bg-[var(--surface-hover)] transition-all duration-150"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-7 h-7 border border-[var(--border)] flex items-center justify-center shrink-0"
@@ -282,7 +282,11 @@ export default function WalletPage() {
                     >
                       {cfg.prefix}{formatCurrency(Number(tx.amount))}
                     </div>
-                    <Badge variant="secondary">OK</Badge>
+                    <Badge
+                      variant={tx.status === "COMPLETED" ? "default" : tx.status === "PENDING" ? "warning" : "secondary"}
+                    >
+                      {tx.status === "COMPLETED" ? "OK" : tx.status === "PENDING" ? "PEND" : tx.status}
+                    </Badge>
                   </div>
                 </div>
               );

@@ -155,7 +155,7 @@ export default function Dota2Page() {
   );
 
   if (!profile) return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-8">
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--neon)] uppercase mb-1">▸ Jogos</div>
         <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Dota 2</h1>

@@ -71,7 +71,7 @@ export default async function ProfilePage() {
   const recent = allBets.slice(0, 10);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-8">
       {/* Header */}
       <div className="flex items-start gap-5">
         <div className="w-16 h-16 border-2 border-[var(--neon)] bg-[var(--neon-dim)] flex items-center justify-center shrink-0"

@@ -91,7 +91,7 @@ export default async function LeaderboardPage() {
   const currentUserRank = rows.findIndex((r) => r.userId === currentUserId) + 1;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-8">
       {/* Header */}
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--gold)] uppercase mb-1">▸ Competição</div>

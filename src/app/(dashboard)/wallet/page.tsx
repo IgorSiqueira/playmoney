@@ -115,7 +115,7 @@ export default function WalletPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-8">
       <Breadcrumb
         pageTitle="Carteira"
         crumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Carteira" }]}

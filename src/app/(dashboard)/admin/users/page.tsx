@@ -47,7 +47,7 @@ export default async function AdminUsersPage() {
   const excluded     = rows.filter((u) => u.isExcluded).length;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-8">
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--danger)] uppercase mb-1">▸ Admin · Restrito</div>
         <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Usuários</h1>

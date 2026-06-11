@@ -95,7 +95,7 @@ export default function BetsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-8">
       <Breadcrumb
         pageTitle="Apostas"
         crumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Apostas" }]}

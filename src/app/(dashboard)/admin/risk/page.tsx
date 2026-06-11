@@ -72,7 +72,7 @@ export default function AdminRiskPage() {
   const shown = showReviewed ? reviewed : pending;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-8">
       {/* Header */}
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--danger)] uppercase mb-1">

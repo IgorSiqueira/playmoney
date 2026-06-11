@@ -254,13 +254,13 @@ export default function LandingPage() {
                     <div
                       className="absolute top-2 right-2 px-2 py-0.5"
                       style={{
-                        background: card.status === "PAGA" ? "rgba(0,255,100,0.15)" : `${card.color}22`,
-                        border: `1px solid ${card.status === "PAGA" ? "rgba(0,255,100,0.4)" : card.color}`,
+                        background: card.status === "PAGA" ? "rgba(0,128,255,0.15)" : `${card.color}22`,
+                        border: `1px solid ${card.status === "PAGA" ? "rgba(0,128,255,0.4)" : card.color}`,
                       }}
                     >
                       <span
                         className="font-display text-[11px] tracking-widest font-bold"
-                        style={{ color: card.status === "PAGA" ? "#00ff64" : card.color }}
+                        style={{ color: card.status === "PAGA" ? "var(--neon)" : card.color }}
                       >
                         {card.status}
                       </span>

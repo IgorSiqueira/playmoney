@@ -217,11 +217,11 @@ export default function BetsPage() {
                         <Badge variant={s.variant}>{s.label}</Badge>
                       </div>
                       <div className="flex items-center gap-3 mt-0.5">
-                        <span className="font-mono text-[10px] text-[var(--text-muted)]">
+                        <span className="font-mono text-[11px] text-[var(--text-muted)]">
                           {formatDate(bet.createdAt)}
                         </span>
                         {bet.matchId && (
-                          <span className="font-mono text-[10px] text-[var(--text-muted)] flex items-center gap-1">
+                          <span className="font-mono text-[11px] text-[var(--text-muted)] flex items-center gap-1">
                             <Hash size={9} />
                             {bet.matchId}
                           </span>
@@ -234,12 +234,12 @@ export default function BetsPage() {
                       {formatCurrency(Number(bet.amount))}
                     </div>
                     {bet.status === "WON" && (
-                      <div className="font-mono text-[10px] text-[var(--neon)]">
+                      <div className="font-mono text-[11px] text-[var(--neon)]">
                         +{formatCurrency(Number(bet.potentialPayout))}
                       </div>
                     )}
                     {bet.status === "LOST" && (
-                      <div className="font-mono text-[10px] text-[var(--danger)]">
+                      <div className="font-mono text-[11px] text-[var(--danger)]">
                         -{formatCurrency(Number(bet.amount))}
                       </div>
                     )}
@@ -318,7 +318,7 @@ function ActiveBetCard({
                 </span>
                 <Badge variant="warning">Ativa</Badge>
               </div>
-              <div className="font-mono text-[10px] text-[var(--text-muted)] mt-0.5">
+              <div className="font-mono text-[11px] text-[var(--text-muted)] mt-0.5">
                 {bet.gameProfile.displayName} · {formatDate(bet.createdAt)}
               </div>
             </div>

@@ -54,7 +54,7 @@ export function OverrideButton({ betId, userName, betAmount, potentialPayout, on
   if (!open) {
     return (
       <Button size="sm" variant="outline"
-        className="border-[var(--danger)] text-[var(--danger)] hover:bg-[var(--danger-dim)] text-[10px]"
+        className="border-[var(--danger)] text-[var(--danger)] hover:bg-[var(--danger-dim)] text-[11px]"
         onClick={() => setOpen(true)}>
         <ShieldAlert size={10} className="mr-1" />
         Override
@@ -69,7 +69,7 @@ export function OverrideButton({ betId, userName, betAmount, potentialPayout, on
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <ShieldAlert size={12} className="text-[var(--danger)]" />
-          <span className="font-display text-[10px] tracking-widest text-[var(--danger)] uppercase font-bold">
+          <span className="font-display text-[11px] tracking-widest text-[var(--danger)] uppercase font-bold">
             Override — {userName}
           </span>
         </div>
@@ -105,7 +105,7 @@ export function OverrideButton({ betId, userName, betAmount, potentialPayout, on
       </div>
 
       <div className="space-y-2">
-        <Label className="text-[10px]">Motivo (opcional)</Label>
+        <Label className="text-[11px]">Motivo (opcional)</Label>
         <Input
           placeholder="Ex: OpenDota indisponível, partida verificada manualmente"
           value={reason}

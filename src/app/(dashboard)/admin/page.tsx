@@ -109,7 +109,7 @@ export default async function AdminPage() {
                     <div className="font-ui text-sm font-semibold text-[var(--text-bright)]">
                       {bet.user.name} · {bet.gameProfile.displayName}
                     </div>
-                    <div className="font-mono text-[10px] text-[var(--text-muted)]">
+                    <div className="font-mono text-[11px] text-[var(--text-muted)]">
                       {bet.settledAt ? formatDate(bet.settledAt) : "—"}
                     </div>
                   </div>
@@ -118,12 +118,12 @@ export default async function AdminPage() {
                   <div>
                     <div className="font-mono text-sm text-[var(--text-bright)]">{formatCurrency(Number(bet.amount))}</div>
                     {won && (
-                      <div className="font-mono text-[10px] text-[var(--danger)]">
+                      <div className="font-mono text-[11px] text-[var(--danger)]">
                         −{formatCurrency(Number(bet.potentialPayout))} casa
                       </div>
                     )}
                     {!won && (
-                      <div className="font-mono text-[10px] text-[var(--neon)]">
+                      <div className="font-mono text-[11px] text-[var(--neon)]">
                         +{formatCurrency(Number(bet.amount))} casa
                       </div>
                     )}

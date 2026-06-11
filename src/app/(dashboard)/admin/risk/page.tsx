@@ -160,11 +160,11 @@ export default function AdminRiskPage() {
                       <span className="ml-2 font-mono text-[11px] text-[var(--danger)] border border-[var(--danger)] px-1">SUSPENSO</span>
                     )}
                   </div>
-                  <div className="font-mono text-[10px] text-[var(--text-muted)] truncate">{flag.user.email}</div>
+                  <div className="font-mono text-[11px] text-[var(--text-muted)] truncate">{flag.user.email}</div>
                 </div>
 
                 {/* Date */}
-                <div className="font-mono text-[10px] text-[var(--text-muted)] shrink-0">
+                <div className="font-mono text-[11px] text-[var(--text-muted)] shrink-0">
                   {formatDate(flag.createdAt)}
                 </div>
 
@@ -207,7 +207,7 @@ export default function AdminRiskPage() {
                     <AlertTriangle size={10} />
                     Detalhes do sinal
                   </div>
-                  <pre className="font-mono text-[10px] text-[var(--text)] whitespace-pre-wrap leading-relaxed">
+                  <pre className="font-mono text-[11px] text-[var(--text)] whitespace-pre-wrap leading-relaxed">
                     {JSON.stringify(flag.detail, null, 2)}
                   </pre>
                 </div>

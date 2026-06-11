@@ -43,12 +43,12 @@ export function BetTicker() {
             <span className="font-display text-[11px] text-[var(--text)] uppercase tracking-wide">
               {e.hero}
             </span>
-            <span className="font-ui text-[10px] text-[var(--text-muted)]">·</span>
-            <span className="font-ui text-[10px] text-[var(--text)]">{e.type}</span>
-            <span className="font-ui text-[10px] text-[var(--text-muted)]">·</span>
-            <span className="font-mono text-[10px] text-[var(--neon)]">R${e.amount}</span>
-            <span className="font-mono text-[10px] text-[var(--text-muted)]">→</span>
-            <span className={`font-mono text-[10px] font-bold ${e.won ? "text-[#00ff7f]" : "text-[var(--danger)]"}`}>
+            <span className="font-ui text-[11px] text-[var(--text-muted)]">·</span>
+            <span className="font-ui text-[11px] text-[var(--text)]">{e.type}</span>
+            <span className="font-ui text-[11px] text-[var(--text-muted)]">·</span>
+            <span className="font-mono text-[11px] text-[var(--neon)]">R${e.amount}</span>
+            <span className="font-mono text-[11px] text-[var(--text-muted)]">→</span>
+            <span className={`font-mono text-[11px] font-bold ${e.won ? "text-[#00ff7f]" : "text-[var(--danger)]"}`}>
               {e.won ? `R$${e.payout}` : "PERDEU"}
             </span>
             <span className={`font-display text-[11px] tracking-widest px-1.5 py-0.5 border ${

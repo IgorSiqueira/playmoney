@@ -151,7 +151,7 @@ export default function Dota2Page() {
   if (fetching) return (
     <div className="flex items-center gap-3 py-20 justify-center">
       <div className="w-4 h-4 border-2 border-[var(--neon)] border-t-transparent rounded-full animate-spin" />
-      <span className="font-display text-[10px] tracking-widest text-[var(--text-muted)] uppercase">Carregando...</span>
+      <span className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">Carregando...</span>
     </div>
   );
 
@@ -224,7 +224,7 @@ export default function Dota2Page() {
               <h2 className="font-display text-xl font-black uppercase tracking-wide text-[var(--text-bright)]">{profile.displayName}</h2>
               {profile.stats?.rankTier && <Badge variant="warning">{getRankName(profile.stats.rankTier)}</Badge>}
             </div>
-            <div className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest mb-4">STEAM ID · {profile.externalId}</div>
+            <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest mb-4">STEAM ID · {profile.externalId}</div>
             {profile.stats && (
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                 {[
@@ -238,7 +238,7 @@ export default function Dota2Page() {
                   <div key={label} className="border border-[var(--border)] bg-[var(--surface-1)] p-2.5">
                     <div className="flex items-center gap-1 mb-1.5">
                       <Icon size={10} style={{ color }} />
-                      <span className="font-display text-[10px] tracking-wide text-[var(--text-muted)] uppercase">{label}</span>
+                      <span className="font-display text-[11px] tracking-wide text-[var(--text-muted)] uppercase">{label}</span>
                     </div>
                     <div className="font-mono text-sm font-bold" style={{ color }}>{value}</div>
                   </div>
@@ -266,7 +266,7 @@ export default function Dota2Page() {
 
           {/* Event type selector */}
           <div>
-            <div className="font-display text-[10px] tracking-widest text-[var(--text-muted)] uppercase mb-2">Tipo de Aposta</div>
+            <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mb-2">Tipo de Aposta</div>
             <div className="grid grid-cols-5 gap-1.5">
               {(Object.entries(EVENT_TYPES) as [EventType, typeof EVENT_TYPES[EventType]][]).map(([key, cfg]) => (
                 <button key={key} onClick={() => setEventType(key)}
@@ -287,7 +287,7 @@ export default function Dota2Page() {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <Trophy size={12} style={{ color: "var(--neon)" }} />
-                  <span className="font-display text-[10px] tracking-[0.25em] uppercase text-[var(--neon)]">Vitória na próxima partida</span>
+                  <span className="font-display text-[11px] tracking-[0.25em] uppercase text-[var(--neon)]">Vitória na próxima partida</span>
                 </div>
                 <div className="font-mono text-4xl font-black text-[var(--neon)]"
                   style={{ textShadow: "0 0 20px var(--neon)99" }}>

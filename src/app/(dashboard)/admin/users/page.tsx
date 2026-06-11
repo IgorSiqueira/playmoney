@@ -104,7 +104,7 @@ export default async function AdminUsersPage() {
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 border border-[var(--border)] bg-[var(--surface-1)] flex items-center justify-center shrink-0">
-                      <span className="font-display text-[10px] font-black text-[var(--neon)]">
+                      <span className="font-display text-[11px] font-black text-[var(--neon)]">
                         {u.name?.[0]?.toUpperCase() ?? "?"}
                       </span>
                     </div>

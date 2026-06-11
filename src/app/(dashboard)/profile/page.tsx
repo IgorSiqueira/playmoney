@@ -91,7 +91,7 @@ export default async function ProfilePage() {
             {user?.name}
           </h1>
           <div className="flex items-center gap-3 mt-1">
-            <span className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest">{user?.email}</span>
+            <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">{user?.email}</span>
             {user?.role === "ADMIN" && <Badge variant="destructive">Admin</Badge>}
             {user?.agreedToTermsAt && <Badge variant="default">Verificado 18+</Badge>}
           </div>
@@ -287,7 +287,7 @@ export default async function ProfilePage() {
                     </div>
                     <div>
                       <div className="font-ui text-sm font-semibold text-[var(--text-bright)]">{desc}</div>
-                      <div className="font-mono text-[10px] text-[var(--text-muted)]">
+                      <div className="font-mono text-[11px] text-[var(--text-muted)]">
                         {bet.gameProfile.displayName} · {formatDate(bet.createdAt)}
                       </div>
                     </div>
@@ -296,10 +296,10 @@ export default async function ProfilePage() {
                     <div className="text-right">
                       <div className="font-mono text-sm text-[var(--text-bright)]">{formatCurrency(Number(bet.amount))}</div>
                       {bet.status === "WON" && (
-                        <div className="font-mono text-[10px] text-[var(--neon)]">+{formatCurrency(Number(bet.potentialPayout))}</div>
+                        <div className="font-mono text-[11px] text-[var(--neon)]">+{formatCurrency(Number(bet.potentialPayout))}</div>
                       )}
                       {bet.status === "LOST" && (
-                        <div className="font-mono text-[10px] text-[var(--danger)]">-{formatCurrency(Number(bet.amount))}</div>
+                        <div className="font-mono text-[11px] text-[var(--danger)]">-{formatCurrency(Number(bet.amount))}</div>
                       )}
                     </div>
                     <Badge variant={s.variant}>{s.label}</Badge>
@@ -317,7 +317,7 @@ export default async function ProfilePage() {
           <div className="font-display text-xs font-bold uppercase tracking-widest text-[var(--text-bright)] mb-1">
             Perfil Vazio
           </div>
-          <div className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
+          <div className="font-mono text-[11px] tracking-widest text-[var(--text-muted)] uppercase">
             Crie sua primeira aposta para ver estatísticas
           </div>
         </div>

@@ -96,7 +96,7 @@ export default function SettingsPage() {
     return (
       <div className="flex items-center gap-3 py-16">
         <div className="w-1.5 h-1.5 bg-[var(--neon)] animate-pulse" />
-        <span className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">Carregando...</span>
+        <span className="font-mono text-[11px] tracking-widest text-[var(--text-muted)] uppercase">Carregando...</span>
       </div>
     );
   }
@@ -235,7 +235,7 @@ export default function SettingsPage() {
                 <div className="border border-[var(--danger)] bg-[var(--danger-dim)] p-3 space-y-2">
                   <div className="flex items-center gap-2">
                     <AlertTriangle size={12} className="text-[var(--danger)] shrink-0" />
-                    <span className="font-display text-[10px] tracking-widest text-[var(--danger)] uppercase">
+                    <span className="font-display text-[11px] tracking-widest text-[var(--danger)] uppercase">
                       Confirme para se excluir por {EXCLUSION_OPTIONS.find(o => o.value === selectedExclusion)?.label}
                     </span>
                   </div>

@@ -163,7 +163,7 @@ export default async function LeaderboardPage() {
 
         {rows.length === 0 ? (
           <div className="bracket border border-[var(--border)] bg-[var(--surface-2)] py-16 text-center">
-            <div className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
+            <div className="font-mono text-[11px] tracking-widest text-[var(--text-muted)] uppercase">
               Nenhum jogador com apostas liquidadas ainda
             </div>
           </div>
@@ -209,7 +209,7 @@ export default async function LeaderboardPage() {
                       {p.name?.[0]?.toUpperCase() ?? "?"}
                     </div>
                     <span className="font-ui text-sm font-semibold text-[var(--text-bright)] truncate">
-                      {p.name}{isMe && <span className="text-[var(--neon)] ml-1 text-[10px]">(você)</span>}
+                      {p.name}{isMe && <span className="text-[var(--neon)] ml-1 text-[11px]">(você)</span>}
                     </span>
                   </div>
 

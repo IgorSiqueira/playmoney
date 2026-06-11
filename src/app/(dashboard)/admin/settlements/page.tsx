@@ -103,7 +103,7 @@ export default async function AdminSettlementsPage({
                 : "border-[var(--border)] bg-[var(--surface-2)] text-[var(--text-muted)] hover:border-[var(--border-mid)]"
             }`}>
               <Icon size={12} />
-              <span className="font-display text-[10px] tracking-widest uppercase font-bold">{label}</span>
+              <span className="font-display text-[11px] tracking-widest uppercase font-bold">{label}</span>
               <span className={`font-mono text-[11px] px-1.5 py-0.5 border ${
                 tab === key ? "border-[var(--neon)] text-[var(--neon)]" : "border-[var(--border)] text-[var(--text-muted)]"
               }`}>{count}</span>
@@ -118,7 +118,7 @@ export default async function AdminSettlementsPage({
           {activeBets.length === 0 ? (
             <div className="bracket border border-[var(--border)] bg-[var(--surface-2)] py-16 text-center">
               <Activity size={24} className="text-[var(--text-muted)] mx-auto mb-3" />
-              <div className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
+              <div className="font-mono text-[11px] tracking-widest text-[var(--text-muted)] uppercase">
                 Nenhuma aposta ativa no momento
               </div>
             </div>
@@ -142,7 +142,7 @@ export default async function AdminSettlementsPage({
                           <span className="font-ui text-sm font-bold text-[var(--text-bright)]">
                             {bet.user.name}
                           </span>
-                          <span className="font-mono text-[10px] text-[var(--text-muted)]">
+                          <span className="font-mono text-[11px] text-[var(--text-muted)]">
                             {bet.user.email}
                           </span>
                         </div>
@@ -205,7 +205,7 @@ export default async function AdminSettlementsPage({
           <div className="space-y-0.5 mt-1">
             {settledBets.length === 0 ? (
               <div className="py-16 text-center">
-                <div className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">Sem apostas liquidadas</div>
+                <div className="font-mono text-[11px] tracking-widest text-[var(--text-muted)] uppercase">Sem apostas liquidadas</div>
               </div>
             ) : (
               settledBets.map((bet) => {

@@ -102,7 +102,7 @@ export default async function DashboardPage() {
           <Link href="/bets">
             <div className="flex items-center gap-2 border border-[var(--gold)] bg-[var(--gold-dim)] px-4 py-2 hover:bg-[rgba(255,184,0,0.15)] transition-colors cursor-pointer">
               <Activity size={12} className="text-[var(--gold)]" />
-              <span className="font-display text-[10px] tracking-widest text-[var(--gold)] uppercase">
+              <span className="font-display text-[11px] tracking-widest text-[var(--gold)] uppercase">
                 {active.length} Ativa{active.length > 1 ? "s" : ""}
               </span>
             </div>
@@ -218,7 +218,7 @@ export default async function DashboardPage() {
               <div className="font-display text-xs font-bold uppercase tracking-widest text-[var(--gold)] mb-0.5">
                 Bônus de Primeiro Depósito
               </div>
-              <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest">
+              <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
                 Deposite e ganhe 50% de bônus — até R$ 50,00 extra na sua carteira
               </p>
             </div>
@@ -238,7 +238,7 @@ export default async function DashboardPage() {
               <Gamepad2 size={28} className="text-[var(--neon)]" />
             </div>
             <div className="flex-1">
-              <div className="font-display text-[10px] tracking-[0.2em] text-[var(--neon)] uppercase mb-1">Ação Necessária</div>
+              <div className="font-display text-[11px] tracking-[0.2em] text-[var(--neon)] uppercase mb-1">Ação Necessária</div>
               <div className="font-display text-lg font-bold uppercase text-[var(--text-bright)] mb-1">Conecte seu jogo</div>
               <p className="font-ui text-sm text-[var(--text-muted)]">
                 Adicione seu perfil do Dota 2 para calcularmos suas odds e começar a apostar.
@@ -290,7 +290,7 @@ export default async function DashboardPage() {
                     </div>
                     <div>
                       <div className="font-ui text-sm font-semibold text-[var(--text-bright)]">{description}</div>
-                      <div className="font-mono text-[10px] text-[var(--text-muted)]">
+                      <div className="font-mono text-[11px] text-[var(--text-muted)]">
                         {bet.gameProfile.displayName} · {formatDate(bet.createdAt)}
                       </div>
                     </div>
@@ -300,7 +300,7 @@ export default async function DashboardPage() {
                       <div className="font-mono text-sm font-semibold text-[var(--text-bright)]">
                         {formatCurrency(Number(bet.amount))}
                       </div>
-                      <div className="font-mono text-[10px] text-[var(--text-muted)]">
+                      <div className="font-mono text-[11px] text-[var(--text-muted)]">
                         → {formatCurrency(Number(bet.potentialPayout))}
                       </div>
                     </div>

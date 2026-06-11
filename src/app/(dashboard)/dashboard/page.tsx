@@ -285,7 +285,7 @@ export default async function DashboardPage() {
               return (
                 <div key={bet.id} className="flex items-center justify-between border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 hover:border-[var(--border-mid)] transition-colors">
                   <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 border border-[var(--border)] flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 border border-[var(--border)] flex items-center justify-center shrink-0">
                       <Icon size={12} className="text-[var(--text-muted)]" />
                     </div>
                     <div>

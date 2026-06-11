@@ -96,7 +96,7 @@ export default async function AdminPage() {
             return (
               <div key={bet.id} className="flex items-center justify-between border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 hover:border-[var(--border-mid)] transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 border flex items-center justify-center shrink-0"
+                  <div className="w-9 h-9 border flex items-center justify-center shrink-0"
                     style={{ borderColor: won ? "rgba(0,128,255,0.4)" : "rgba(255,58,110,0.4)" }}>
                     {won ? <TrendingDown size={12} className="text-[var(--danger)]" /> : <TrendingUp size={12} className="text-[var(--neon)]" />}
                   </div>

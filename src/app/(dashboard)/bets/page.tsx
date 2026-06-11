@@ -204,7 +204,7 @@ export default function BetsPage() {
                 >
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-7 h-7 border flex items-center justify-center shrink-0"
+                      className="w-9 h-9 border flex items-center justify-center shrink-0"
                       style={{ borderColor: `${s.color}40` }}
                     >
                       <Icon size={12} style={{ color: s.color }} />

@@ -290,7 +290,7 @@ export default function WalletPage() {
                   className="flex items-center justify-between border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 hover:border-[var(--border-mid)] hover:bg-[var(--surface-hover)] transition-all duration-150"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 border border-[var(--border)] flex items-center justify-center shrink-0"
+                    <div className="w-9 h-9 border border-[var(--border)] flex items-center justify-center shrink-0"
                       style={{ borderColor: `${cfg.color}40` }}>
                       <Icon size={12} style={{ color: cfg.color }} />
                     </div>

@@ -78,7 +78,7 @@ export default function AdminRiskPage() {
         <div className="font-display text-[10px] tracking-[0.3em] text-[var(--danger)] uppercase mb-1">
           ▸ Detecção de Fraude
         </div>
-        <h1 className="font-display text-2xl font-black tracking-wider text-[var(--text-bright)] uppercase">
+        <h1 className="font-display text-3xl font-black tracking-tight text-[var(--text-bright)] uppercase">
           Risk <span className="text-[var(--danger)]">Flags</span>
         </h1>
       </div>

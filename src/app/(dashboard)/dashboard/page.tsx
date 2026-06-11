@@ -90,7 +90,7 @@ export default async function DashboardPage() {
           <div className="font-display text-[10px] tracking-[0.3em] text-[var(--neon)] uppercase mb-1">
             ▸ Painel de Controle
           </div>
-          <h1 className="font-display text-2xl font-black uppercase tracking-tight text-[var(--text-bright)]">
+          <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">
             Olá, {session.user.name?.split(" ")[0]}
           </h1>
           <p className="font-ui text-sm text-[var(--text-muted)] mt-1">

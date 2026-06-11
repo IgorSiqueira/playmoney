@@ -104,7 +104,7 @@ export default function WalletPage() {
     <div className="space-y-8">
       <div>
         <div className="font-display text-[10px] tracking-[0.3em] text-[var(--neon)] uppercase mb-1">▸ Financeiro</div>
-        <h1 className="font-display text-2xl font-black uppercase tracking-tight text-[var(--text-bright)]">Carteira</h1>
+        <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Carteira</h1>
         <p className="font-ui text-sm text-[var(--text-muted)] mt-1">Gerencie seu saldo e transações</p>
       </div>
 

@@ -158,7 +158,7 @@ export default function Dota2Page() {
     <div className="space-y-8">
       <div>
         <div className="font-display text-[10px] tracking-[0.3em] text-[var(--neon)] uppercase mb-1">▸ Jogos</div>
-        <h1 className="font-display text-2xl font-black uppercase tracking-tight text-[var(--text-bright)]">Dota 2</h1>
+        <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Dota 2</h1>
         <p className="font-ui text-sm text-[var(--text-muted)] mt-1">Conecte sua conta Steam para calcularmos suas odds</p>
       </div>
       <div className="max-w-md">
@@ -194,7 +194,7 @@ export default function Dota2Page() {
       <div className="flex items-start justify-between">
         <div>
           <div className="font-display text-[10px] tracking-[0.3em] text-[var(--neon)] uppercase mb-1">▸ Dota 2</div>
-          <h1 className="font-display text-2xl font-black uppercase tracking-tight text-[var(--text-bright)]">Perfil & Apostas</h1>
+          <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Perfil & Apostas</h1>
         </div>
         <Button variant="secondary" size="sm" onClick={() => setProfile(null)} className="flex items-center gap-1">
           <RefreshCw size={10} /> Trocar conta

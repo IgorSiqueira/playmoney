@@ -82,7 +82,7 @@ export default async function ProfilePage() {
         </div>
         <div>
           <div className="font-display text-[10px] tracking-[0.3em] text-[var(--neon)] uppercase mb-1">▸ Jogador</div>
-          <h1 className="font-display text-2xl font-black uppercase tracking-tight text-[var(--text-bright)]">
+          <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">
             {user?.name}
           </h1>
           <div className="flex items-center gap-3 mt-1">

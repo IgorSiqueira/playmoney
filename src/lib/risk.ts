@@ -36,13 +36,10 @@ async function upsertFlag(
 }
 
 // ── Atualiza suspensão do usuário ────────────────────────────────────────────
-// Auto-suspende apenas por sinais diretos de manipulação de apostas.
-// PARTY_RECURRENCE e WEAK_ENEMIES são circunstanciais — só criam flags para o admin.
-const AUTO_SUSPEND_SIGNALS: RiskSignal[] = ["BET_ACCURACY", "WIN_RATE_SPIKE"];
 
 async function refreshSuspension(userId: string) {
   const agg = await prisma.riskFlag.aggregate({
-    where: { userId, signal: { in: AUTO_SUSPEND_SIGNALS }, reviewedAt: null },
+    where: { userId, reviewedAt: null },
     _max: { score: true },
   });
 

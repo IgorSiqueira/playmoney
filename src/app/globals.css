@@ -57,6 +57,18 @@ body::before {
   z-index: 0;
 }
 
+/* ── Type scale ─────────────────────────────── */
+/* display: 32px  title: 24px  headline: 18px      */
+/* body: 15px  caption: 13px  micro: 12px           */
+:root {
+  --text-display:  2rem;    /* 32px */
+  --text-title:    1.5rem;  /* 24px */
+  --text-headline: 1.125rem;/* 18px */
+  --text-body:     0.9375rem;/* 15px */
+  --text-caption:  0.8125rem;/* 13px */
+  --text-micro:    0.75rem; /* 12px — minimum */
+}
+
 /* ── Utility classes ────────────────────────── */
 .font-display  { font-family: var(--font-orbitron), monospace; }
 .font-mono     { font-family: var(--font-jetbrains), monospace; }

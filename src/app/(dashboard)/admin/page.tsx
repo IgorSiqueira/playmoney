@@ -44,14 +44,14 @@ export default async function AdminPage() {
   const exposure = Number(activeExposure._sum.potentialPayout ?? 0);
 
   const huds = [
-    { icon: DollarSign,   label: "Receita Total",     value: formatCurrency(rev),     color: "var(--neon)",   glow: "rgba(0,255,157,0.5)" },
+    { icon: DollarSign,   label: "Receita Total",     value: formatCurrency(rev),     color: "var(--neon)",   glow: "rgba(0,128,255,0.5)" },
     { icon: TrendingDown, label: "Payout Total",       value: formatCurrency(pay),     color: "var(--danger)", glow: "rgba(255,58,110,0.5)" },
-    { icon: TrendingUp,   label: "Lucro da Casa",      value: formatCurrency(profit),  color: profit >= 0 ? "var(--neon)" : "var(--danger)", glow: profit >= 0 ? "rgba(0,255,157,0.5)" : "rgba(255,58,110,0.5)" },
+    { icon: TrendingUp,   label: "Lucro da Casa",      value: formatCurrency(profit),  color: profit >= 0 ? "var(--neon)" : "var(--danger)", glow: profit >= 0 ? "rgba(0,128,255,0.5)" : "rgba(255,58,110,0.5)" },
     { icon: Activity,     label: "Exposição Ativa",    value: formatCurrency(exposure), color: "var(--gold)",   glow: "rgba(255,184,0,0.5)" },
     { icon: Users,        label: "Usuários",            value: String(totalUsers),      color: "var(--blue)",   glow: "rgba(0,207,255,0.5)" },
     { icon: Swords,       label: "Total de Apostas",   value: String(totalBets),        color: "var(--text-bright)", glow: "rgba(255,255,255,0.3)" },
     { icon: AlertTriangle,label: "Apostas Ativas",     value: String(activeBets),       color: "var(--gold)",   glow: "rgba(255,184,0,0.5)" },
-    { icon: ShieldAlert,  label: "Margem da Casa",     value: rev > 0 ? `${((profit/rev)*100).toFixed(1)}%` : "—", color: "var(--neon)", glow: "rgba(0,255,157,0.5)" },
+    { icon: ShieldAlert,  label: "Margem da Casa",     value: rev > 0 ? `${((profit/rev)*100).toFixed(1)}%` : "—", color: "var(--neon)", glow: "rgba(0,128,255,0.5)" },
   ];
 
   return (
@@ -97,7 +97,7 @@ export default async function AdminPage() {
               <div key={bet.id} className="flex items-center justify-between border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 hover:border-[var(--border-mid)] transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="w-7 h-7 border flex items-center justify-center shrink-0"
-                    style={{ borderColor: won ? "rgba(0,255,157,0.4)" : "rgba(255,58,110,0.4)" }}>
+                    style={{ borderColor: won ? "rgba(0,128,255,0.4)" : "rgba(255,58,110,0.4)" }}>
                     {won ? <TrendingDown size={12} className="text-[var(--danger)]" /> : <TrendingUp size={12} className="text-[var(--neon)]" />}
                   </div>
                   <div>

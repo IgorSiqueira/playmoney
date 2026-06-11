@@ -118,7 +118,7 @@ export default function WalletPage() {
           </div>
           <div
             className="font-mono text-4xl font-bold text-[var(--neon)] mt-3"
-            style={{ textShadow: "0 0 20px rgba(0,255,157,0.5)" }}
+            style={{ textShadow: "0 0 20px rgba(0,128,255,0.5)" }}
           >
             {wallet ? formatCurrency(Number(wallet.balance)) : "···"}
           </div>

@@ -223,7 +223,7 @@ export default async function AdminSettlementsPage({
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <div className="w-5 h-5 border flex items-center justify-center shrink-0"
-                          style={{ borderColor: won ? "rgba(0,255,157,0.4)" : "rgba(255,58,110,0.4)" }}>
+                          style={{ borderColor: won ? "rgba(0,128,255,0.4)" : "rgba(255,58,110,0.4)" }}>
                           {won
                             ? <Trophy size={9} className="text-[var(--neon)]" />
                             : <Skull  size={9} className="text-[var(--danger)]" />

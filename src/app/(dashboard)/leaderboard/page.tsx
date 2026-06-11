@@ -108,7 +108,7 @@ export default async function LeaderboardPage() {
             const rank = idx + 1;
             const podiumColors: Record<number, { color: string; glow: string; height: string; icon: typeof Crown }> = {
               1: { color: "var(--gold)",   glow: "rgba(255,184,0,0.4)",    height: "h-28", icon: Crown },
-              2: { color: "var(--neon)",   glow: "rgba(0,255,157,0.4)",    height: "h-20", icon: Trophy },
+              2: { color: "var(--neon)",   glow: "rgba(0,128,255,0.4)",    height: "h-20", icon: Trophy },
               3: { color: "var(--danger)", glow: "rgba(255,58,110,0.4)",   height: "h-16", icon: Medal },
             };
             const cfg = podiumColors[rank];
@@ -120,7 +120,7 @@ export default async function LeaderboardPage() {
                 className="bracket border bg-[var(--surface-2)] p-4 text-center flex flex-col items-center justify-end"
                 style={{
                   borderColor: isMe ? "var(--neon)" : cfg.color,
-                  boxShadow: isMe ? `0 0 16px rgba(0,255,157,0.15)` : undefined,
+                  boxShadow: isMe ? `0 0 16px rgba(0,128,255,0.15)` : undefined,
                   minHeight: cfg.height,
                 }}
               >

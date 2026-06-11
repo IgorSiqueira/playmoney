@@ -26,6 +26,8 @@
   --border-mid:    rgba(0, 128, 255, 0.2);
   --border-bright: rgba(0, 128, 255, 0.45);
 
+  --surface-hover: rgba(0, 128, 255, 0.06);
+
   --text:          #b8cce0;
   --text-secondary:#8aaac0;
   --text-muted:    #5c7a96;

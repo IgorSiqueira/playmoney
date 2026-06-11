@@ -165,7 +165,7 @@ export default function LandingPage() {
           <div className="flex flex-col items-start">
             <div className="inline-flex items-center gap-2 border border-[var(--border-mid)] bg-[var(--neon-dim)] px-4 py-1.5 mb-8 animate-glow-in">
               <div className="w-1.5 h-1.5 rounded-full bg-[var(--neon)] pulse-neon" />
-              <span className="font-display text-[10px] tracking-[0.25em] text-[var(--neon)] uppercase">
+              <span className="font-display text-[11px] tracking-[0.25em] text-[var(--neon)] uppercase">
                 Plataforma Ativa · Beta Aberto
               </span>
             </div>
@@ -271,7 +271,7 @@ export default function LandingPage() {
                   <div className="p-3">
                     <div className="flex items-center justify-between mb-2">
                       <div>
-                        <div className="font-display text-[10px] tracking-widest text-[var(--text-muted)] uppercase">{card.name}</div>
+                        <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{card.name}</div>
                         <div className="font-display text-xs font-bold text-[var(--text-bright)] uppercase tracking-wide">{card.type}</div>
                       </div>
                       <div
@@ -342,7 +342,7 @@ export default function LandingPage() {
       <section id="como-funciona" className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <div className="font-display text-[10px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Como funciona</div>
+            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Como funciona</div>
             <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight">
               Três passos para apostar
             </h2>
@@ -391,7 +391,7 @@ export default function LandingPage() {
       <section id="modalidades" className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <div className="font-display text-[10px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Modalidades</div>
+            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Modalidades</div>
             <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight">
               O que você pode apostar
             </h2>
@@ -429,7 +429,7 @@ export default function LandingPage() {
 
       {/* ── Dota 2 hero showcase strip ─────────────────────────────────── */}
       <section className="relative z-10 py-16 border-b border-[var(--border)] overflow-hidden">
-        <div className="font-display text-[10px] tracking-[0.3em] text-[var(--text-muted)] uppercase text-center mb-8">
+        <div className="font-display text-[11px] tracking-[0.3em] text-[var(--text-muted)] uppercase text-center mb-8">
           ▸ Conecte seu herói favorito
         </div>
         <div className="flex items-center justify-center gap-4 px-6 flex-wrap">
@@ -458,7 +458,7 @@ export default function LandingPage() {
       <section id="faq" className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-14">
-            <div className="font-display text-[10px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Perguntas frequentes</div>
+            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Perguntas frequentes</div>
             <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight">
               FAQ
             </h2>
@@ -495,7 +495,7 @@ export default function LandingPage() {
             }}
           />
           <div className="relative z-10">
-            <div className="font-display text-[10px] tracking-[0.3em] text-[var(--neon)] uppercase mb-4">▸ Comece agora</div>
+            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-4">▸ Comece agora</div>
             <h2 className="font-display font-black text-4xl md:text-5xl text-[var(--text-bright)] uppercase tracking-tight mb-6 leading-tight">
               Você está pronto<br />
               <span className="neon-text">para apostar em si mesmo?</span>
@@ -524,12 +524,12 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-6 h-6 border border-[var(--neon)] bg-[var(--neon-dim)] flex items-center justify-center">
-              <span className="font-display text-[10px] font-black text-[var(--neon)]">P</span>
+              <span className="font-display text-[11px] font-black text-[var(--neon)]">P</span>
             </div>
             <span className="font-display text-xs font-black tracking-[0.2em] text-[var(--text-muted)] uppercase">
               Play<span className="text-[var(--neon)]">Money</span>
             </span>
-            <span className="font-mono text-[10px] text-[var(--text-muted)]">© 2026</span>
+            <span className="font-mono text-[11px] text-[var(--text-muted)]">© 2026</span>
           </div>
 
           <div className="flex items-center gap-6">
@@ -538,7 +538,7 @@ export default function LandingPage() {
             <a href="#faq" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">FAQ</a>
           </div>
 
-          <span className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest uppercase">
+          <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest uppercase">
             Jogue com responsabilidade · +18
           </span>
         </div>

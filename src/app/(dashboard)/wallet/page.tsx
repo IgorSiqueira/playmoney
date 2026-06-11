@@ -191,7 +191,8 @@ export default function WalletPage() {
             <div className="space-y-2">
               <Label>Valor personalizado (R$)</Label>
               <Input type="number" placeholder="0.00" min={10} max={10000} step={0.01}
-                value={amount} onChange={(e) => setAmount(e.target.value)} />
+                value={amount} onChange={(e) => { setAmount(e.target.value); setError(""); }}
+                aria-invalid={!!error || undefined} />
             </div>
 
             {error && <AlertBox variant="error">{error}</AlertBox>}
@@ -221,7 +222,8 @@ export default function WalletPage() {
                   type="text"
                   placeholder="CPF, e-mail ou telefone"
                   value={pixKey}
-                  onChange={(e) => setPixKey(e.target.value)}
+                  onChange={(e) => { setPixKey(e.target.value); setWithdrawError(""); }}
+                  aria-invalid={withdrawError && !pixKey.trim() ? true : undefined}
                 />
               </div>
               <div className="space-y-2">
@@ -233,7 +235,8 @@ export default function WalletPage() {
                   max={wallet ? wallet.balance : undefined}
                   step={0.01}
                   value={withdrawAmount}
-                  onChange={(e) => setWithdrawAmount(e.target.value)}
+                  onChange={(e) => { setWithdrawAmount(e.target.value); setWithdrawError(""); }}
+                  aria-invalid={withdrawError && !withdrawAmount ? true : undefined}
                 />
               </div>
             </div>

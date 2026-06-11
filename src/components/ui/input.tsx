@@ -13,6 +13,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           "font-ui text-sm text-[var(--text-bright)] tracking-wide",
           "placeholder:text-[var(--text-muted)] placeholder:opacity-70",
           "focus-visible:outline-none focus-visible:border-[var(--neon)] focus-visible:shadow-[0_0_12px_rgba(0,128,255,0.25)]",
+          "aria-[invalid=true]:border-[var(--danger)] aria-[invalid=true]:shadow-[0_0_8px_rgba(255,58,110,0.2)]",
           "disabled:cursor-not-allowed disabled:opacity-40",
           "transition-all duration-150",
           className

@@ -200,7 +200,7 @@ export default function BetsPage() {
               return (
                 <div
                   key={bet.id}
-                  className="flex items-center justify-between border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 hover:border-[var(--border-mid)] transition-colors group"
+                  className="flex items-center justify-between border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 hover:border-[var(--border-mid)] hover:bg-[var(--surface-hover)] transition-all duration-150 group"
                 >
                   <div className="flex items-center gap-3">
                     <div

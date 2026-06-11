@@ -167,7 +167,7 @@ export default function SettingsPage() {
                 <Input type="number" placeholder="Sem limite" min={10} step={10}
                   value={dailyLimit} onChange={(e) => setDailyLimit(e.target.value)} />
                 {settings?.dailyLossLimit && (
-                  <p className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">
+                  <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
                     Atual: {formatCurrency(settings.dailyLossLimit)}
                   </p>
                 )}
@@ -177,7 +177,7 @@ export default function SettingsPage() {
                 <Input type="number" placeholder="Sem limite" min={10} step={10}
                   value={weeklyLimit} onChange={(e) => setWeeklyLimit(e.target.value)} />
                 {settings?.weeklyLossLimit && (
-                  <p className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">
+                  <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
                     Atual: {formatCurrency(settings.weeklyLossLimit)}
                   </p>
                 )}
@@ -218,7 +218,7 @@ export default function SettingsPage() {
                 {EXCLUSION_OPTIONS.map((opt) => (
                   <button key={opt.value} type="button"
                     onClick={() => { setSelectedExclusion(opt.value); setConfirmExclusion(false); }}
-                    className={`py-2 border font-display text-[9px] tracking-widest uppercase transition-all ${
+                    className={`py-2 border font-display text-[11px] tracking-widest uppercase transition-all ${
                       selectedExclusion === opt.value
                         ? "border-[var(--danger)] bg-[var(--danger-dim)] text-[var(--danger)]"
                         : "border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--danger)]"
@@ -256,7 +256,7 @@ export default function SettingsPage() {
 
           <div className="mt-4 pt-4 border-t border-[var(--border)] flex items-center gap-2">
             <Heart size={10} className="text-[var(--danger)]" />
-            <span className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">
+            <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
               Jogo compulsivo é uma doença · Ajuda: jogo-responsavel.org.br · CVJ 0800 722 4000
             </span>
           </div>

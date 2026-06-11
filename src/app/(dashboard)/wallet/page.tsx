@@ -129,12 +129,12 @@ export default function WalletPage() {
               </span>
             </div>
           )}
-          <p className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase mt-2">
+          <p className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mt-2">
             Pronto para apostar
           </p>
           {wallet && !wallet.depositBonusClaimed && (
             <div className="mt-3 border border-[var(--gold)] bg-[var(--gold-dim)] px-3 py-2">
-              <span className="font-display text-[9px] tracking-widest text-[var(--gold)] uppercase">
+              <span className="font-display text-[11px] tracking-widest text-[var(--gold)] uppercase">
                 🎁 Deposite R$ 20+ e ganhe 50% de bônus (até R$ 50)
               </span>
             </div>
@@ -231,7 +231,7 @@ export default function WalletPage() {
               >
                 {withdrawLoading ? "Processando..." : "Solicitar Saque"}
               </Button>
-              <span className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">
+              <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
                 ▸ Processado em até 1 dia útil
               </span>
             </div>

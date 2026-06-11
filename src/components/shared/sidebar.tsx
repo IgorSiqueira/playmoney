@@ -50,7 +50,7 @@ export function Sidebar({ user }: SidebarProps) {
 
       {/* Nav */}
       <nav className="flex-1 py-4 px-2 space-y-0.5">
-        <div className="font-display text-[9px] tracking-[0.25em] text-[var(--text-muted)] px-3 mb-3 uppercase">
+        <div className="font-display text-[11px] tracking-[0.25em] text-[var(--text-muted)] px-3 mb-3 uppercase">
           Navegação
         </div>
         {navItems.map(({ href, label, icon: Icon }) => {
@@ -90,7 +90,7 @@ export function Sidebar({ user }: SidebarProps) {
         {user.role === "ADMIN" && (
           <>
             <div className="mx-3 my-3 border-t border-[var(--border)]" />
-            <div className="font-display text-[9px] tracking-[0.25em] text-[var(--danger)] px-3 mb-2 uppercase flex items-center gap-1.5">
+            <div className="font-display text-[11px] tracking-[0.25em] text-[var(--danger)] px-3 mb-2 uppercase flex items-center gap-1.5">
               <ShieldAlert size={9} />
               Admin
             </div>
@@ -128,7 +128,7 @@ export function Sidebar({ user }: SidebarProps) {
       <div className="mx-3 mb-3 border border-[var(--border)] bg-[var(--surface-2)] p-2.5">
         <div className="flex items-center gap-1.5 mb-1">
           <Zap size={10} className="text-[var(--neon)]" />
-          <span className="font-display text-[9px] tracking-widest text-[var(--neon)] uppercase">Sistema Online</span>
+          <span className="font-display text-[11px] tracking-widest text-[var(--neon)] uppercase">Sistema Online</span>
         </div>
         <div className="h-1 bg-[var(--surface-1)] rounded-full overflow-hidden">
           <div className="h-full w-full bg-[var(--neon)] shadow-[0_0_6px_var(--neon)]" style={{ width: "92%" }} />
@@ -145,7 +145,7 @@ export function Sidebar({ user }: SidebarProps) {
           </div>
           <div className="min-w-0">
             <div className="font-ui text-xs font-semibold text-[var(--text-bright)] truncate">{user.name}</div>
-            <div className="font-mono text-[9px] text-[var(--text-muted)] truncate">{user.email}</div>
+            <div className="font-mono text-[11px] text-[var(--text-muted)] truncate">{user.email}</div>
           </div>
         </div>
         <button
@@ -153,7 +153,7 @@ export function Sidebar({ user }: SidebarProps) {
           className="group w-full flex items-center gap-2 px-2 py-1.5 text-[var(--text-muted)] hover:text-[var(--danger)] hover:bg-[var(--danger-dim)] transition-all duration-150"
         >
           <LogOut size={12} />
-          <span className="font-display text-[9px] uppercase tracking-widest">Sair</span>
+          <span className="font-display text-[11px] uppercase tracking-widest">Sair</span>
         </button>
       </div>
     </aside>

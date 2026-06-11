@@ -64,7 +64,7 @@ export default async function AdminUsersPage() {
         ].map(({ icon: Icon, label, value, color }) => (
           <div key={label} className="bracket border border-[var(--border)] bg-[var(--surface-2)] p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
+              <span className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
               <Icon size={11} style={{ color }} />
             </div>
             <div className="font-mono text-xl font-bold" style={{ color }}>{value}</div>
@@ -82,7 +82,7 @@ export default async function AdminUsersPage() {
         {/* Header */}
         <div className="grid grid-cols-[1fr_5rem_5rem_4rem_4rem_5rem_6rem] gap-2 px-4 py-2 border-b border-[var(--border)]">
           {["Usuário", "Saldo", "P&L", "WR%", "Apostas", "Status", "Cadastro"].map((h) => (
-            <span key={h} className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">{h}</span>
+            <span key={h} className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{h}</span>
           ))}
         </div>
 
@@ -105,11 +105,11 @@ export default async function AdminUsersPage() {
                     </div>
                     <div className="min-w-0">
                       <div className="font-ui text-sm font-semibold text-[var(--text-bright)] truncate">{u.name ?? "—"}</div>
-                      <div className="font-mono text-[9px] text-[var(--text-muted)] truncate">{u.email}</div>
+                      <div className="font-mono text-[11px] text-[var(--text-muted)] truncate">{u.email}</div>
                     </div>
                   </div>
                   {hasGame && (
-                    <div className="font-mono text-[9px] text-[var(--text-muted)] mt-0.5 ml-8">
+                    <div className="font-mono text-[11px] text-[var(--text-muted)] mt-0.5 ml-8">
                       {u.gameProfiles.map((g) => g.displayName ?? g.game).join(", ")}
                     </div>
                   )}
@@ -121,7 +121,7 @@ export default async function AdminUsersPage() {
                     {formatCurrency(Number(u.wallet?.balance ?? 0))}
                   </div>
                   {Number(u.wallet?.bonusBalance ?? 0) > 0 && (
-                    <div className="font-mono text-[9px] text-[var(--gold)]">
+                    <div className="font-mono text-[11px] text-[var(--gold)]">
                       +{formatCurrency(Number(u.wallet!.bonusBalance))} bônus
                     </div>
                   )}
@@ -160,7 +160,7 @@ export default async function AdminUsersPage() {
                 </div>
 
                 {/* Created at */}
-                <span className="font-mono text-[9px] text-[var(--text-muted)]">{formatDate(u.createdAt)}</span>
+                <span className="font-mono text-[11px] text-[var(--text-muted)]">{formatDate(u.createdAt)}</span>
               </div>
             );
           })}

@@ -67,7 +67,7 @@ export default async function AdminPage() {
         {huds.map(({ icon: Icon, label, value, color, glow }) => (
           <div key={label} className="bracket relative border border-[var(--border)] bg-[var(--surface-2)] p-4 hover:border-[var(--border-mid)] transition-all group">
             <div className="flex items-center justify-between mb-3">
-              <span className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
+              <span className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
               <Icon size={12} style={{ color }} />
             </div>
             <div className="font-mono text-xl font-bold" style={{ color, textShadow: `0 0 12px ${glow}` }}>{value}</div>

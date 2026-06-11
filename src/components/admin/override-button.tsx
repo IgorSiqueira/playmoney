@@ -46,7 +46,7 @@ export function OverrideButton({ betId, userName, betAmount, potentialPayout, on
     return (
       <div className="flex items-center gap-1.5 px-3 py-1.5 border border-[var(--neon)] bg-[var(--neon-dim)]">
         <CheckCircle2 size={10} className="text-[var(--neon)]" />
-        <span className="font-display text-[9px] tracking-widest text-[var(--neon)] uppercase">Aplicado</span>
+        <span className="font-display text-[11px] tracking-widest text-[var(--neon)] uppercase">Aplicado</span>
       </div>
     );
   }
@@ -88,8 +88,8 @@ export function OverrideButton({ betId, userName, betAmount, potentialPayout, on
               : "border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--neon)]"
           }`}>
           <Trophy size={14} />
-          <span className="font-display text-[9px] tracking-widest uppercase">User Ganhou</span>
-          <span className="font-mono text-[9px] text-[var(--text-muted)]">+{potentialPayout}</span>
+          <span className="font-display text-[11px] tracking-widest uppercase">User Ganhou</span>
+          <span className="font-mono text-[11px] text-[var(--text-muted)]">+{potentialPayout}</span>
         </button>
         <button
           onClick={() => setOutcome("LOST")}
@@ -99,8 +99,8 @@ export function OverrideButton({ betId, userName, betAmount, potentialPayout, on
               : "border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--danger)]"
           }`}>
           <Skull size={14} />
-          <span className="font-display text-[9px] tracking-widest uppercase">Casa Ganhou</span>
-          <span className="font-mono text-[9px] text-[var(--text-muted)]">+{betAmount}</span>
+          <span className="font-display text-[11px] tracking-widest uppercase">Casa Ganhou</span>
+          <span className="font-mono text-[11px] text-[var(--text-muted)]">+{betAmount}</span>
         </button>
       </div>
 
@@ -117,7 +117,7 @@ export function OverrideButton({ betId, userName, betAmount, potentialPayout, on
       {error && (
         <div className="flex items-center gap-1.5 border border-[var(--danger)] px-3 py-2">
           <XCircle size={10} className="text-[var(--danger)]" />
-          <span className="font-mono text-[9px] text-[var(--danger)] tracking-widest">{error}</span>
+          <span className="font-mono text-[11px] text-[var(--danger)] tracking-widest">{error}</span>
         </div>
       )}
 

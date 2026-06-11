@@ -169,12 +169,12 @@ export default function Dota2Page() {
               <Gamepad2 size={14} className="text-[var(--neon)]" />
               <span className="font-display text-sm font-bold uppercase tracking-widest text-[var(--text-bright)]">Conectar Steam</span>
             </div>
-            <p className="font-display text-[9px] tracking-[0.2em] text-[var(--text-muted)] uppercase mb-5">Perfil público necessário · API gratuita</p>
+            <p className="font-display text-[11px] tracking-[0.2em] text-[var(--text-muted)] uppercase mb-5">Perfil público necessário · API gratuita</p>
             <form onSubmit={handleConnect} className="space-y-4">
               <div className="space-y-1.5">
                 <Label>Steam ID (32-bit ou 64-bit)</Label>
                 <Input placeholder="Ex: 86745912 ou 76561198..." value={steamId} onChange={(e) => setSteamId(e.target.value)} required />
-                <p className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">Encontre em: steamidfinder.com</p>
+                <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">Encontre em: steamidfinder.com</p>
               </div>
               {error && <AlertBox variant="error">{error}</AlertBox>}
               <Button type="submit" disabled={loading} className="w-full">
@@ -253,7 +253,7 @@ export default function Dota2Page() {
         <div className="grid grid-cols-5 gap-1.5">
           {(Object.entries(EVENT_TYPES) as [EventType, typeof EVENT_TYPES[EventType]][]).map(([key, cfg]) => (
             <button key={key} onClick={() => setEventType(key)}
-              className={`py-2.5 px-1 border font-display text-[9px] tracking-widest uppercase text-center transition-all leading-tight ${
+              className={`py-2.5 px-1 border font-display text-[11px] tracking-widest uppercase text-center transition-all leading-tight ${
                 eventType === key
                   ? "border-[var(--neon)] bg-[var(--neon-dim)] text-[var(--neon)]"
                   : "border-[var(--border)] bg-[var(--surface-2)] text-[var(--text-muted)] hover:border-[var(--border-mid)]"
@@ -270,14 +270,14 @@ export default function Dota2Page() {
           style={{ boxShadow: "0 0 20px rgba(0,128,255,0.15)" }}>
           <div className="flex items-center gap-2 mb-3">
             <Trophy size={13} style={{ color: "var(--neon)" }} />
-            <span className="font-display text-[9px] tracking-[0.25em] uppercase text-[var(--neon)]">Apostar em Vitória</span>
+            <span className="font-display text-[11px] tracking-[0.25em] uppercase text-[var(--neon)]">Apostar em Vitória</span>
             <ChevronRight size={10} className="ml-auto" style={{ color: "var(--neon)" }} />
           </div>
           <div className="font-mono text-4xl font-black text-[var(--neon)]"
             style={{ textShadow: "0 0 20px var(--neon)99" }}>
             {odds.winOdds}x
           </div>
-          <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase mt-1">
+          <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mt-1">
             Prob. · {(odds.winProbability * 100).toFixed(0)}%
           </div>
           <div className="absolute bottom-0 left-0 right-0 h-0.5"
@@ -297,7 +297,7 @@ export default function Dota2Page() {
             <Input type="number" placeholder={`Ex: ${liveOdds ? Math.round(liveOdds.averageStat) : 0}`}
               value={targetValue} onChange={(e) => setTargetValue(e.target.value)} min={0} step={eventType === "GPM" ? 50 : 1} />
             {liveOdds && (
-              <p className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">
+              <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
                 Sua média: {liveOdds.averageStat} {EVENT_TYPES[eventType].unit}
               </p>
             )}
@@ -313,11 +313,11 @@ export default function Dota2Page() {
                 return (
                   <button key={pred} onClick={() => setBetPrediction(pred)}
                     className={`p-4 border text-left transition-all ${active ? `${border} ${bg}` : "border-[var(--border)] bg-[var(--surface-1)] hover:border-[var(--border-mid)]"}`}>
-                    <div className="font-display text-[9px] tracking-widest uppercase mb-2" style={{ color: active ? color : "var(--text-muted)" }}>
+                    <div className="font-display text-[11px] tracking-widest uppercase mb-2" style={{ color: active ? color : "var(--text-muted)" }}>
                       {pred === "OVER" ? `Acima de ${targetValue}` : `Abaixo de ${targetValue}`}
                     </div>
                     <div className="font-mono text-3xl font-black" style={{ color: active ? color : "var(--text)" }}>{oddsVal}x</div>
-                    <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase mt-1">Prob. · {(prob * 100).toFixed(0)}%</div>
+                    <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mt-1">Prob. · {(prob * 100).toFixed(0)}%</div>
                   </button>
                 );
               })}
@@ -353,7 +353,7 @@ export default function Dota2Page() {
                 value={betAmount} onChange={(e) => setBetAmount(e.target.value)} required
                 disabled={balance !== null && balance < 5} />
               {balance !== null && betAmount && parseFloat(betAmount) > balance && (
-                <p className="font-display text-[9px] tracking-widest text-[var(--danger)] uppercase">
+                <p className="font-display text-[11px] tracking-widest text-[var(--danger)] uppercase">
                   Valor maior que seu saldo disponível ({formatCurrency(balance)})
                 </p>
               )}
@@ -367,7 +367,7 @@ export default function Dota2Page() {
                   { label: "Retorno potencial", value: formatCurrency(potentialPayout),       color: "var(--neon)" },
                 ].map(({ label, value, color }) => (
                   <div key={label} className="flex items-center justify-between px-4 py-2.5">
-                    <span className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
+                    <span className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
                     <span className="font-mono text-sm font-bold" style={{ color }}>{value}</span>
                   </div>
                 ))}

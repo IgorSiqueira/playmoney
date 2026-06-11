@@ -99,7 +99,7 @@ export default async function AdminSettlementsPage({
             }`}>
               <Icon size={12} />
               <span className="font-display text-[10px] tracking-widest uppercase font-bold">{label}</span>
-              <span className={`font-mono text-[9px] px-1.5 py-0.5 border ${
+              <span className={`font-mono text-[11px] px-1.5 py-0.5 border ${
                 tab === key ? "border-[var(--neon)] text-[var(--neon)]" : "border-[var(--border)] text-[var(--text-muted)]"
               }`}>{count}</span>
             </div>
@@ -142,7 +142,7 @@ export default async function AdminSettlementsPage({
                           </span>
                         </div>
                         <div className="font-display text-xs text-[var(--gold)] mt-0.5">{desc}</div>
-                        <div className="font-mono text-[9px] text-[var(--text-muted)] mt-0.5">
+                        <div className="font-mono text-[11px] text-[var(--text-muted)] mt-0.5">
                           {bet.gameProfile.displayName} · {bet.gameProfile.game} · criada {formatDate(bet.createdAt)}
                         </div>
                       </div>
@@ -168,7 +168,7 @@ export default async function AdminSettlementsPage({
                     {isOverride ? (
                       <div className="flex items-center gap-2 px-3 py-2 border border-[var(--text-muted)] bg-[var(--surface-1)]">
                         <ShieldAlert size={10} className="text-[var(--text-muted)]" />
-                        <span className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">Override já aplicado</span>
+                        <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">Override já aplicado</span>
                       </div>
                     ) : (
                       <OverrideButton
@@ -193,7 +193,7 @@ export default async function AdminSettlementsPage({
           {/* Column headers */}
           <div className="grid grid-cols-[1fr_5rem_5rem_5rem_5rem_7rem] gap-2 px-4 py-2 border-b border-[var(--border)]">
             {["Jogador / Aposta", "Apostado", "Payout", "Odds", "Match", "Liquidada"].map((h) => (
-              <span key={h} className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">{h}</span>
+              <span key={h} className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{h}</span>
             ))}
           </div>
 
@@ -238,7 +238,7 @@ export default async function AdminSettlementsPage({
                           </span>
                         )}
                       </div>
-                      <div className="font-mono text-[9px] text-[var(--text-muted)] ml-7 mt-0.5 truncate">{desc}</div>
+                      <div className="font-mono text-[11px] text-[var(--text-muted)] ml-7 mt-0.5 truncate">{desc}</div>
                     </div>
 
                     {/* Apostado */}
@@ -260,13 +260,13 @@ export default async function AdminSettlementsPage({
                     {/* Match ID */}
                     <div className="flex items-center gap-1 min-w-0">
                       <Hash size={9} className="text-[var(--text-muted)] shrink-0" />
-                      <span className="font-mono text-[9px] text-[var(--text-muted)] truncate">
+                      <span className="font-mono text-[11px] text-[var(--text-muted)] truncate">
                         {bet.matchId ?? "—"}
                       </span>
                     </div>
 
                     {/* Settled at */}
-                    <span className="font-mono text-[9px] text-[var(--text-muted)]">
+                    <span className="font-mono text-[11px] text-[var(--text-muted)]">
                       {bet.settledAt ? formatDate(bet.settledAt) : "—"}
                     </span>
                   </div>
@@ -280,7 +280,7 @@ export default async function AdminSettlementsPage({
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between pt-2">
-          <span className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">
+          <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
             Página {page} de {totalPages} ·{" "}
             {tab === "active" ? activeTotal : settledTotal} apostas
           </span>

@@ -153,7 +153,7 @@ export default function BetsPage() {
               Apostas Ativas
             </span>
             <div className="ml-1 px-2 py-0.5 border border-[var(--gold)] bg-[var(--gold-dim)]">
-              <span className="font-mono text-[9px] text-[var(--gold)]">{activeBets.length}</span>
+              <span className="font-mono text-[11px] text-[var(--gold)]">{activeBets.length}</span>
             </div>
           </div>
 
@@ -331,7 +331,7 @@ function ActiveBetCard({
           >
             <PredIcon size={10} style={{ color: predColor }} />
             <span
-              className="font-display text-[9px] tracking-widest uppercase font-bold"
+              className="font-display text-[11px] tracking-widest uppercase font-bold"
               style={{ color: predColor }}
             >
               {predLabel}
@@ -347,7 +347,7 @@ function ActiveBetCard({
             { label: "Retorno",   value: formatCurrency(Number(bet.potentialPayout)), color: "var(--neon)" },
           ].map(({ label, value, color }) => (
             <div key={label} className="border border-[var(--border)] bg-[var(--surface-1)] px-3 py-2 text-center">
-              <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase mb-1">{label}</div>
+              <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mb-1">{label}</div>
               <div className="font-mono text-sm font-bold" style={{ color }}>{value}</div>
             </div>
           ))}
@@ -360,7 +360,7 @@ function ActiveBetCard({
               {/* Terminal-style header */}
               <div className="flex items-center gap-2 mb-3">
                 <Terminal size={11} className="text-[var(--neon)]" />
-                <span className="font-display text-[9px] tracking-widest text-[var(--neon)] uppercase">
+                <span className="font-display text-[11px] tracking-widest text-[var(--neon)] uppercase">
                   Submeter Resultado
                 </span>
               </div>
@@ -376,7 +376,7 @@ function ActiveBetCard({
                   onChange={(e) => onMatchIdChange(e.target.value)}
                   className="font-mono"
                 />
-                <p className="font-mono text-[9px] tracking-widest text-[var(--text-muted)] uppercase">
+                <p className="font-mono text-[11px] tracking-widest text-[var(--text-muted)] uppercase">
                   ▸ Encontre em opendota.com ou no histórico do jogo
                 </p>
               </div>

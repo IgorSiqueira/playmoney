@@ -125,7 +125,7 @@ export default async function LeaderboardPage() {
                 }}
               >
                 <Icon size={16} style={{ color: cfg.color }} className="mb-2" />
-                <div className="font-display text-[9px] tracking-widest uppercase mb-1" style={{ color: cfg.color }}>
+                <div className="font-display text-[11px] tracking-widest uppercase mb-1" style={{ color: cfg.color }}>
                   #{rank}
                 </div>
                 <div className="font-ui text-sm font-bold text-[var(--text-bright)] mb-1 truncate max-w-full">
@@ -134,7 +134,7 @@ export default async function LeaderboardPage() {
                 <div className="font-mono text-sm font-bold" style={{ color: cfg.color, textShadow: `0 0 10px ${cfg.glow}` }}>
                   {p.pnl >= 0 ? "+" : ""}{formatCurrency(p.pnl)}
                 </div>
-                <div className="font-mono text-[9px] text-[var(--text-muted)] mt-0.5 tracking-widest">
+                <div className="font-mono text-[11px] text-[var(--text-muted)] mt-0.5 tracking-widest">
                   {p.winRate.toFixed(0)}% WR · {p.totalBets} apostas
                 </div>
               </div>
@@ -151,7 +151,7 @@ export default async function LeaderboardPage() {
           <span className="font-display text-xs font-bold uppercase tracking-widest text-[var(--text-bright)]">Ranking Completo</span>
           {currentUserRank > 0 && (
             <div className="ml-auto px-2 py-0.5 border border-[var(--neon)] bg-[var(--neon-dim)]">
-              <span className="font-mono text-[9px] text-[var(--neon)]">Sua posição: #{currentUserRank}</span>
+              <span className="font-mono text-[11px] text-[var(--neon)]">Sua posição: #{currentUserRank}</span>
             </div>
           )}
         </div>
@@ -167,7 +167,7 @@ export default async function LeaderboardPage() {
             {/* Header row */}
             <div className="grid grid-cols-[2rem_1fr_6rem_6rem_5rem_5rem] gap-3 px-4 py-2">
               {["#", "Jogador", "P&L", "Apostado", "WR", "Apostas"].map((h) => (
-                <span key={h} className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">{h}</span>
+                <span key={h} className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{h}</span>
               ))}
             </div>
 
@@ -241,7 +241,7 @@ export default async function LeaderboardPage() {
         )}
       </div>
 
-      <div className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest text-center">
+      <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest text-center">
         ▸ Ranking baseado em apostas liquidadas · Mínimo 1 aposta para aparecer
       </div>
     </div>

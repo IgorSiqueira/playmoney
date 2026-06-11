@@ -30,17 +30,17 @@ export function BetTicker() {
       <div className="absolute left-0 z-20 flex items-center h-full px-3 border-r border-[var(--border)] bg-[var(--surface-1)]">
         <div className="flex items-center gap-1.5">
           <div className="w-1.5 h-1.5 rounded-full bg-[var(--neon)] pulse-neon" />
-          <span className="font-display text-[9px] tracking-[0.2em] text-[var(--neon)] uppercase whitespace-nowrap">Ao Vivo</span>
+          <span className="font-display text-[11px] tracking-[0.2em] text-[var(--neon)] uppercase whitespace-nowrap">Ao Vivo</span>
         </div>
       </div>
 
       <div className="ticker-track pl-32">
         {doubled.map((e, i) => (
           <span key={i} className="inline-flex items-center gap-2 mx-6 whitespace-nowrap">
-            <span className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">
+            <span className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">
               @{e.user}
             </span>
-            <span className="font-display text-[9px] text-[var(--text)] uppercase tracking-wide">
+            <span className="font-display text-[11px] text-[var(--text)] uppercase tracking-wide">
               {e.hero}
             </span>
             <span className="font-ui text-[10px] text-[var(--text-muted)]">·</span>
@@ -58,7 +58,7 @@ export function BetTicker() {
             }`}>
               {e.won ? "GANHOU" : "PERDEU"}
             </span>
-            <span className="font-mono text-[9px] text-[var(--text-muted)]">{e.odds}</span>
+            <span className="font-mono text-[11px] text-[var(--text-muted)]">{e.odds}</span>
             <span className="text-[var(--border-mid)] mx-2">◆</span>
           </span>
         ))}

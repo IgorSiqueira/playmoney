@@ -92,7 +92,7 @@ export default function AdminRiskPage() {
           { label: "Score ≥ 70", value: pending.filter((f) => f.score >= 70).length, color: "var(--danger)" },
         ].map(({ label, value, color }) => (
           <div key={label} className="bracket border border-[var(--border)] bg-[var(--surface-2)] p-3">
-            <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase mb-1">{label}</div>
+            <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mb-1">{label}</div>
             <div className="font-mono text-2xl font-bold" style={{ color }}>{value}</div>
           </div>
         ))}
@@ -104,7 +104,7 @@ export default function AdminRiskPage() {
           <button
             key={label}
             onClick={() => setShowReviewed(i === 1)}
-            className="font-display text-[9px] tracking-widest uppercase px-3 py-1.5 border transition-all"
+            className="font-display text-[11px] tracking-widest uppercase px-3 py-1.5 border transition-all"
             style={{
               borderColor: (!showReviewed && i === 0) || (showReviewed && i === 1) ? "var(--neon)" : "var(--border)",
               color:       (!showReviewed && i === 0) || (showReviewed && i === 1) ? "var(--neon)" : "var(--text-muted)",
@@ -137,7 +137,7 @@ export default function AdminRiskPage() {
                 {/* Signal */}
                 <div className="shrink-0 w-36">
                   <div
-                    className="font-display text-[9px] tracking-widest uppercase font-bold"
+                    className="font-display text-[11px] tracking-widest uppercase font-bold"
                     style={{ color: SIGNAL_COLORS[flag.signal] ?? "var(--text)" }}
                   >
                     {SIGNAL_LABELS[flag.signal] ?? flag.signal}
@@ -152,7 +152,7 @@ export default function AdminRiskPage() {
                   <div className="font-ui text-sm font-semibold text-[var(--text-bright)] truncate">
                     {flag.user.name ?? "—"}
                     {flag.user.suspendedAt && (
-                      <span className="ml-2 font-mono text-[9px] text-[var(--danger)] border border-[var(--danger)] px-1">SUSPENSO</span>
+                      <span className="ml-2 font-mono text-[11px] text-[var(--danger)] border border-[var(--danger)] px-1">SUSPENSO</span>
                     )}
                   </div>
                   <div className="font-mono text-[10px] text-[var(--text-muted)] truncate">{flag.user.email}</div>
@@ -178,7 +178,7 @@ export default function AdminRiskPage() {
                         <button
                           onClick={() => suspend(flag.id)}
                           disabled={isPending}
-                          className="font-display text-[9px] tracking-widest uppercase px-2 py-1.5 border border-[var(--danger)] text-[var(--danger)] hover:bg-[var(--danger-dim)] transition-all disabled:opacity-50"
+                          className="font-display text-[11px] tracking-widest uppercase px-2 py-1.5 border border-[var(--danger)] text-[var(--danger)] hover:bg-[var(--danger-dim)] transition-all disabled:opacity-50"
                         >
                           Suspender
                         </button>
@@ -186,7 +186,7 @@ export default function AdminRiskPage() {
                       <button
                         onClick={() => review(flag.id)}
                         disabled={isPending}
-                        className="font-display text-[9px] tracking-widest uppercase px-2 py-1.5 border border-[var(--neon)] text-[var(--neon)] hover:bg-[var(--neon-dim)] transition-all disabled:opacity-50"
+                        className="font-display text-[11px] tracking-widest uppercase px-2 py-1.5 border border-[var(--neon)] text-[var(--neon)] hover:bg-[var(--neon-dim)] transition-all disabled:opacity-50"
                       >
                         Revisar ✓
                       </button>
@@ -198,7 +198,7 @@ export default function AdminRiskPage() {
               {/* Detail expandido */}
               {expanded === flag.id && (
                 <div className="border-t border-[var(--border)] px-4 py-3 bg-[var(--surface-1)]">
-                  <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase mb-2 flex items-center gap-2">
+                  <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mb-2 flex items-center gap-2">
                     <AlertTriangle size={10} />
                     Detalhes do sinal
                   </div>

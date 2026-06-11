@@ -117,14 +117,14 @@ export default async function DashboardPage() {
             className="bracket relative border border-[var(--border)] bg-[var(--surface-2)] p-4 hover:border-[var(--border-mid)] transition-all group overflow-hidden"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
+              <span className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
               <Icon size={12} style={{ color }} />
             </div>
             <div className="font-mono text-xl font-bold" style={{ color, textShadow: `0 0 12px ${glow}` }}>
               {value}
             </div>
             {sub && (
-              <div className="font-mono text-[9px] text-[var(--text-muted)] mt-1 tracking-widest">{sub}</div>
+              <div className="font-mono text-[11px] text-[var(--text-muted)] mt-1 tracking-widest">{sub}</div>
             )}
             <div
               className="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -251,7 +251,7 @@ export default async function DashboardPage() {
               <div className="font-display text-xs font-bold uppercase tracking-widest text-[var(--text-bright)] mb-1 group-hover:text-[var(--neon)] transition-colors">
                 {label}
               </div>
-              <div className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">{desc}</div>
+              <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">{desc}</div>
             </div>
           </Link>
         ))}

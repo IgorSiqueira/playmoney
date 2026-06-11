@@ -134,7 +134,7 @@ export default function LandingPage() {
           </span>
           <div className="hidden md:flex items-center gap-1 ml-2 px-2 py-0.5 border border-[var(--border)] bg-[var(--neon-dim)]">
             <div className="w-1.5 h-1.5 rounded-full bg-[var(--neon)] pulse-neon" />
-            <span className="font-display text-[9px] tracking-[0.2em] text-[var(--neon)] uppercase">Dota 2</span>
+            <span className="font-display text-[11px] tracking-[0.2em] text-[var(--neon)] uppercase">Dota 2</span>
           </div>
         </div>
 
@@ -259,7 +259,7 @@ export default function LandingPage() {
                       }}
                     >
                       <span
-                        className="font-display text-[9px] tracking-widest font-bold"
+                        className="font-display text-[11px] tracking-widest font-bold"
                         style={{ color: card.status === "PAGA" ? "#00ff64" : card.color }}
                       >
                         {card.status}
@@ -284,16 +284,16 @@ export default function LandingPage() {
 
                     <div className="flex items-center justify-between border-t border-[var(--border)] pt-2">
                       <div className="text-center">
-                        <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">Aposta</div>
+                        <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">Aposta</div>
                         <div className="font-mono text-sm text-[var(--text)]">{card.stake}</div>
                       </div>
                       <div style={{ color: card.color }} className="text-sm font-mono">→</div>
                       <div className="text-center">
-                        <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">Retorno</div>
+                        <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">Retorno</div>
                         <div className="font-mono text-sm font-bold" style={{ color: card.color }}>{card.payout}</div>
                       </div>
                       <div className="text-center">
-                        <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">Win Rate</div>
+                        <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">Win Rate</div>
                         <div className="font-mono text-sm text-[var(--text)]">{card.wr}</div>
                       </div>
                     </div>
@@ -330,7 +330,7 @@ export default function LandingPage() {
                   />
                 )}
               </div>
-              <div className="font-display text-[9px] tracking-[0.25em] text-[var(--text-muted)] uppercase mt-1">
+              <div className="font-display text-[11px] tracking-[0.25em] text-[var(--text-muted)] uppercase mt-1">
                 {s.label}
               </div>
             </div>

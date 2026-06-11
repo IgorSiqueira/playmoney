@@ -90,7 +90,7 @@ export default async function ProfilePage() {
             {user?.role === "ADMIN" && <Badge variant="destructive">Admin</Badge>}
             {user?.agreedToTermsAt && <Badge variant="default">Verificado 18+</Badge>}
           </div>
-          <div className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest mt-1">
+          <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest mt-1">
             Membro desde {user?.createdAt ? formatDate(user.createdAt) : "—"}
           </div>
         </div>
@@ -134,11 +134,11 @@ export default async function ProfilePage() {
         ].map(({ icon: Icon, label, value, sub, color, glow }) => (
           <div key={label} className="bracket border border-[var(--border)] bg-[var(--surface-2)] p-4 hover:border-[var(--border-mid)] transition-all">
             <div className="flex items-center justify-between mb-3">
-              <span className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
+              <span className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
               <Icon size={12} style={{ color }} />
             </div>
             <div className="font-mono text-xl font-bold" style={{ color, textShadow: `0 0 12px ${glow}` }}>{value}</div>
-            <div className="font-mono text-[9px] text-[var(--text-muted)] mt-1 tracking-widest">{sub}</div>
+            <div className="font-mono text-[11px] text-[var(--text-muted)] mt-1 tracking-widest">{sub}</div>
           </div>
         ))}
       </div>
@@ -146,14 +146,14 @@ export default async function ProfilePage() {
       {/* Streak + saldo + ativas */}
       <div className="grid grid-cols-3 gap-3">
         <div className="bracket border border-[var(--border)] bg-[var(--surface-2)] p-4 text-center">
-          <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase mb-3">Sequência Atual</div>
+          <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mb-3">Sequência Atual</div>
           {streakType ? (
             <>
               <div className="font-mono text-3xl font-bold"
                 style={{ color: streakType === "W" ? "var(--neon)" : "var(--danger)", textShadow: streakType === "W" ? "0 0 15px rgba(0,255,157,0.5)" : "0 0 15px rgba(255,58,110,0.5)" }}>
                 {streak}×
               </div>
-              <div className="font-display text-[9px] tracking-widest mt-1 uppercase"
+              <div className="font-display text-[11px] tracking-widest mt-1 uppercase"
                 style={{ color: streakType === "W" ? "var(--neon)" : "var(--danger)" }}>
                 {streakType === "W" ? "Vitórias" : "Derrotas"}
               </div>
@@ -163,22 +163,22 @@ export default async function ProfilePage() {
           )}
         </div>
         <div className="bracket border border-[var(--border)] bg-[var(--surface-2)] p-4 text-center">
-          <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase mb-3">Saldo Disponível</div>
+          <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mb-3">Saldo Disponível</div>
           <div className="font-mono text-2xl font-bold text-[var(--neon)]" style={{ textShadow: "0 0 12px rgba(0,255,157,0.4)" }}>
             {formatCurrency(Number(wallet?.balance ?? 0))}
           </div>
           {wallet && Number(wallet.bonusBalance) > 0 && (
-            <div className="font-mono text-[9px] text-[var(--gold)] mt-1 tracking-widest">
+            <div className="font-mono text-[11px] text-[var(--gold)] mt-1 tracking-widest">
               +{formatCurrency(Number(wallet.bonusBalance))} bônus
             </div>
           )}
         </div>
         <div className="bracket border border-[var(--border)] bg-[var(--surface-2)] p-4 text-center">
-          <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase mb-3">Apostas Ativas</div>
+          <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mb-3">Apostas Ativas</div>
           <div className="font-mono text-3xl font-bold text-[var(--gold)]" style={{ textShadow: "0 0 12px rgba(255,184,0,0.4)" }}>
             {active.length}
           </div>
-          <div className="font-mono text-[9px] text-[var(--text-muted)] mt-1 tracking-widest">
+          <div className="font-mono text-[11px] text-[var(--text-muted)] mt-1 tracking-widest">
             {active.length > 0 ? "Em andamento" : "Nenhuma"}
           </div>
         </div>
@@ -203,12 +203,12 @@ export default async function ProfilePage() {
               };
               return (
                 <div key={type} className="bracket border border-[var(--border)] bg-[var(--surface-2)] p-3">
-                  <div className="font-display text-[9px] tracking-widest text-[var(--text-muted)] uppercase mb-2">{labels[type] ?? type}</div>
+                  <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mb-2">{labels[type] ?? type}</div>
                   <div className="flex items-baseline gap-1.5 mb-2">
                     <span className="font-mono text-lg font-bold" style={{ color: wr >= 50 ? "var(--neon)" : "var(--danger)" }}>
                       {wr.toFixed(0)}%
                     </span>
-                    <span className="font-mono text-[9px] text-[var(--text-muted)]">{w}V/{total - w}D</span>
+                    <span className="font-mono text-[11px] text-[var(--text-muted)]">{w}V/{total - w}D</span>
                   </div>
                   {/* progress bar */}
                   <div className="h-1 bg-[var(--surface-1)] rounded-full overflow-hidden">
@@ -243,10 +243,10 @@ export default async function ProfilePage() {
                   <Zap size={12} className="text-[var(--neon)]" />
                   <div>
                     <div className="font-ui text-sm font-semibold text-[var(--text-bright)]">{gp.displayName ?? "—"}</div>
-                    <div className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">{gp.game} · ID {gp.externalId}</div>
+                    <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">{gp.game} · ID {gp.externalId}</div>
                   </div>
                 </div>
-                <div className="font-mono text-[9px] text-[var(--text-muted)] tracking-widest">
+                <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
                   {gp.lastSyncAt ? `Sync ${formatDate(gp.lastSyncAt)}` : "Nunca sincronizado"}
                 </div>
               </div>

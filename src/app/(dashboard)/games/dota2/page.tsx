@@ -171,7 +171,7 @@ export default function Dota2Page() {
             </div>
             <p className="font-display text-[11px] tracking-[0.2em] text-[var(--text-muted)] uppercase mb-5">Perfil público necessário · API gratuita</p>
             <form onSubmit={handleConnect} className="space-y-4">
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label>Steam ID (32-bit ou 64-bit)</Label>
                 <Input placeholder="Ex: 86745912 ou 76561198..." value={steamId} onChange={(e) => setSteamId(e.target.value)} required />
                 <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">Encontre em: steamidfinder.com</p>
@@ -292,7 +292,7 @@ export default function Dota2Page() {
             </span>
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label>Valor alvo ({EVENT_TYPES[eventType].unit})</Label>
             <Input type="number" placeholder={`Ex: ${liveOdds ? Math.round(liveOdds.averageStat) : 0}`}
               value={targetValue} onChange={(e) => setTargetValue(e.target.value)} min={0} step={eventType === "GPM" ? 50 : 1} />
@@ -347,7 +347,7 @@ export default function Dota2Page() {
           )}
 
           <form onSubmit={handleBet} className="space-y-4">
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label>Valor da aposta (R$)</Label>
               <Input type="number" placeholder="0.00" min={5} max={5000} step={0.01}
                 value={betAmount} onChange={(e) => setBetAmount(e.target.value)} required

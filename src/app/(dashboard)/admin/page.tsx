@@ -90,7 +90,7 @@ export default async function AdminPage() {
             </Link>
           </Button>
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           {recentSettlements.map((bet) => {
             const won = bet.status === "WON";
             return (

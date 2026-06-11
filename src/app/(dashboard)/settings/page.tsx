@@ -162,7 +162,7 @@ export default function SettingsPage() {
           </p>
           <form onSubmit={handleLimits} className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label className="flex items-center gap-1.5"><Clock size={10} /> Limite Diário (R$)</Label>
                 <Input type="number" placeholder="Sem limite" min={10} step={10}
                   value={dailyLimit} onChange={(e) => setDailyLimit(e.target.value)} />
@@ -172,7 +172,7 @@ export default function SettingsPage() {
                   </p>
                 )}
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label className="flex items-center gap-1.5"><Clock size={10} /> Limite Semanal (R$)</Label>
                 <Input type="number" placeholder="Sem limite" min={10} step={10}
                   value={weeklyLimit} onChange={(e) => setWeeklyLimit(e.target.value)} />

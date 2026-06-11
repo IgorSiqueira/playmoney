@@ -70,15 +70,15 @@ export default function RegisterPage() {
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label htmlFor="name">Nome de Jogador</Label>
                 <Input id="name" name="name" placeholder="Seu nome" required minLength={2} />
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" name="email" type="email" placeholder="seu@email.com" required />
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label htmlFor="password">Senha</Label>
                 <Input
                   id="password"

@@ -187,7 +187,7 @@ export default function BetsPage() {
             </span>
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {finishedBets.map((bet) => {
               const s = statusCfg[bet.status] ?? { label: bet.status, variant: "secondary" as const, icon: Target, color: "var(--text-muted)" };
               const Icon = s.icon;
@@ -365,7 +365,7 @@ function ActiveBetCard({
                 </span>
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label className="flex items-center gap-1.5">
                   <Hash size={10} />
                   Match ID da partida jogada

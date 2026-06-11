@@ -104,7 +104,7 @@ export function OverrideButton({ betId, userName, betAmount, potentialPayout, on
         </button>
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <Label className="text-[10px]">Motivo (opcional)</Label>
         <Input
           placeholder="Ex: OpenDota indisponível, partida verificada manualmente"

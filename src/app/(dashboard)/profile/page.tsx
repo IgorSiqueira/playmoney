@@ -236,7 +236,7 @@ export default async function ProfilePage() {
             <Gamepad2 size={13} className="text-[var(--text-muted)]" />
             <span className="font-display text-xs font-bold uppercase tracking-widest text-[var(--text-bright)]">Perfis Conectados</span>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {gameProfiles.map((gp) => (
               <div key={gp.game} className="flex items-center justify-between border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3">
                 <div className="flex items-center gap-3">
@@ -263,7 +263,7 @@ export default async function ProfilePage() {
             <Hash size={13} className="text-[var(--text-muted)]" />
             <span className="font-display text-xs font-bold uppercase tracking-widest text-[var(--text-bright)]">Histórico Recente</span>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {recent.map((bet) => {
               const statusCfg: Record<string, { label: string; variant: "default"|"destructive"|"warning"|"secondary"; icon: typeof Trophy }> = {
                 ACTIVE: { label: "Ativa",     variant: "warning",     icon: Clock },

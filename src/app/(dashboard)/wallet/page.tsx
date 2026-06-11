@@ -169,7 +169,7 @@ export default function WalletPage() {
               ))}
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label>Valor personalizado (R$)</Label>
               <Input type="number" placeholder="0.00" min={10} max={10000} step={0.01}
                 value={amount} onChange={(e) => setAmount(e.target.value)} />
@@ -196,7 +196,7 @@ export default function WalletPage() {
 
           <form onSubmit={handleWithdraw} className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label>Chave PIX</Label>
                 <Input
                   type="text"
@@ -205,7 +205,7 @@ export default function WalletPage() {
                   onChange={(e) => setPixKey(e.target.value)}
                 />
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label>Valor (R$)</Label>
                 <Input
                   type="number"
@@ -256,7 +256,7 @@ export default function WalletPage() {
             </div>
           </div>
         ) : (
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {wallet.transactions.map((tx) => {
               const cfg = typeConfig[tx.type] ?? { label: tx.type, icon: TrendingUp, color: "var(--text)", prefix: "" };
               const Icon = cfg.icon;

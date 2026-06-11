@@ -193,7 +193,7 @@ export default async function DashboardPage() {
               </Link>
             </Button>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {recentBets.map((bet) => {
               const statusCfg: Record<string, { label: string; variant: "default"|"destructive"|"warning"|"secondary"; icon: typeof Trophy }> = {
                 ACTIVE:    { label: "Ativa",     variant: "warning",     icon: Clock },

@@ -158,7 +158,7 @@ export default function WalletPage() {
                   key={v}
                   type="button"
                   onClick={() => setAmount(String(v))}
-                  className={`py-2 font-ui text-[12px] font-semibold uppercase border transition-all ${
+                  className={`py-3 font-ui text-[12px] font-semibold uppercase border transition-all ${
                     amount === String(v)
                       ? "border-[var(--neon)] bg-[var(--neon-dim)] text-[var(--neon)]"
                       : "border-[var(--border)] bg-[var(--surface-1)] text-[var(--text-muted)] hover:border-[var(--border-mid)] hover:text-[var(--text)]"

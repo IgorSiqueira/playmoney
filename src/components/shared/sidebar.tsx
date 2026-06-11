@@ -61,7 +61,7 @@ export function Sidebar({ user }: SidebarProps) {
               key={href}
               href={href}
               className={cn(
-                "group flex items-center gap-3 px-3 py-2.5 transition-all duration-150 relative",
+                "group flex items-center gap-3 px-3 py-3 transition-all duration-150 relative",
                 active
                   ? "bg-[var(--neon-dim)] text-[var(--neon)]"
                   : "text-[var(--text-muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)]"

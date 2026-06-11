@@ -186,7 +186,7 @@ export default async function LeaderboardPage() {
               return (
                 <div
                   key={p.userId}
-                  className="grid grid-cols-[2rem_1fr_6rem_6rem_5rem_5rem] gap-3 items-center px-4 py-3 border transition-colors"
+                  className="grid grid-cols-[2rem_1fr_6rem_6rem_5rem_5rem] gap-3 items-center px-4 py-3 border hover:brightness-110 transition-all duration-150"
                   style={{
                     borderColor: isMe ? "var(--neon)" : isTop3 ? `${rankColor}40` : "var(--border)",
                     background: isMe ? "var(--neon-dim)" : "var(--surface-2)",

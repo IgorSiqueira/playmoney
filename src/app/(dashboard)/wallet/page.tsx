@@ -231,7 +231,7 @@ export default function WalletPage() {
               >
                 {withdrawLoading ? "Processando..." : "Solicitar Saque"}
               </Button>
-              <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
+              <span className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">
                 ▸ Processado em até 1 dia útil
               </span>
             </div>

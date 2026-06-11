@@ -85,7 +85,7 @@ export default function BetsPage() {
     return (
       <div className="flex items-center gap-3 py-16">
         <div className="w-1.5 h-1.5 bg-[var(--neon)] animate-pulse" />
-        <span className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
+        <span className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">
           Carregando apostas...
         </span>
       </div>
@@ -258,7 +258,7 @@ export default function BetsPage() {
             <div className="font-display text-xs font-bold uppercase tracking-widest text-[var(--text-bright)] mb-1">
               Sem Apostas
             </div>
-            <div className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
+            <div className="font-ui text-[13px] text-[var(--text-muted)]">
               Vá para Dota 2 para criar sua primeira aposta
             </div>
           </div>
@@ -376,7 +376,7 @@ function ActiveBetCard({
                   onChange={(e) => onMatchIdChange(e.target.value)}
                   className="font-mono"
                 />
-                <p className="font-mono text-[11px] tracking-widest text-[var(--text-muted)] uppercase">
+                <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">
                   ▸ Encontre em opendota.com ou no histórico do jogo
                 </p>
               </div>

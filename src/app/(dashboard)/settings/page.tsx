@@ -127,7 +127,7 @@ export default function SettingsPage() {
               : <Badge variant="warning" className="ml-auto">Pendente</Badge>}
           </div>
           {settings?.agreedToTermsAt ? (
-            <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest">
+            <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-wide">
               Aceito em {new Date(settings.agreedToTermsAt).toLocaleDateString("pt-BR")} · Você confirmou ser maior de 18 anos
             </p>
           ) : (
@@ -136,10 +136,10 @@ export default function SettingsPage() {
                 Para apostar, você precisa confirmar que tem 18 anos ou mais e aceitar os Termos de Uso da plataforma.
               </p>
               <div className="border border-[var(--border)] bg-[var(--surface-1)] p-3 space-y-1">
-                <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest">▸ Este é um serviço de apostas simuladas para fins de entretenimento</p>
-                <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest">▸ Você deve ter 18 anos ou mais para participar</p>
-                <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest">▸ Apostas envolvem risco de perda financeira</p>
-                <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest">▸ Jogue com responsabilidade</p>
+                <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">▸ Este é um serviço de apostas simuladas para fins de entretenimento</p>
+                <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">▸ Você deve ter 18 anos ou mais para participar</p>
+                <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">▸ Apostas envolvem risco de perda financeira</p>
+                <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">▸ Jogue com responsabilidade</p>
               </div>
               <Button onClick={handleTerms} disabled={saving}>
                 <CheckCircle2 size={11} className="mr-1.5" /> Confirmo que tenho 18+ anos e aceito os Termos
@@ -167,7 +167,7 @@ export default function SettingsPage() {
                 <Input type="number" placeholder="Sem limite" min={10} step={10}
                   value={dailyLimit} onChange={(e) => setDailyLimit(e.target.value)} />
                 {settings?.dailyLossLimit && (
-                  <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
+                  <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">
                     Atual: {formatCurrency(settings.dailyLossLimit)}
                   </p>
                 )}
@@ -177,7 +177,7 @@ export default function SettingsPage() {
                 <Input type="number" placeholder="Sem limite" min={10} step={10}
                   value={weeklyLimit} onChange={(e) => setWeeklyLimit(e.target.value)} />
                 {settings?.weeklyLossLimit && (
-                  <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
+                  <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">
                     Atual: {formatCurrency(settings.weeklyLossLimit)}
                   </p>
                 )}
@@ -241,7 +241,7 @@ export default function SettingsPage() {
                     <input type="checkbox" checked={confirmExclusion}
                       onChange={(e) => setConfirmExclusion(e.target.checked)}
                       className="accent-red-500" />
-                    <span className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest">
+                    <span className="font-ui text-[13px] text-[var(--text-muted)]">
                       Entendo que não poderei reverter esta ação antes do período terminar
                     </span>
                   </label>
@@ -256,7 +256,7 @@ export default function SettingsPage() {
 
           <div className="mt-4 pt-4 border-t border-[var(--border)] flex items-center gap-2">
             <Heart size={10} className="text-[var(--danger)]" />
-            <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
+            <span className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">
               Jogo compulsivo é uma doença · Ajuda: jogo-responsavel.org.br · CVJ 0800 722 4000
             </span>
           </div>

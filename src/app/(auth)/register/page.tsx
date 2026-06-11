@@ -107,7 +107,7 @@ export default function RegisterPage() {
 
           <div className="border-t border-[var(--border)] px-4 py-2 flex items-center gap-2">
             <Zap size={10} className="text-[var(--neon)]" />
-            <span className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
+            <span className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">
               Gratuito · Sem taxas de cadastro
             </span>
           </div>

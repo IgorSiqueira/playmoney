@@ -135,8 +135,8 @@ export default function WalletPage() {
             <span className="font-ui text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wide">Saldo Disponível</span>
           </div>
           <div
-            className="font-mono text-4xl font-bold text-[var(--neon)] mt-3"
-            style={{ textShadow: "0 0 20px rgba(0,128,255,0.5)" }}
+            className="font-mono text-5xl font-black text-[var(--neon)] mt-3 leading-none"
+            style={{ textShadow: "0 0 30px rgba(0,128,255,0.6), 0 0 60px rgba(0,128,255,0.2)" }}
           >
             {wallet ? formatCurrency(Number(wallet.balance)) : "···"}
           </div>

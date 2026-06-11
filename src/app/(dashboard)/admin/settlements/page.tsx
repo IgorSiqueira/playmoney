@@ -221,7 +221,7 @@ export default async function AdminSettlementsPage({
                 return (
                   <div
                     key={bet.id}
-                    className="grid grid-cols-[1fr_5rem_5rem_5rem_5rem_7rem] gap-2 items-center px-4 py-3 border border-[var(--border)] bg-[var(--surface-2)] hover:border-[var(--border-mid)] transition-colors"
+                    className="grid grid-cols-[1fr_5rem_5rem_5rem_5rem_7rem] gap-2 items-center px-4 py-3 border border-[var(--border)] bg-[var(--surface-2)] hover:border-[var(--border-mid)] hover:bg-[var(--surface-hover)] transition-all duration-150"
                     style={{ borderLeftColor: won ? "var(--neon)" : "var(--danger)", borderLeftWidth: 2 }}
                   >
                     {/* Jogador / Aposta */}

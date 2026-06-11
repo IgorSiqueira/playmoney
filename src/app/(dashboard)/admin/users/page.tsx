@@ -97,7 +97,7 @@ export default async function AdminUsersPage() {
             return (
               <div
                 key={u.id}
-                className="grid grid-cols-[1fr_5rem_5rem_4rem_4rem_5rem_6rem] gap-2 items-center px-4 py-3 border border-[var(--border)] bg-[var(--surface-2)] hover:border-[var(--border-mid)] transition-colors"
+                className="grid grid-cols-[1fr_5rem_5rem_4rem_4rem_5rem_6rem] gap-2 items-center px-4 py-3 border border-[var(--border)] bg-[var(--surface-2)] hover:border-[var(--border-mid)] hover:bg-[var(--surface-hover)] transition-all duration-150"
                 style={{ borderColor: u.isExcluded ? "rgba(255,58,110,0.3)" : undefined }}
               >
                 {/* User info */}

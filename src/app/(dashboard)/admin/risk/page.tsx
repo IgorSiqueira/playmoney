@@ -75,7 +75,7 @@ export default function AdminRiskPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <div className="font-display text-[10px] tracking-[0.3em] text-[var(--danger)] uppercase mb-1">
+        <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--danger)] uppercase mb-1">
           ▸ Detecção de Fraude
         </div>
         <h1 className="font-display text-3xl font-black tracking-tight text-[var(--text-bright)] uppercase">

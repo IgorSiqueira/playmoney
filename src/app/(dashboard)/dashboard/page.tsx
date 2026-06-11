@@ -87,7 +87,7 @@ export default async function DashboardPage() {
       {/* Header */}
       <div className="flex items-end justify-between">
         <div>
-          <div className="font-display text-[10px] tracking-[0.3em] text-[var(--neon)] uppercase mb-1">
+          <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--neon)] uppercase mb-1">
             ▸ Painel de Controle
           </div>
           <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">

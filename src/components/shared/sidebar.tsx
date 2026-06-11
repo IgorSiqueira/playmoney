@@ -50,7 +50,7 @@ export function Sidebar({ user }: SidebarProps) {
 
       {/* Nav */}
       <nav className="flex-1 py-4 px-2 space-y-0.5">
-        <div className="font-display text-[11px] tracking-[0.25em] text-[var(--text-muted)] px-3 mb-3 uppercase">
+        <div className="font-ui text-[11px] font-semibold text-[var(--text-muted)] px-3 mb-3 uppercase tracking-wide">
           Navegação
         </div>
         {navItems.map(({ href, label, icon: Icon }) => {
@@ -90,8 +90,8 @@ export function Sidebar({ user }: SidebarProps) {
         {user.role === "ADMIN" && (
           <>
             <div className="mx-3 my-3 border-t border-[var(--border)]" />
-            <div className="font-display text-[11px] tracking-[0.25em] text-[var(--danger)] px-3 mb-2 uppercase flex items-center gap-1.5">
-              <ShieldAlert size={9} />
+            <div className="font-ui text-[11px] font-semibold text-[var(--danger)] px-3 mb-2 uppercase tracking-wide flex items-center gap-1.5">
+              <ShieldAlert size={11} />
               Admin
             </div>
             {[

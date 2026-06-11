@@ -94,7 +94,7 @@ export default async function LeaderboardPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <div className="font-display text-[10px] tracking-[0.3em] text-[var(--gold)] uppercase mb-1">▸ Competição</div>
+        <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--gold)] uppercase mb-1">▸ Competição</div>
         <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Leaderboard</h1>
         <p className="font-ui text-sm text-[var(--text-muted)] mt-1">Top 25 jogadores por lucro total — atualizado em tempo real</p>
       </div>

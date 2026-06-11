@@ -96,7 +96,7 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <div className="font-display text-[10px] tracking-[0.3em] text-[var(--neon)] uppercase mb-1">▸ Conta</div>
+        <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--neon)] uppercase mb-1">▸ Conta</div>
         <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Configurações</h1>
         <p className="font-ui text-sm text-[var(--text-muted)] mt-1">Jogo responsável e preferências da conta</p>
       </div>

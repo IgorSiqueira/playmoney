@@ -65,13 +65,13 @@ export function Sidebar({ user }: SidebarProps) {
               className={cn(
                 "group flex items-center gap-3 px-3 py-3 transition-all duration-150 relative",
                 active
-                  ? "bg-[var(--neon-dim)] text-[var(--neon)]"
+                  ? "bg-[rgba(0,128,255,0.12)] text-[var(--neon)] border-l-0"
                   : "text-[var(--text-muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)]"
               )}
             >
               {/* Active indicator */}
               {active && (
-                <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-[var(--neon)] shadow-[0_0_8px_var(--neon)]" />
+                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[var(--neon)] shadow-[0_0_10px_var(--neon)]" />
               )}
               <Icon
                 size={15}

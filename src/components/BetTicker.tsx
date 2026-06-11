@@ -48,12 +48,12 @@ export function BetTicker() {
             <span className="font-ui text-[11px] text-[var(--text-muted)]">·</span>
             <span className="font-mono text-[11px] text-[var(--neon)]">R${e.amount}</span>
             <span className="font-mono text-[11px] text-[var(--text-muted)]">→</span>
-            <span className={`font-mono text-[11px] font-bold ${e.won ? "text-[#00ff7f]" : "text-[var(--danger)]"}`}>
+            <span className={`font-mono text-[11px] font-bold ${e.won ? "text-[var(--neon)]" : "text-[var(--danger)]"}`}>
               {e.won ? `R$${e.payout}` : "PERDEU"}
             </span>
             <span className={`font-display text-[11px] tracking-widest px-1.5 py-0.5 border ${
               e.won
-                ? "text-[#00ff7f] border-[rgba(0,255,127,0.3)] bg-[rgba(0,255,127,0.07)]"
+                ? "text-[var(--neon)] border-[rgba(0,128,255,0.3)] bg-[rgba(0,128,255,0.07)]"
                 : "text-[var(--danger)] border-[rgba(255,58,110,0.3)] bg-[rgba(255,58,110,0.07)]"
             }`}>
               {e.won ? "GANHOU" : "PERDEU"}

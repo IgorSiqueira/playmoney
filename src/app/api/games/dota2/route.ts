@@ -4,6 +4,8 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { fetchPlayerProfile, fetchRecentMatches, calculatePlayerStats, normalizePlayerId } from "@/lib/opendota";
 import { calculateOdds } from "@/lib/odds";
+import { syncDota2Profile } from "@/lib/game-sync";
+
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { evaluateMatchSignals } from "@/lib/risk";
 
@@ -49,40 +51,11 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: "Nenhum perfil Dota 2 conectado." }, { status: 404 });
   }
 
-  const accountId = Number(existing.externalId);
-
-  const [playerProfile, recentMatches, stats] = await Promise.all([
-    fetchPlayerProfile(accountId),
-    fetchRecentMatches(accountId, 20),
-    calculatePlayerStats(accountId),
-  ]);
-
-  // If OpenDota is unavailable, keep cached data but refresh lastSyncAt
-  // so the user isn't blocked from betting while the API is down
-  if (!playerProfile?.profile) {
-    const refreshed = await prisma.gameProfile.update({
-      where: { userId_game: { userId, game: "DOTA2" } },
-      data: { lastSyncAt: new Date() },
-    });
-    return NextResponse.json({ ...refreshed, _cached: true });
-  }
-
-  const odds     = calculateOdds(stats);
-  const statsJson = JSON.parse(JSON.stringify({ ...stats, odds, recentMatches: recentMatches.slice(0, 10) }));
-
-  const updated = await prisma.gameProfile.update({
-    where: { userId_game: { userId, game: "DOTA2" } },
-    data: {
-      displayName: playerProfile.profile.personaname,
-      avatarUrl:   playerProfile.profile.avatarfull,
-      stats:       statsJson,
-      lastSyncAt:  new Date(),
-    },
-  });
+  const updated = await syncDota2Profile(userId);
 
   void evaluateMatchSignals(userId);
 
-  return NextResponse.json(updated);
+  return NextResponse.json(updated ?? existing);
 }
 
 export async function POST(req: Request) {

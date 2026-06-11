@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { evaluateBetSignals } from "@/lib/risk";
+import { syncDota2Profile } from "@/lib/game-sync";
 import { prisma } from "@/lib/prisma";
 import { fetchMatchDetails, didPlayerWinMatch } from "@/lib/opendota";
 import { verifyEventOutcome } from "@/lib/bet-events";
@@ -303,8 +304,9 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     return updatedBet;
   });
 
-  // Fire-and-forget: avalia sinais de risco sem bloquear a resposta
+  // Fire-and-forget: avalia sinais de risco e sincroniza perfil sem bloquear a resposta
   void evaluateBetSignals(userId);
+  void syncDota2Profile(userId);
 
   return NextResponse.json({
     bet: result,

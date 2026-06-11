@@ -8,6 +8,7 @@ import Link from "next/link";
 import {
   TrendingUp, TrendingDown, Swords, CircleDollarSign, Activity,
   ChevronRight, Gamepad2, Target, Trophy, Skull, Clock, Gift,
+  CheckCircle2, Circle,
 } from "lucide-react";
 
 export default async function DashboardPage() {
@@ -133,6 +134,79 @@ export default async function DashboardPage() {
           </div>
         ))}
       </div>
+
+      {/* Onboarding — shown until user places first bet */}
+      {allBets.length === 0 && (
+        <div className="bracket relative border border-[var(--border)] bg-[var(--surface-2)] overflow-hidden">
+          <div className="h-0.5 bg-gradient-to-r from-transparent via-[var(--neon)] to-transparent" />
+          <div className="p-6">
+            <div className="font-display text-[11px] tracking-[0.2em] text-[var(--neon)] uppercase mb-1">▸ Primeiros Passos</div>
+            <h2 className="font-display text-lg font-black uppercase tracking-tight text-[var(--text-bright)] mb-5">
+              Comece a Apostar em 3 Passos
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                {
+                  step: 1,
+                  done: gameProfiles.length > 0,
+                  title: "Conecte o Dota 2",
+                  desc: "Vincule seu perfil Steam para calcularmos suas odds com base no seu histórico.",
+                  href: "/games/dota2",
+                  cta: "Conectar",
+                },
+                {
+                  step: 2,
+                  done: Number(wallet?.balance ?? 0) > 0,
+                  title: "Deposite Saldo",
+                  desc: "Adicione créditos via PIX para começar a apostar. Mínimo R$ 10,00.",
+                  href: "/wallet",
+                  cta: "Depositar",
+                },
+                {
+                  step: 3,
+                  done: false,
+                  title: "Faça sua Primeira Aposta",
+                  desc: "Escolha um evento, defina o valor e acompanhe seu desempenho em tempo real.",
+                  href: "/games/dota2",
+                  cta: "Apostar",
+                },
+              ].map(({ step, done, title, desc, href, cta }) => (
+                <div
+                  key={step}
+                  className={`relative border p-4 transition-all ${
+                    done
+                      ? "border-[var(--neon)] bg-[var(--neon-dim)] opacity-60"
+                      : "border-[var(--border)] bg-[var(--surface-1)] hover:border-[var(--border-mid)]"
+                  }`}
+                >
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className={`shrink-0 mt-0.5 ${done ? "text-[var(--neon)]" : "text-[var(--text-muted)]"}`}>
+                      {done ? <CheckCircle2 size={16} /> : <Circle size={16} />}
+                    </div>
+                    <div>
+                      <div className="font-mono text-[11px] text-[var(--text-muted)] mb-0.5">
+                        PASSO {step}
+                      </div>
+                      <div className="font-display text-sm font-bold uppercase tracking-wide text-[var(--text-bright)]">
+                        {title}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="font-ui text-[12px] text-[var(--text-muted)] leading-relaxed mb-4">{desc}</p>
+                  {!done && (
+                    <Button asChild size="sm" variant="outline" className="w-full">
+                      <Link href={href}>{cta}</Link>
+                    </Button>
+                  )}
+                  {done && (
+                    <div className="font-ui text-[12px] font-semibold text-[var(--neon)]">Concluído ✓</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Bonus banner */}
       {wallet && !wallet.depositBonusClaimed && Number(wallet.balance) === 0 && (

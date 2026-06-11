@@ -114,7 +114,7 @@ export default function WalletPage() {
           <div className="h-0.5 bg-gradient-to-r from-transparent via-[var(--neon)] to-transparent absolute top-0 left-0 right-0" />
           <div className="flex items-center gap-2 mb-2">
             <CreditCard size={13} className="text-[var(--neon)]" />
-            <span className="font-display text-[10px] tracking-widest text-[var(--text-muted)] uppercase">Saldo Disponível</span>
+            <span className="font-ui text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wide">Saldo Disponível</span>
           </div>
           <div
             className="font-mono text-4xl font-bold text-[var(--neon)] mt-3"
@@ -124,17 +124,17 @@ export default function WalletPage() {
           </div>
           {wallet && Number(wallet.bonusBalance) > 0 && (
             <div className="flex items-center gap-1.5 mt-1.5">
-              <span className="font-mono text-[10px] text-[var(--gold)] tracking-widest">
+              <span className="font-ui text-[12px] text-[var(--gold)]">
                 Inclui {formatCurrency(Number(wallet.bonusBalance))} de bônus
               </span>
             </div>
           )}
-          <p className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mt-2">
+          <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide mt-2">
             Pronto para apostar
           </p>
           {wallet && !wallet.depositBonusClaimed && (
             <div className="mt-3 border border-[var(--gold)] bg-[var(--gold-dim)] px-3 py-2">
-              <span className="font-display text-[11px] tracking-widest text-[var(--gold)] uppercase">
+              <span className="font-ui text-[12px] text-[var(--gold)] font-semibold">
                 🎁 Deposite R$ 20+ e ganhe 50% de bônus (até R$ 50)
               </span>
             </div>
@@ -147,7 +147,7 @@ export default function WalletPage() {
         <div className="bracket relative border border-[var(--border)] bg-[var(--surface-2)] p-6">
           <div className="flex items-center gap-2 mb-4">
             <Zap size={13} className="text-[var(--gold)]" />
-            <span className="font-display text-[10px] tracking-widest text-[var(--text-muted)] uppercase">Depositar via PIX</span>
+            <span className="font-ui text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wide">Depositar via PIX</span>
           </div>
 
           <form onSubmit={handleDeposit} className="space-y-4">
@@ -158,7 +158,7 @@ export default function WalletPage() {
                   key={v}
                   type="button"
                   onClick={() => setAmount(String(v))}
-                  className={`py-2 font-display text-[10px] tracking-widest uppercase border transition-all ${
+                  className={`py-2 font-ui text-[12px] font-semibold uppercase border transition-all ${
                     amount === String(v)
                       ? "border-[var(--neon)] bg-[var(--neon-dim)] text-[var(--neon)]"
                       : "border-[var(--border)] bg-[var(--surface-1)] text-[var(--text-muted)] hover:border-[var(--border-mid)] hover:text-[var(--text)]"
@@ -251,7 +251,7 @@ export default function WalletPage() {
 
         {!wallet?.transactions.length ? (
           <div className="border border-[var(--border)] bg-[var(--surface-2)] py-12 text-center">
-            <div className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
+            <div className="font-ui text-[13px] text-[var(--text-muted)]">
               Nenhuma transação registrada
             </div>
           </div>
@@ -272,7 +272,7 @@ export default function WalletPage() {
                     </div>
                     <div>
                       <div className="font-ui text-sm font-semibold text-[var(--text-bright)]">{cfg.label}</div>
-                      <div className="font-mono text-[10px] text-[var(--text-muted)]">{formatDate(tx.createdAt)}</div>
+                      <div className="font-mono text-[11px] text-[var(--text-muted)]">{formatDate(tx.createdAt)}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">

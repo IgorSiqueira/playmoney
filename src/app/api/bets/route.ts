@@ -140,12 +140,15 @@ export async function POST(req: Request) {
       },
     });
 
+    const profileStats = gameProfile.stats as { knownTeammates?: number[] } | null;
+    const knownTeammatesSnapshot = profileStats?.knownTeammates ?? [];
+
     const bet = await tx.bet.create({
       data: {
         userId, gameProfileId, prediction, amount, odds: selectedOdds,
         potentialPayout, status: "ACTIVE", eventType,
         targetValue: targetValue ?? null,
-        matchData: JSON.parse(JSON.stringify({ stats })),
+        matchData: JSON.parse(JSON.stringify({ stats, knownTeammatesSnapshot })),
       },
     });
 

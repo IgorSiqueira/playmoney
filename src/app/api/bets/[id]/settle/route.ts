@@ -170,6 +170,46 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     );
   }
 
+  // [E13] Verificar se algum jogador do time amigo está no histórico de parceiros
+  // Snapshot tirado no momento da criação da aposta — imune a sync posterior
+  const betData = bet.matchData as { knownTeammatesSnapshot?: number[] } | null;
+  const knownTeammates = new Set<number>(betData?.knownTeammatesSnapshot ?? []);
+
+  if (knownTeammates.size > 0) {
+    const ourSideRadiant = player.player_slot < 128;
+    const hasKnownTeammate = match.players.some(
+      (p) =>
+        p.account_id &&
+        p.account_id !== accountId &&
+        (p.player_slot < 128) === ourSideRadiant &&
+        knownTeammates.has(p.account_id)
+    );
+
+    if (hasKnownTeammate) {
+      await prisma.$transaction(async (tx) => {
+        const cancelled = await tx.bet.updateMany({
+          where: { id, status: "ACTIVE" },
+          data: { status: "CANCELLED", settledAt: new Date(), matchId: parsed.data.matchId },
+        });
+        if (cancelled.count === 0) throw new Error("ALREADY_SETTLED");
+        const wallet = await tx.wallet.update({
+          where: { userId },
+          data: { balance: { increment: Number(bet.amount) } },
+        });
+        await tx.transaction.create({
+          data: {
+            walletId: wallet.id,
+            type: "DEPOSIT",
+            amount: Number(bet.amount),
+            status: "COMPLETED",
+            description: "Aposta cancelada. Valor devolvido.",
+          },
+        });
+      });
+      return NextResponse.json({ cancelled: true, refunded: Number(bet.amount) });
+    }
+  }
+
   // Determinar resultado: WIN_LOSS usa resultado da partida; eventos usam stats do player
   let betWon: boolean;
   let playerWon: boolean | null = null;

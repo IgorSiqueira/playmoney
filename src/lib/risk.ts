@@ -4,6 +4,10 @@ import type { RiskSignal, Prisma } from "@prisma/client";
 
 const SUSPEND_SCORE = 70;
 
+// PARTY_RECURRENCE e WEAK_ENEMIES ficam como sinais para o admin,
+// mas não disparam auto-suspensão — a proteção acontece na liquidação.
+const AUTO_SUSPEND_SIGNALS: RiskSignal[] = ["BET_ACCURACY", "WIN_RATE_SPIKE"];
+
 interface SignalResult {
   score: number;
   detail: Prisma.InputJsonValue;
@@ -11,18 +15,13 @@ interface SignalResult {
 
 // ── Upsert de flag ────────────────────────────────────────────────────────────
 
-async function upsertFlag(
-  userId: string,
-  signal: RiskSignal,
-  result: SignalResult
-) {
+async function upsertFlag(userId: string, signal: RiskSignal, result: SignalResult) {
   const existing = await prisma.riskFlag.findFirst({
     where: { userId, signal, reviewedAt: null },
     orderBy: { createdAt: "desc" },
   });
 
   if (existing) {
-    // Só atualiza se o score piorou
     if (result.score <= existing.score) return;
     await prisma.riskFlag.update({
       where: { id: existing.id },
@@ -39,7 +38,7 @@ async function upsertFlag(
 
 async function refreshSuspension(userId: string) {
   const agg = await prisma.riskFlag.aggregate({
-    where: { userId, reviewedAt: null },
+    where: { userId, signal: { in: AUTO_SUSPEND_SIGNALS }, reviewedAt: null },
     _max: { score: true },
   });
 
@@ -59,7 +58,6 @@ async function refreshSuspension(userId: string) {
 }
 
 // ── Sinal: BET_ACCURACY ──────────────────────────────────────────────────────
-// Win rate de apostas > 75% com >= 5 liquidadas
 
 async function evalBetAccuracy(userId: string): Promise<SignalResult | null> {
   const bets = await prisma.bet.findMany({
@@ -81,7 +79,6 @@ async function evalBetAccuracy(userId: string): Promise<SignalResult | null> {
 }
 
 // ── Sinal: WIN_RATE_SPIKE ────────────────────────────────────────────────────
-// Win rate em apostas > histórico do perfil + 20pp, com >= 3 apostas WIN_LOSS
 
 async function evalWinRateSpike(userId: string): Promise<SignalResult | null> {
   const [bets, profile] = await Promise.all([
@@ -115,117 +112,6 @@ async function evalWinRateSpike(userId: string): Promise<SignalResult | null> {
   };
 }
 
-// ── Sinal: PARTY_RECURRENCE ──────────────────────────────────────────────────
-// Os mesmos Steam IDs aparecem na party do jogador em > 50% das partidas recentes
-
-async function evalPartyRecurrence(userId: string): Promise<SignalResult | null> {
-  const profile = await prisma.gameProfile.findFirst({
-    where: { userId, game: "DOTA2" },
-    select: { externalId: true, stats: true },
-  });
-  if (!profile) return null;
-
-  const accountId = Number(profile.externalId);
-  const stats = profile.stats as { recentMatches?: Array<{ match_id: number }> };
-  const matchIds = (stats.recentMatches ?? []).slice(0, 10).map((m) => m.match_id);
-  if (matchIds.length < 5) return null;
-
-  const details = await Promise.all(
-    matchIds.map((id) => fetchMatchDetails(String(id)))
-  );
-
-  const frequency: Record<number, number> = {};
-  let analyzed = 0;
-
-  for (const match of details) {
-    if (!match) continue;
-    const us = match.players.find((p) => p.account_id === accountId);
-    if (!us?.party_id) continue;
-    analyzed++;
-
-    for (const p of match.players) {
-      if (p.account_id === accountId || !p.account_id || p.party_id !== us.party_id) continue;
-      frequency[p.account_id] = (frequency[p.account_id] ?? 0) + 1;
-    }
-  }
-
-  if (analyzed < 3) return null;
-
-  const suspicious = Object.entries(frequency)
-    .map(([id, count]) => ({
-      accountId: Number(id),
-      count,
-      ratio: parseFloat((count / analyzed).toFixed(3)),
-    }))
-    .filter((e) => e.ratio >= 0.5)
-    .sort((a, b) => b.ratio - a.ratio);
-
-  if (suspicious.length === 0) return null;
-
-  const maxRatio = suspicious[0].ratio;
-  return {
-    score: Math.min(100, Math.round(((maxRatio - 0.5) / 0.5) * 100)),
-    detail: { suspicious, matchesAnalyzed: analyzed },
-  };
-}
-
-// ── Sinal: WEAK_ENEMIES ──────────────────────────────────────────────────────
-// Os mesmos inimigos aparecem em > 30% das partidas (sugerindo adversários combinados)
-
-async function evalWeakEnemies(userId: string): Promise<SignalResult | null> {
-  const profile = await prisma.gameProfile.findFirst({
-    where: { userId, game: "DOTA2" },
-    select: { externalId: true, stats: true },
-  });
-  if (!profile) return null;
-
-  const accountId = Number(profile.externalId);
-  const stats = profile.stats as { recentMatches?: Array<{ match_id: number }> };
-  const matchIds = (stats.recentMatches ?? []).slice(0, 10).map((m) => m.match_id);
-  if (matchIds.length < 5) return null;
-
-  const details = await Promise.all(
-    matchIds.map((id) => fetchMatchDetails(String(id)))
-  );
-
-  const frequency: Record<number, number> = {};
-  let analyzed = 0;
-
-  for (const match of details) {
-    if (!match) continue;
-    const us = match.players.find((p) => p.account_id === accountId);
-    if (!us) continue;
-    analyzed++;
-
-    const ourSideRadiant = us.player_slot < 128;
-    for (const p of match.players) {
-      if (!p.account_id || p.account_id === 0) continue;
-      const isRadiant = p.player_slot < 128;
-      if (isRadiant === ourSideRadiant) continue; // skip teammates
-      frequency[p.account_id] = (frequency[p.account_id] ?? 0) + 1;
-    }
-  }
-
-  if (analyzed < 5) return null;
-
-  const suspicious = Object.entries(frequency)
-    .map(([id, count]) => ({
-      accountId: Number(id),
-      count,
-      ratio: parseFloat((count / analyzed).toFixed(3)),
-    }))
-    .filter((e) => e.ratio >= 0.3)
-    .sort((a, b) => b.ratio - a.ratio);
-
-  if (suspicious.length === 0) return null;
-
-  const maxRatio = suspicious[0].ratio;
-  return {
-    score: Math.min(100, Math.round(((maxRatio - 0.3) / 0.7) * 100)),
-    detail: { suspicious, matchesAnalyzed: analyzed },
-  };
-}
-
 // ── API pública ───────────────────────────────────────────────────────────────
 
 /** Roda BET_ACCURACY + WIN_RATE_SPIKE. Chamado após cada liquidação de aposta. */
@@ -236,23 +122,100 @@ export async function evaluateBetSignals(userId: string) {
   ]);
 
   await Promise.all([
-    acc   ? upsertFlag(userId, "BET_ACCURACY",  acc)   : null,
-    spike ? upsertFlag(userId, "WIN_RATE_SPIKE", spike) : null,
+    acc   ? upsertFlag(userId, "BET_ACCURACY",   acc)   : null,
+    spike ? upsertFlag(userId, "WIN_RATE_SPIKE",  spike) : null,
   ]);
 
   await refreshSuspension(userId);
 }
 
-/** Roda PARTY_RECURRENCE + WEAK_ENEMIES. Chamado no sync do perfil (fire-and-forget). */
+/**
+ * Roda PARTY_RECURRENCE + WEAK_ENEMIES e atualiza knownTeammates no perfil.
+ * Chamado no sync do perfil (fire-and-forget).
+ *
+ * knownTeammates: todos os account IDs que jogaram no mesmo time nas últimas
+ * partidas analisadas. Usado na liquidação para cancelar apostas quando o
+ * jogador submete uma partida com alguém desse histórico no seu time.
+ */
 export async function evaluateMatchSignals(userId: string) {
-  const [party, enemies] = await Promise.all([
-    evalPartyRecurrence(userId),
-    evalWeakEnemies(userId),
-  ]);
+  const profile = await prisma.gameProfile.findFirst({
+    where: { userId, game: "DOTA2" },
+    select: { externalId: true, stats: true },
+  });
+  if (!profile) return;
+
+  const accountId = Number(profile.externalId);
+  const statsObj = profile.stats as { recentMatches?: Array<{ match_id: number }> };
+  const matchIds = (statsObj.recentMatches ?? []).slice(0, 10).map((m) => m.match_id);
+  if (matchIds.length < 5) return;
+
+  // Busca detalhes de todas as partidas uma única vez
+  const rawDetails = await Promise.all(matchIds.map((id) => fetchMatchDetails(String(id))));
+  const details = rawDetails.filter((m): m is NonNullable<typeof m> => m !== null);
+  if (details.length < 3) return;
+
+  // Itera uma vez para extrair knownTeammates + dados dos dois sinais
+  const knownTeammates = new Set<number>();
+  const partyFrequency: Record<number, number> = {};
+  const enemyFrequency: Record<number, number> = {};
+  let analyzed = 0;
+
+  for (const match of details) {
+    const us = match.players.find((p) => p.account_id === accountId);
+    if (!us) continue;
+    analyzed++;
+
+    const ourSideRadiant = us.player_slot < 128;
+
+    for (const p of match.players) {
+      if (!p.account_id || p.account_id === accountId) continue;
+      const isTeammate = (p.player_slot < 128) === ourSideRadiant;
+
+      if (isTeammate) {
+        knownTeammates.add(p.account_id);
+        if (us.party_id && p.party_id === us.party_id) {
+          partyFrequency[p.account_id] = (partyFrequency[p.account_id] ?? 0) + 1;
+        }
+      } else {
+        enemyFrequency[p.account_id] = (enemyFrequency[p.account_id] ?? 0) + 1;
+      }
+    }
+  }
+
+  // Persiste knownTeammates no stats do perfil
+  const currentStats = profile.stats as Record<string, unknown>;
+  await prisma.gameProfile.update({
+    where: { userId_game: { userId, game: "DOTA2" } },
+    data: { stats: { ...currentStats, knownTeammates: [...knownTeammates] } },
+  });
+
+  // PARTY_RECURRENCE
+  const partySuspicious = Object.entries(partyFrequency)
+    .map(([id, count]) => ({ accountId: Number(id), count, ratio: parseFloat((count / analyzed).toFixed(3)) }))
+    .filter((e) => e.ratio >= 0.5)
+    .sort((a, b) => b.ratio - a.ratio);
+
+  const partyResult: SignalResult | null = partySuspicious.length > 0 ? {
+    score: Math.min(100, Math.round(((partySuspicious[0].ratio - 0.5) / 0.5) * 100)),
+    detail: { suspicious: partySuspicious, matchesAnalyzed: analyzed },
+  } : null;
+
+  // WEAK_ENEMIES
+  const enemySuspicious = analyzed >= 5
+    ? Object.entries(enemyFrequency)
+        .map(([id, count]) => ({ accountId: Number(id), count, ratio: parseFloat((count / analyzed).toFixed(3)) }))
+        .filter((e) => e.ratio >= 0.3)
+        .sort((a, b) => b.ratio - a.ratio)
+    : [];
+
+  const enemiesResult: SignalResult | null = enemySuspicious.length > 0 ? {
+    score: Math.min(100, Math.round(((enemySuspicious[0].ratio - 0.3) / 0.7) * 100)),
+    detail: { suspicious: enemySuspicious, matchesAnalyzed: analyzed },
+  } : null;
 
   await Promise.all([
-    party   ? upsertFlag(userId, "PARTY_RECURRENCE", party)   : null,
-    enemies ? upsertFlag(userId, "WEAK_ENEMIES",      enemies) : null,
+    partyResult   ? upsertFlag(userId, "PARTY_RECURRENCE", partyResult)   : null,
+    enemiesResult ? upsertFlag(userId, "WEAK_ENEMIES",      enemiesResult) : null,
   ]);
 
   await refreshSuspension(userId);

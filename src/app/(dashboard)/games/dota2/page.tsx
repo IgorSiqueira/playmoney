@@ -14,6 +14,7 @@ import {
   TrendingUp, TrendingDown, Crosshair, Zap,
 } from "lucide-react";
 import { AlertBox } from "@/components/ui/alert-box";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 
 interface GameProfile {
   id: string; externalId: string; displayName: string | null; avatarUrl: string | null;
@@ -156,6 +157,10 @@ export default function Dota2Page() {
 
   if (!profile) return (
     <div className="space-y-8 pb-8">
+      <Breadcrumb
+        pageTitle="Dota 2"
+        crumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Jogos" }, { label: "Dota 2" }]}
+      />
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--neon)] uppercase mb-1">▸ Jogos</div>
         <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Dota 2</h1>

@@ -10,6 +10,7 @@ import {
   Shield, AlertTriangle, CheckCircle2, Settings,
   Lock, Clock, Ban, Heart, XCircle,
 } from "lucide-react";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 
 interface UserSettings {
   selfExcludedUntil: string | null;
@@ -95,6 +96,10 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-8 pb-8">
+      <Breadcrumb
+        pageTitle="Configurações"
+        crumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Configurações" }]}
+      />
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--neon)] uppercase mb-1">▸ Conta</div>
         <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Configurações</h1>

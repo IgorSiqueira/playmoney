@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Users, TrendingUp, TrendingDown, ShieldAlert, Ban, CheckCircle2 } from "lucide-react";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 
 export default async function AdminUsersPage() {
   const session = await auth();
@@ -48,6 +49,10 @@ export default async function AdminUsersPage() {
 
   return (
     <div className="space-y-8 pb-8">
+      <Breadcrumb
+        pageTitle="Usuários"
+        crumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Admin", href: "/admin" }, { label: "Usuários" }]}
+      />
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--danger)] uppercase mb-1">▸ Admin · Restrito</div>
         <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Usuários</h1>

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { describeEventBet } from "@/lib/bet-events";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 import {
   User, TrendingUp, TrendingDown, Target, Trophy, Skull,
   Swords, BarChart3, Zap, Hash, Clock, Gamepad2,
@@ -72,6 +73,10 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-8 pb-8">
+      <Breadcrumb
+        pageTitle="Perfil"
+        crumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Perfil" }]}
+      />
       {/* Header */}
       <div className="flex items-start gap-5">
         <div className="w-16 h-16 border-2 border-[var(--neon)] bg-[var(--neon-dim)] flex items-center justify-center shrink-0"

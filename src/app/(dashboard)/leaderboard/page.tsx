@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/utils";
 import { Trophy, TrendingUp, TrendingDown, Swords, Medal, Crown } from "lucide-react";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 
 interface PlayerRow {
   userId: string;
@@ -92,6 +93,10 @@ export default async function LeaderboardPage() {
 
   return (
     <div className="space-y-8 pb-8">
+      <Breadcrumb
+        pageTitle="Leaderboard"
+        crumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Leaderboard" }]}
+      />
       {/* Header */}
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--gold)] uppercase mb-1">▸ Competição</div>

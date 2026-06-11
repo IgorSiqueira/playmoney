@@ -3,6 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import { ShieldAlert, ShieldCheck, Eye, AlertTriangle } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 
 interface RiskFlagRow {
   id: string;
@@ -73,6 +74,10 @@ export default function AdminRiskPage() {
 
   return (
     <div className="space-y-6 pb-8">
+      <Breadcrumb
+        pageTitle="Risk Flags"
+        crumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Admin", href: "/admin" }, { label: "Risk Flags" }]}
+      />
       {/* Header */}
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--danger)] uppercase mb-1">

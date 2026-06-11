@@ -86,7 +86,7 @@ export default function LoginPage() {
 
             <div className="mt-5 pt-5 border-t border-[var(--border)] flex items-center justify-between">
               <span className="font-ui text-sm text-[var(--text-muted)]">Sem conta?</span>
-              <Link href="/register" className="font-ui text-sm text-[var(--neon)] hover:underline">
+              <Link href="/register" className="font-ui text-sm text-[var(--neon)] underline underline-offset-2 decoration-[var(--neon-mid)] hover:decoration-[var(--neon)]">
                 Criar conta →
               </Link>
             </div>

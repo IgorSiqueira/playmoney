@@ -8,9 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils";
 import {
   Shield, AlertTriangle, CheckCircle2, Settings,
-  Lock, Clock, Ban, Heart, XCircle,
+  Lock, Clock, Ban, Heart,
 } from "lucide-react";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
+import { AlertBox } from "@/components/ui/alert-box";
 
 interface UserSettings {
   selfExcludedUntil: string | null;
@@ -51,6 +52,12 @@ export default function SettingsPage() {
   }
 
   useEffect(() => { load(); }, []);
+
+  useEffect(() => {
+    if (!success) return;
+    const t = setTimeout(() => setSuccess(""), 5000);
+    return () => clearTimeout(t);
+  }, [success]);
 
   async function save(patch: Record<string, unknown>) {
     setSaving(true); setError(""); setSuccess("");
@@ -107,18 +114,8 @@ export default function SettingsPage() {
       </div>
 
       {/* Feedback */}
-      {success && (
-        <div className="border border-[var(--neon)] bg-[var(--neon-dim)] px-4 py-2.5 flex items-center gap-2">
-          <CheckCircle2 size={11} className="text-[var(--neon)]" />
-          <span className="font-display text-[10px] tracking-widest text-[var(--neon)] uppercase">{success}</span>
-        </div>
-      )}
-      {error && (
-        <div className="border border-[var(--danger)] bg-[var(--danger-dim)] px-4 py-2.5 flex items-center gap-2">
-          <XCircle size={11} className="text-[var(--danger)]" />
-          <span className="font-display text-[10px] tracking-widest text-[var(--danger)] uppercase">{error}</span>
-        </div>
-      )}
+      {success && <AlertBox variant="success">{success}</AlertBox>}
+      {error && <AlertBox variant="error">{error}</AlertBox>}
 
       {/* Termos de uso */}
       <section className="bracket border border-[var(--border)] bg-[var(--surface-2)]">

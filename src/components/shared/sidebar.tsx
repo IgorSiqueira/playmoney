@@ -43,7 +43,7 @@ export function Sidebar({ user }: SidebarProps) {
             <div className="font-display text-xs font-black tracking-[0.2em] text-[var(--text-bright)] uppercase">
               Play<span className="text-[var(--neon)]">Money</span>
             </div>
-            <div className="font-mono text-[8px] text-[var(--text-muted)] tracking-widest">v1.0 · BETA</div>
+            <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">v1.0 · BETA</div>
           </div>
         </Link>
       </div>

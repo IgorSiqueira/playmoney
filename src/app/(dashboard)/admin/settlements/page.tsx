@@ -158,7 +158,7 @@ export default async function AdminSettlementsPage({
                         { label: "Match ID",  value: bet.matchId ?? "—",                          color: "var(--text-muted)" },
                       ].map(({ label, value, color }) => (
                         <div key={label} className="border border-[var(--border)] bg-[var(--surface-1)] px-3 py-2">
-                          <div className="font-display text-[8px] tracking-widest text-[var(--text-muted)] uppercase mb-1">{label}</div>
+                          <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mb-1">{label}</div>
                           <div className="font-mono text-xs font-bold truncate" style={{ color }}>{value}</div>
                         </div>
                       ))}

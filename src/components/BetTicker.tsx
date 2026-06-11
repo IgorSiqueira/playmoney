@@ -51,7 +51,7 @@ export function BetTicker() {
             <span className={`font-mono text-[10px] font-bold ${e.won ? "text-[#00ff7f]" : "text-[var(--danger)]"}`}>
               {e.won ? `R$${e.payout}` : "PERDEU"}
             </span>
-            <span className={`font-display text-[8px] tracking-widest px-1.5 py-0.5 border ${
+            <span className={`font-display text-[11px] tracking-widest px-1.5 py-0.5 border ${
               e.won
                 ? "text-[#00ff7f] border-[rgba(0,255,127,0.3)] bg-[rgba(0,255,127,0.07)]"
                 : "text-[var(--danger)] border-[rgba(255,58,110,0.3)] bg-[rgba(255,58,110,0.07)]"

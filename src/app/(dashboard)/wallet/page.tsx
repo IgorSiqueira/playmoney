@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { CreditCard, TrendingUp, TrendingDown, History, Zap, ArrowDownToLine } from "lucide-react";
+import { CreditCard, TrendingUp, TrendingDown, History, Zap, ArrowDownToLine, Receipt } from "lucide-react";
+import { EmptyState } from "@/components/shared/empty-state";
 import { AlertBox } from "@/components/ui/alert-box";
 
 interface Transaction {
@@ -265,11 +266,11 @@ export default function WalletPage() {
         </div>
 
         {!wallet?.transactions.length ? (
-          <div className="border border-[var(--border)] bg-[var(--surface-2)] py-12 text-center">
-            <div className="font-ui text-[13px] text-[var(--text-muted)]">
-              Nenhuma transação registrada
-            </div>
-          </div>
+          <EmptyState
+            icon={<Receipt size={36} />}
+            title="Nenhuma transação"
+            description="Suas movimentações de saldo aparecerão aqui."
+          />
         ) : (
           <div className="space-y-2">
             {wallet.transactions.map((tx) => {

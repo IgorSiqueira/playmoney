@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { describeEventBet } from "@/lib/bet-events";
 import { AlertBox } from "@/components/ui/alert-box";
+import { EmptyState } from "@/components/shared/empty-state";
 
 interface Bet {
   id: string;
@@ -247,22 +248,16 @@ export default function BetsPage() {
 
       {/* Empty state */}
       {bets.length === 0 && (
-        <div className="bracket relative border border-[var(--border)] bg-[var(--surface-2)] py-16 text-center overflow-hidden">
-          <div className="absolute inset-0 opacity-[0.015]"
-            style={{ backgroundImage: "repeating-linear-gradient(45deg, var(--neon) 0, var(--neon) 1px, transparent 0, transparent 50%)", backgroundSize: "8px 8px" }}
-          />
-          <div className="relative z-10">
-            <div className="w-14 h-14 border border-[var(--border)] bg-[var(--surface-3)] flex items-center justify-center mx-auto mb-4">
-              <Target size={24} className="text-[var(--text-muted)]" />
-            </div>
-            <div className="font-display text-xs font-bold uppercase tracking-widest text-[var(--text-bright)] mb-1">
-              Sem Apostas
-            </div>
-            <div className="font-ui text-[13px] text-[var(--text-muted)]">
-              Vá para Dota 2 para criar sua primeira aposta
-            </div>
-          </div>
-        </div>
+        <EmptyState
+          icon={<Target size={36} />}
+          title="Sem Apostas"
+          description="Você ainda não fez nenhuma aposta. Conecte seu perfil Steam no Dota 2 para começar."
+          action={
+            <a href="/games/dota2" className="inline-flex items-center gap-2 font-ui text-sm font-semibold text-[var(--neon)] underline underline-offset-2 decoration-[var(--neon-mid)] hover:decoration-[var(--neon)]">
+              Ir para Dota 2 →
+            </a>
+          }
+        />
       )}
     </div>
   );

@@ -32,9 +32,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static    ./.next/static
 COPY --from=builder                        /app/public          ./public
 
-# Prisma: CLI + generated client + schema + migrations
-# Kept separate from standalone — used only by entrypoint.sh at startup
-COPY --from=deps    /app/node_modules/.bin/prisma  ./node_modules/.bin/prisma
+# Prisma: pacote completo (inclui build/index.js + todos os .wasm) + cliente gerado
+# Usado apenas pelo entrypoint.sh para rodar as migrations na inicialização
 COPY --from=deps    /app/node_modules/prisma       ./node_modules/prisma
 COPY --from=builder /app/node_modules/.prisma      ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma      ./node_modules/@prisma

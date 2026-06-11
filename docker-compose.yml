@@ -20,7 +20,7 @@ services:
   postgres:
     image: postgres:16-alpine
     ports:
-      - "5432:5432"
+      - "7060:5432"
     environment:
       POSTGRES_DB: playmoney
       POSTGRES_USER: playmoney

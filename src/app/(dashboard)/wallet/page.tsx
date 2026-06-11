@@ -52,6 +52,18 @@ export default function WalletPage() {
 
   useEffect(() => { load(); }, []);
 
+  useEffect(() => {
+    if (!success) return;
+    const t = setTimeout(() => setSuccess(""), 5000);
+    return () => clearTimeout(t);
+  }, [success]);
+
+  useEffect(() => {
+    if (!withdrawSuccess) return;
+    const t = setTimeout(() => setWithdrawSuccess(""), 5000);
+    return () => clearTimeout(t);
+  }, [withdrawSuccess]);
+
   async function handleWithdraw(e: React.FormEvent) {
     e.preventDefault();
     const v = parseFloat(withdrawAmount);
@@ -158,7 +170,8 @@ export default function WalletPage() {
                   key={v}
                   type="button"
                   onClick={() => setAmount(String(v))}
-                  className={`py-3 font-ui text-[12px] font-semibold uppercase border transition-all ${
+                  disabled={loading}
+                  className={`py-3 font-ui text-[12px] font-semibold uppercase border transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
                     amount === String(v)
                       ? "border-[var(--neon)] bg-[var(--neon-dim)] text-[var(--neon)]"
                       : "border-[var(--border)] bg-[var(--surface-1)] text-[var(--text-muted)] hover:border-[var(--border-mid)] hover:text-[var(--text)]"
@@ -229,7 +242,9 @@ export default function WalletPage() {
                 disabled={withdrawLoading || !withdrawAmount || !pixKey.trim()}
                 className="border-[var(--danger)] text-[var(--danger)] hover:bg-[var(--danger-dim)]"
               >
-                {withdrawLoading ? "Processando..." : "Solicitar Saque"}
+                {withdrawLoading
+                  ? <><span className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />Processando...</>
+                  : "Solicitar Saque"}
               </Button>
               <span className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">
                 ▸ Processado em até 1 dia útil

@@ -79,11 +79,10 @@ export interface GuardResult {
  */
 export function guardMinMatchHistory(stats: PlayerStats): GuardResult {
   if (stats.totalMatches < LIMITS.MIN_MATCH_HISTORY) {
-    return {
-      ok: false,
-      error: `Histórico insuficiente: são necessárias pelo menos ${LIMITS.MIN_MATCH_HISTORY} partidas recentes. Você tem ${stats.totalMatches}.`,
-      code: "INSUFFICIENT_HISTORY",
-    };
+    const error = stats.profilePrivate
+      ? `Seu perfil Steam está privado. Para apostar você precisa: 1) Abrir o Steam → Editar perfil → Privacidade → definir "Detalhes do jogo" como Público. 2) Jogar pelo menos ${LIMITS.MIN_MATCH_HISTORY} partidas com o perfil público. 3) Voltar aqui e sincronizar seu perfil novamente.`
+      : `Histórico insuficiente: você tem ${stats.totalMatches} partida${stats.totalMatches === 1 ? "" : "s"} pública${stats.totalMatches === 1 ? "" : "s"}, mas são necessárias pelo menos ${LIMITS.MIN_MATCH_HISTORY}. Jogue mais ${LIMITS.MIN_MATCH_HISTORY - stats.totalMatches} partida${LIMITS.MIN_MATCH_HISTORY - stats.totalMatches === 1 ? "" : "s"} e sincronize novamente.`;
+    return { ok: false, error, code: "INSUFFICIENT_HISTORY" };
   }
   return { ok: true };
 }

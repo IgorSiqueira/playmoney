@@ -29,6 +29,7 @@ export interface OpenDotaPlayer {
     personaname: string;
     avatarfull: string;
     steamid: string;
+    fh_unavailable?: boolean; // true quando o perfil Steam está privado
   };
   mmr_estimate?: { estimate: number };
   solo_competitive_rank?: number;
@@ -91,6 +92,7 @@ export interface PlayerStats {
   averageGPM: number;
   rankTier?: number;
   mmrEstimate?: number;
+  profilePrivate?: boolean;
 }
 
 function steamId64ToAccountId(steamId64: string): number {
@@ -136,6 +138,7 @@ export async function calculatePlayerStats(accountId: number): Promise<PlayerSta
       averageKills: 5, averageDeaths: 5, averageAssists: 8, averageGPM: 400,
       rankTier: profile?.rank_tier,
       mmrEstimate: profile?.mmr_estimate?.estimate,
+      profilePrivate: profile?.profile?.fh_unavailable === true,
     };
   }
 

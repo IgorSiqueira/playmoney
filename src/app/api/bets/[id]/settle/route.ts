@@ -173,7 +173,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   // [E13] Verificar se algum jogador do time amigo está no histórico de parceiros
   // Snapshot tirado no momento da criação da aposta — imune a sync posterior
-  const betData = bet.matchData as { knownTeammatesSnapshot?: number[] } | null;
+  const betData = bet.matchData as {
+    knownTeammatesSnapshot?: number[];
+    conditions?: Array<{ type: string; threshold: number }>;
+  } | null;
   const knownTeammates = new Set<number>(betData?.knownTeammatesSnapshot ?? []);
 
   if (knownTeammates.size > 0) {
@@ -211,23 +214,38 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     }
   }
 
-  // Determinar resultado: WIN_LOSS usa resultado da partida; eventos usam stats do player
+  // Determinar resultado
   let betWon: boolean;
   let playerWon: boolean | null = null;
   const eventType = bet.eventType ?? "WIN_LOSS";
 
-  if (eventType === "WIN_LOSS") {
+  if (eventType !== "WIN_LOSS") {
+    // Legado: aposta em evento isolado (KILLS/ASSISTS/GPM OVER/UNDER)
+    try {
+      betWon = verifyEventOutcome(eventType, bet.prediction, Number(bet.targetValue ?? 0), player);
+    } catch {
+      return NextResponse.json({ error: "Tipo de evento inválido na aposta." }, { status: 400 });
+    }
+  } else {
+    // Aposta de vitória (simples ou combo com condições)
     playerWon = didPlayerWinMatch(match, accountId);
     if (playerWon === null) {
       return NextResponse.json({ error: "Não foi possível determinar o resultado da partida." }, { status: 400 });
     }
     betWon = (bet.prediction === "WIN" && playerWon) || (bet.prediction === "LOSE" && !playerWon);
-  } else {
-    // Evento in-game
-    try {
-      betWon = verifyEventOutcome(eventType, bet.prediction, Number(bet.targetValue ?? 0), player);
-    } catch {
-      return NextResponse.json({ error: "Tipo de evento inválido na aposta." }, { status: 400 });
+
+    // Verificar condições do combo (sistema novo) — reutiliza betData já tipado acima
+    if (betWon) {
+      for (const cond of betData?.conditions ?? []) {
+        try {
+          if (!verifyEventOutcome(cond.type, "OVER", cond.threshold, player)) {
+            betWon = false;
+            break;
+          }
+        } catch {
+          // tipo de condição desconhecido — ignora sem anular a aposta
+        }
+      }
     }
   }
 

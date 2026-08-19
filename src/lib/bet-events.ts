@@ -89,6 +89,43 @@ export interface EventOddsResult {
   averageStat: number;
 }
 
+export interface ComboCondition {
+  type: "KILLS" | "ASSISTS" | "GPM";
+  threshold: number;
+}
+
+export interface ComboOddsResult {
+  odds: number;
+  combinedProbability: number;
+  isCombo: boolean;
+}
+
+/**
+ * Calcula odds de uma aposta WIN com condições adicionais de stats.
+ * Combos não têm teto de odd (MAX_ODDS); apostas simples sim.
+ */
+export function calculateComboOdds(
+  winProbability: number,
+  conditions: ComboCondition[],
+  stats: { averageKills: number; averageAssists: number; averageGPM: number },
+): ComboOddsResult {
+  let combinedProb = winProbability;
+  for (const cond of conditions) {
+    const avg =
+      cond.type === "KILLS"   ? stats.averageKills
+      : cond.type === "ASSISTS" ? stats.averageAssists
+      : stats.averageGPM;
+    combinedProb *= calcOverProbability(avg, cond.threshold);
+  }
+  const isCombo = conditions.length > 0;
+  const rawOdds = (1 / combinedProb) * (1 - HOUSE_EDGE);
+  return {
+    odds: parseFloat((isCombo ? rawOdds : Math.min(MAX_ODDS, rawOdds)).toFixed(2)),
+    combinedProbability: combinedProb,
+    isCombo,
+  };
+}
+
 /** Calcula odds de OVER e UNDER para um evento de stat com alvo específico */
 export function calcEventOdds(
   eventType: EventType,

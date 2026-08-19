@@ -7,11 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, getRankName } from "@/lib/utils";
-import { EVENT_TYPES, calcEventOdds, type EventType } from "@/lib/bet-events";
+import { calculateComboOdds } from "@/lib/bet-events";
 import {
   Gamepad2, RefreshCw, Shield, Sword, Trophy,
-  Target, BarChart3, ChevronRight, AlertTriangle,
-  TrendingUp, TrendingDown, Crosshair, Zap,
+  Target, BarChart3, ChevronRight, X,
+  TrendingUp, TrendingDown, Crosshair, Plus,
 } from "lucide-react";
 import { AlertBox } from "@/components/ui/alert-box";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
@@ -44,7 +44,18 @@ interface GameProfile {
   lastSyncAt: string | null;
 }
 
-type Prediction = "WIN" | "OVER" | "UNDER";
+type ConditionType = "KILLS" | "ASSISTS" | "GPM";
+interface Condition { type: ConditionType; threshold: number }
+
+const CONDITION_META: Record<ConditionType, {
+  label: string;
+  unit: string;
+  avg: (stats: NonNullable<GameProfile["stats"]>) => number;
+}> = {
+  KILLS:   { label: "Abates",       unit: "kills",  avg: s => s.averageKills },
+  ASSISTS: { label: "Assistências", unit: "assists", avg: s => s.averageAssists },
+  GPM:     { label: "GPM",          unit: "GPM",    avg: s => s.averageGPM },
+};
 
 const FORM_CONFIG = {
   hot:     { label: "Em Chamas",  icon: "🔥", color: "var(--neon)" },
@@ -142,63 +153,43 @@ function WinLossOddsPanel({
                 {
                   label: "Forma recente (Ú5 vs A15)",
                   value: pct(f.formAdjustment),
-                  note:
-                    f.formAdjustment > 0.01
-                      ? "Melhorando"
-                      : f.formAdjustment < -0.01
-                        ? "Piorando"
-                        : "Estável",
-                  color:
-                    f.formAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
+                  note: f.formAdjustment > 0.01 ? "Melhorando" : f.formAdjustment < -0.01 ? "Piorando" : "Estável",
+                  color: f.formAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
                 },
                 {
                   label: `Sequência (${f.currentStreak.count} partidas)`,
                   value: pct(f.streakAdjustment),
-                  note:
-                    f.currentStreak.type === "WIN"
-                      ? "Bônus por sequência positiva"
-                      : f.currentStreak.type === "LOSS"
-                        ? "Penalidade por sequência negativa"
-                        : "Sem sequência ativa",
-                  color:
-                    f.streakAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
+                  note: f.currentStreak.type === "WIN" ? "Bônus por sequência positiva"
+                    : f.currentStreak.type === "LOSS" ? "Penalidade por sequência negativa"
+                    : "Sem sequência ativa",
+                  color: f.streakAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
                 },
                 {
                   label: "KDA",
                   value: pct(f.kdaAdjustment),
                   note: "Kills+Assists vs Deaths",
-                  color:
-                    f.kdaAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
+                  color: f.kdaAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
                 },
                 {
                   label: "Rank / medalha",
                   value: pct(f.rankAdjustment),
                   note: "Ajuste por nível de habilidade",
-                  color:
-                    f.rankAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
+                  color: f.rankAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
                 },
                 {
                   label: "Tendência GPM",
                   value: pct(f.gpmAdjustment),
                   note: "Gold/min nas últimas 5 vs anteriores",
-                  color:
-                    f.gpmAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
+                  color: f.gpmAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
                 },
               ].map(({ label, value, note, color }) => (
-                <tr
-                  key={label}
-                  className="border-t border-[rgba(0,128,255,0.08)] hover:bg-[rgba(0,128,255,0.04)]"
-                >
+                <tr key={label} className="border-t border-[rgba(0,128,255,0.08)] hover:bg-[rgba(0,128,255,0.04)]">
                   <td className="px-4 py-2">
-                    <div className="font-display text-[11px] tracking-wide text-[var(--text)] uppercase">
-                      {label}
-                    </div>
+                    <div className="font-display text-[11px] tracking-wide text-[var(--text)] uppercase">{label}</div>
                     <div className="font-mono text-[10px] text-[var(--text-muted)]">{note}</div>
                   </td>
                   <td className="px-4 py-2 text-right">
-                    <span className="font-mono text-sm font-bold" style={{ color }}>
-                      {value}
-                    </span>
+                    <span className="font-mono text-sm font-bold" style={{ color }}>{value}</span>
                   </td>
                 </tr>
               ))}
@@ -209,10 +200,8 @@ function WinLossOddsPanel({
                   </span>
                 </td>
                 <td className="px-4 py-2 text-right">
-                  <span
-                    className="font-mono text-base font-black text-[var(--neon)]"
-                    style={{ textShadow: "0 0 8px rgba(0,128,255,0.5)" }}
-                  >
+                  <span className="font-mono text-base font-black text-[var(--neon)]"
+                    style={{ textShadow: "0 0 8px rgba(0,128,255,0.5)" }}>
                     {pct(f.finalProbability, false)}
                   </span>
                 </td>
@@ -234,9 +223,11 @@ export default function Dota2Page() {
 
   const [balance, setBalance] = useState<number | null>(null);
 
-  const [eventType, setEventType] = useState<EventType>("WIN_LOSS");
-  const [targetValue, setTargetValue] = useState("");
-  const [betPrediction, setBetPrediction] = useState<Prediction>("WIN");
+  const [conditions, setConditions] = useState<Condition[]>([]);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [addingType, setAddingType] = useState<ConditionType>("KILLS");
+  const [addingThreshold, setAddingThreshold] = useState("");
+
   const [betAmount, setBetAmount] = useState("");
   const [betLoading, setBetLoading] = useState(false);
   const [betSuccess, setBetSuccess] = useState("");
@@ -255,7 +246,6 @@ export default function Dota2Page() {
         if (!d?.id) return;
         setProfile(d);
 
-        // Auto-sync silencioso se lastSyncAt > 24h
         const STALE_HOURS = 24;
         const lastSync = d.lastSyncAt ? new Date(d.lastSyncAt).getTime() : 0;
         const staleMs  = STALE_HOURS * 60 * 60 * 1000;
@@ -263,46 +253,39 @@ export default function Dota2Page() {
           fetch("/api/games/dota2", { method: "PATCH" })
             .then((r) => r.ok ? r.json() : null)
             .then((fresh) => { if (fresh?.id) setProfile(fresh); })
-            .catch(() => { /* silencioso — falha não bloqueia a UI */ });
+            .catch(() => { /* silencioso */ });
         }
       })
       .finally(() => setFetching(false));
   }, []);
 
-  // Reset prediction when event type changes
-  useEffect(() => {
-    if (eventType === "WIN_LOSS") {
-      setBetPrediction("WIN");
-    } else {
-      setBetPrediction("OVER");
-      // Suggest average as default target
-      if (profile?.stats) {
-        const avgs: Record<string, number> = {
-          KILLS: profile.stats.averageKills,
-          ASSISTS: profile.stats.averageAssists,
-          GPM: profile.stats.averageGPM,
-        };
-        setTargetValue(String(Math.round(avgs[eventType] ?? 0)));
-      }
-    }
-  }, [eventType, profile?.stats]);
+  const availableConditionTypes = (["KILLS", "ASSISTS", "GPM"] as ConditionType[])
+    .filter((t) => !conditions.some((c) => c.type === t));
 
-  // Compute live odds
-  const liveOdds = useMemo(() => {
+  // Combo odds: WIN probability multiplied by each condition probability
+  const comboResult = useMemo(() => {
     if (!profile?.stats) return null;
-    if (eventType === "WIN_LOSS") return null; // use stored odds
-    const tv = parseFloat(targetValue);
-    if (!tv || tv <= 0) return null;
-    return calcEventOdds(eventType, profile.stats as never, tv);
-  }, [eventType, targetValue, profile?.stats]);
+    const s = profile.stats;
+    return calculateComboOdds(
+      s.odds.winProbability,
+      conditions,
+      { averageKills: s.averageKills, averageAssists: s.averageAssists, averageGPM: s.averageGPM },
+    );
+  }, [conditions, profile?.stats]);
 
-  const selectedOdds = useMemo(() => {
-    if (eventType === "WIN_LOSS") return profile?.stats?.odds.winOdds;
-    return betPrediction === "OVER" ? liveOdds?.overOdds : liveOdds?.underOdds;
-  }, [eventType, betPrediction, profile, liveOdds]);
+  // When no conditions: use stored winOdds; when combo: use calculated combo odds
+  const selectedOdds = conditions.length > 0 ? comboResult?.odds : profile?.stats?.odds.winOdds;
+  const potentialPayout = betAmount && selectedOdds ? parseFloat(betAmount) * selectedOdds : 0;
 
-  const potentialPayout = betAmount && selectedOdds
-    ? parseFloat(betAmount) * selectedOdds : 0;
+  function openAddForm() {
+    const firstAvailable = availableConditionTypes[0];
+    if (!firstAvailable) return;
+    setAddingType(firstAvailable);
+    if (profile?.stats) {
+      setAddingThreshold(String(Math.round(CONDITION_META[firstAvailable].avg(profile.stats))));
+    }
+    setShowAddForm(true);
+  }
 
   async function handleConnect(e: React.FormEvent) {
     e.preventDefault();
@@ -321,22 +304,19 @@ export default function Dota2Page() {
     e.preventDefault();
     if (!profile) return;
     setBetLoading(true); setBetError(""); setBetSuccess("");
-    const body: Record<string, unknown> = {
-      gameProfileId: profile.id,
-      prediction: betPrediction,
-      amount: parseFloat(betAmount),
-      eventType,
-    };
-    if (eventType !== "WIN_LOSS") body.targetValue = parseFloat(targetValue);
-
     const res = await fetch("/api/bets", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        gameProfileId: profile.id,
+        amount: parseFloat(betAmount),
+        conditions,
+      }),
     });
     const data = await res.json();
     if (res.ok) {
       setBetSuccess(`Aposta criada! Retorno potencial: ${formatCurrency(data.bet.potentialPayout)}`);
-      setBetAmount(""); setTargetValue("");
+      setBetAmount("");
+      setConditions([]);
       setBalance((prev) => prev !== null ? prev - parseFloat(betAmount) : prev);
     } else {
       setBetError(data.error || "Erro ao criar aposta");
@@ -424,12 +404,12 @@ export default function Dota2Page() {
             {profile.stats && (
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                 {[
-                  { icon: Shield,      label: "Win Rate",  value: `${((profile.stats.recentWinRate ?? 0) * 100).toFixed(1)}%`,    color: "var(--neon)" },
-                  { icon: BarChart3,   label: "Partidas",  value: String(profile.stats.totalMatches ?? 0),                         color: "var(--blue)" },
-                  { icon: Sword,       label: "KDA",       value: (profile.stats.averageKDA   ?? 0).toFixed(2),                    color: "var(--gold)" },
-                  { icon: Crosshair,   label: "K Médio",   value: (profile.stats.averageKills  ?? 0).toFixed(1),                   color: "var(--text)" },
-                  { icon: TrendingDown,label: "D Médio",   value: (profile.stats.averageDeaths ?? 0).toFixed(1),                   color: "var(--danger)" },
-                  { icon: TrendingUp,  label: "GPM Médio", value: String(Math.round(profile.stats.averageGPM ?? 0)),               color: "var(--gold)" },
+                  { icon: Shield,       label: "Win Rate",  value: `${((profile.stats.recentWinRate ?? 0) * 100).toFixed(1)}%`, color: "var(--neon)" },
+                  { icon: BarChart3,    label: "Partidas",  value: String(profile.stats.totalMatches ?? 0),                      color: "var(--blue)" },
+                  { icon: Sword,        label: "KDA",       value: (profile.stats.averageKDA    ?? 0).toFixed(2),                color: "var(--gold)" },
+                  { icon: Crosshair,    label: "K Médio",   value: (profile.stats.averageKills  ?? 0).toFixed(1),                color: "var(--text)" },
+                  { icon: TrendingDown, label: "D Médio",   value: (profile.stats.averageDeaths ?? 0).toFixed(1),                color: "var(--danger)" },
+                  { icon: TrendingUp,   label: "GPM Médio", value: String(Math.round(profile.stats.averageGPM ?? 0)),            color: "var(--gold)" },
                 ].map(({ icon: Icon, label, value, color }) => (
                   <div key={label} className="border border-[var(--border)] bg-[var(--surface-1)] p-2.5">
                     <div className="flex items-center gap-1 mb-1.5">
@@ -445,11 +425,11 @@ export default function Dota2Page() {
         </div>
       </div>
 
-      {/* Bet terminal — event selector, odds and form unified */}
+      {/* Bet terminal */}
       <div className="bracket relative border border-[var(--border)] bg-[var(--surface-2)]">
         <div className="h-0.5 bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent" />
         <div className="p-5 space-y-5">
-          {/* Terminal header */}
+          {/* Header */}
           <div className="flex items-center gap-2">
             <Target size={13} className="text-[var(--gold)]" />
             <span className="font-display text-sm font-bold uppercase tracking-widest text-[var(--text-bright)]">Terminal de Apostas</span>
@@ -460,67 +440,156 @@ export default function Dota2Page() {
             )}
           </div>
 
-          {/* Event type selector */}
-          <div>
-            <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mb-2">Tipo de Aposta</div>
-            <div className="grid grid-cols-5 gap-1.5">
-              {(Object.entries(EVENT_TYPES) as [EventType, typeof EVENT_TYPES[EventType]][]).map(([key, cfg]) => (
-                <button key={key} onClick={() => setEventType(key)}
-                  className={`py-2.5 px-1 border font-display text-[11px] tracking-widest uppercase text-center transition-all leading-tight ${
-                    eventType === key
-                      ? "border-[var(--neon)] bg-[var(--neon-dim)] text-[var(--neon)]"
-                      : "border-[var(--border)] bg-[var(--surface-1)] text-[var(--text-muted)] hover:border-[var(--border-mid)]"
-                  }`}>
-                  {cfg.label}
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* Base WIN odds */}
+          {odds && <WinLossOddsPanel odds={odds} />}
 
-          {/* Odds display */}
-          {eventType === "WIN_LOSS" && odds ? (
-            <WinLossOddsPanel odds={odds} />
-          ) : eventType !== "WIN_LOSS" ? (
-            <div className="space-y-3">
-              <div className="space-y-2">
-                <Label>Valor alvo ({EVENT_TYPES[eventType].unit})</Label>
-                <Input type="number" placeholder={`Ex: ${liveOdds ? Math.round(liveOdds.averageStat) : 0}`}
-                  value={targetValue} onChange={(e) => setTargetValue(e.target.value)} min={0} step={eventType === "GPM" ? 50 : 1} />
-                {liveOdds && (
-                  <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">
-                    Sua média: {liveOdds.averageStat} {EVENT_TYPES[eventType].unit}
-                  </p>
-                )}
+          {/* Conditions section */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="font-display text-[11px] tracking-widest uppercase">
+                <span className="text-[var(--text-muted)]">Condições Adicionais</span>
+                <span className="text-[var(--border-mid)] ml-2">— opcional</span>
               </div>
-
-              {liveOdds && targetValue && (
-                <div className="grid grid-cols-2 gap-2">
-                  {([
-                    { pred: "OVER" as Prediction, oddsVal: liveOdds.overOdds, prob: liveOdds.overProbability, color: "var(--neon)", border: "border-[var(--neon)]", bg: "bg-[var(--neon-dim)]" },
-                    { pred: "UNDER" as Prediction, oddsVal: liveOdds.underOdds, prob: liveOdds.underProbability, color: "var(--danger)", border: "border-[var(--danger)]", bg: "bg-[var(--danger-dim)]" },
-                  ]).map(({ pred, oddsVal, prob, color, border, bg }) => {
-                    const active = betPrediction === pred;
-                    return (
-                      <button key={pred} onClick={() => setBetPrediction(pred)}
-                        className={`p-4 border text-left transition-all ${active ? `${border} ${bg}` : "border-[var(--border)] bg-[var(--surface-1)] hover:border-[var(--border-mid)]"}`}>
-                        <div className="font-display text-[11px] tracking-widest uppercase mb-2" style={{ color: active ? color : "var(--text-muted)" }}>
-                          {pred === "OVER" ? `Acima de ${targetValue}` : `Abaixo de ${targetValue}`}
-                        </div>
-                        <div className="font-mono text-3xl font-black" style={{ color: active ? color : "var(--text)" }}>{oddsVal}x</div>
-                        <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mt-1">Prob. · {(prob * 100).toFixed(0)}%</div>
-                      </button>
-                    );
-                  })}
-                </div>
+              {availableConditionTypes.length > 0 && (
+                <button
+                  onClick={openAddForm}
+                  className="flex items-center gap-1 font-display text-[11px] tracking-widest uppercase px-2.5 py-1 border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all duration-150"
+                >
+                  <Plus size={10} /> Adicionar
+                </button>
               )}
             </div>
-          ) : null}
+
+            {/* Active conditions list */}
+            {conditions.map((cond) => {
+              const meta = CONDITION_META[cond.type];
+              return (
+                <div key={cond.type} className="flex items-center gap-3 border border-[rgba(255,184,0,0.3)] bg-[rgba(255,184,0,0.04)] px-3 py-2.5">
+                  <div className="flex-1 min-w-0">
+                    <span className="font-mono text-sm font-semibold text-[var(--gold)]">
+                      {meta.label} &gt; {cond.threshold}
+                      <span className="text-[var(--text-muted)] text-xs ml-1.5">{meta.unit}</span>
+                    </span>
+                    {profile.stats && (
+                      <span className="font-mono text-[11px] text-[var(--text-muted)] ml-3">
+                        (média: {meta.avg(profile.stats).toFixed(cond.type === "GPM" ? 0 : 1)})
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => setConditions((prev) => prev.filter((c) => c.type !== cond.type))}
+                    className="w-5 h-5 flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--danger)] transition-all shrink-0"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              );
+            })}
+
+            {/* Add condition form */}
+            {showAddForm && profile.stats && (
+              <div className="border border-[var(--gold)] bg-[rgba(255,184,0,0.05)] p-4 space-y-3">
+                <div className="font-display text-[11px] tracking-widest text-[var(--gold)] uppercase">Nova condição</div>
+
+                {/* Type selector */}
+                <div className="flex gap-1.5 flex-wrap">
+                  {availableConditionTypes.map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => {
+                        setAddingType(t);
+                        setAddingThreshold(String(Math.round(CONDITION_META[t].avg(profile.stats!))));
+                      }}
+                      className={`px-3 py-1.5 border font-display text-[11px] tracking-widest uppercase transition-all duration-150 ${
+                        addingType === t
+                          ? "border-[var(--gold)] bg-[rgba(255,184,0,0.1)] text-[var(--gold)]"
+                          : "border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--gold)] hover:text-[var(--gold)]"
+                      }`}
+                    >
+                      {CONDITION_META[t].label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Threshold input */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase shrink-0">Mínimo</span>
+                  <Input
+                    type="number"
+                    value={addingThreshold}
+                    onChange={(e) => setAddingThreshold(e.target.value)}
+                    placeholder="0"
+                    className="w-28"
+                    min={0}
+                    step={addingType === "GPM" ? 50 : 1}
+                  />
+                  <span className="font-mono text-[11px] text-[var(--text-muted)]">
+                    {CONDITION_META[addingType].unit} · média: {CONDITION_META[addingType].avg(profile.stats).toFixed(addingType === "GPM" ? 0 : 1)}
+                  </span>
+                  <div className="flex gap-1.5 ml-auto">
+                    <button
+                      onClick={() => setShowAddForm(false)}
+                      className="px-2.5 py-1.5 border border-[var(--border)] text-[var(--text-muted)] font-display text-[11px] tracking-widest uppercase hover:border-[var(--danger)] hover:text-[var(--danger)] transition-all"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={() => {
+                        const t = parseFloat(addingThreshold);
+                        if (!t || t <= 0) return;
+                        setConditions((prev) => [...prev, { type: addingType, threshold: t }]);
+                        setShowAddForm(false);
+                        const remaining = availableConditionTypes.filter((x) => x !== addingType);
+                        if (remaining.length > 0) {
+                          setAddingType(remaining[0]);
+                          setAddingThreshold(String(Math.round(CONDITION_META[remaining[0]].avg(profile.stats!))));
+                        }
+                      }}
+                      disabled={!addingThreshold || parseFloat(addingThreshold) <= 0}
+                      className="px-3 py-1.5 border border-[var(--gold)] text-[var(--gold)] font-display text-[11px] tracking-widest uppercase hover:bg-[rgba(255,184,0,0.1)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      Adicionar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Combo odds summary */}
+            {comboResult && conditions.length > 0 && (
+              <div className="border border-[var(--gold)] bg-[rgba(255,184,0,0.05)] p-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-display text-[11px] tracking-widest text-[var(--gold)] uppercase">Odd Combinada</span>
+                  <span className="font-display text-[11px] font-bold text-[var(--gold)] uppercase px-2 py-0.5 border border-[var(--gold)] bg-[rgba(255,184,0,0.1)]">
+                    COMBO ×{conditions.length + 1}
+                  </span>
+                </div>
+                <div
+                  className="font-mono text-4xl font-black text-[var(--gold)]"
+                  style={{ textShadow: "0 0 20px rgba(255,184,0,0.4)" }}
+                >
+                  {comboResult.odds}x
+                </div>
+                <div className="font-mono text-[11px] text-[var(--text-muted)]">
+                  Prob. combinada · {(comboResult.combinedProbability * 100).toFixed(1)}%
+                </div>
+                <div className="mt-2 pt-2 border-t border-[rgba(255,184,0,0.15)] space-y-1">
+                  <div className="font-mono text-[11px] text-[var(--neon)]">✓ Vitória na partida</div>
+                  {conditions.map((c) => (
+                    <div key={c.type} className="font-mono text-[11px] text-[var(--gold)]">
+                      + {CONDITION_META[c.type].label} &gt; {c.threshold} {CONDITION_META[c.type].unit}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Separator */}
           <div className="border-t border-[var(--border)]" />
 
           {balance !== null && balance < 5 && (
-            <AlertBox variant="error" className="mb-4">
+            <AlertBox variant="error">
               Saldo insuficiente. <a href="/wallet" className="underline">Deposite aqui</a> para apostar.
             </AlertBox>
           )}
@@ -528,9 +597,11 @@ export default function Dota2Page() {
           <form onSubmit={handleBet} className="space-y-4">
             <div className="space-y-2">
               <Label>Valor da aposta (R$)</Label>
-              <Input type="number" placeholder="0.00" min={5} max={5000} step={0.01}
+              <Input
+                type="number" placeholder="0.00" min={5} max={5000} step={0.01}
                 value={betAmount} onChange={(e) => setBetAmount(e.target.value)} required
-                disabled={balance !== null && balance < 5} />
+                disabled={balance !== null && balance < 5}
+              />
               {balance !== null && betAmount && parseFloat(betAmount) > balance && (
                 <p className="font-display text-[11px] tracking-widest text-[var(--danger)] uppercase">
                   Valor maior que seu saldo disponível ({formatCurrency(balance)})
@@ -541,9 +612,9 @@ export default function Dota2Page() {
             {betAmount && selectedOdds && (
               <div className="border border-[var(--border)] bg-[var(--surface-1)] divide-y divide-[var(--border)]">
                 {[
-                  { label: "Aposta",           value: formatCurrency(parseFloat(betAmount)), color: "var(--text)" },
-                  { label: "Multiplicador",     value: `${selectedOdds}x`,                   color: "var(--text)" },
-                  { label: "Retorno potencial", value: formatCurrency(potentialPayout),       color: "var(--neon)" },
+                  { label: "Aposta",            value: formatCurrency(parseFloat(betAmount)), color: "var(--text)" },
+                  { label: "Multiplicador",      value: `${selectedOdds}x`,                   color: conditions.length > 0 ? "var(--gold)" : "var(--text)" },
+                  { label: "Retorno potencial",  value: formatCurrency(potentialPayout),       color: "var(--neon)" },
                 ].map(({ label, value, color }) => (
                   <div key={label} className="flex items-center justify-between px-4 py-2.5">
                     <span className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{label}</span>
@@ -556,16 +627,20 @@ export default function Dota2Page() {
             {betError && <AlertBox variant="error">{betError}</AlertBox>}
             {betSuccess && <AlertBox variant="success">{betSuccess}</AlertBox>}
 
-            <Button type="submit"
+            <Button
+              type="submit"
               disabled={
-                betLoading ||
-                !betAmount ||
-                (eventType !== "WIN_LOSS" && !targetValue) ||
-                !selectedOdds ||
+                betLoading || !betAmount || !selectedOdds ||
                 (balance !== null && (balance < 5 || parseFloat(betAmount) > balance))
               }
-              className="w-full" variant="gold">
-              {betLoading ? "Criando aposta..." : "Criar Aposta"}
+              className="w-full"
+              variant={conditions.length > 0 ? "gold" : "default"}
+            >
+              {betLoading
+                ? "Criando aposta..."
+                : conditions.length > 0
+                  ? `Criar Aposta Combo (${comboResult?.odds}x)`
+                  : "Criar Aposta"}
             </Button>
           </form>
         </div>

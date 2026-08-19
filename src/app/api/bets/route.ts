@@ -4,22 +4,25 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { calculateOdds, calculatePayout } from "@/lib/odds";
 import { calculatePlayerStats } from "@/lib/opendota";
-import { calcEventOdds } from "@/lib/bet-events";
+import { calculateComboOdds } from "@/lib/bet-events";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import {
   guardMinMatchHistory, guardMaxPayout, guardProfileFreshness,
-  guardDailyWinningsCap, guardSuspiciousThrowPattern, guardBodySize,
+  guardDailyWinningsCap, guardBodySize,
   guardSelfExclusion, guardDailyLossLimit, guardWeeklyLossLimit,
 } from "@/lib/bet-guards";
 
 const MAX_ACTIVE_BETS_PER_PROFILE = 5;
 
+const conditionSchema = z.object({
+  type:      z.enum(["KILLS", "ASSISTS", "GPM"]),
+  threshold: z.number().min(0).max(10000),
+});
+
 const createBetSchema = z.object({
   gameProfileId: z.string().min(1),
-  prediction:    z.enum(["WIN", "OVER", "UNDER"]),
   amount:        z.number().min(5).max(5000),
-  eventType:     z.string().default("WIN_LOSS"),
-  targetValue:   z.number().optional(),
+  conditions:    z.array(conditionSchema).max(3).default([]),
 });
 
 export async function GET() {
@@ -52,22 +55,13 @@ export async function POST(req: Request) {
   const parsed = createBetSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Dados inválidos" }, { status: 400 });
 
-  const { gameProfileId, prediction, amount, eventType, targetValue } = parsed.data;
-
-  // Validar que over/under tem targetValue
-  if ((prediction === "OVER" || prediction === "UNDER") && targetValue === undefined) {
-    return NextResponse.json({ error: "Apostas Over/Under requerem um valor alvo." }, { status: 400 });
-  }
-  if (eventType !== "WIN_LOSS" && prediction === "WIN") {
-    return NextResponse.json({ error: "Eventos in-game requerem predição OVER ou UNDER." }, { status: 400 });
-  }
+  const { gameProfileId, amount, conditions } = parsed.data;
 
   const [user, gameProfile] = await Promise.all([
     prisma.user.findUnique({ where: { id: userId }, select: { selfExcludedUntil: true, agreedToTermsAt: true, suspendedAt: true } }),
     prisma.gameProfile.findFirst({ where: { id: gameProfileId, userId } }),
   ]);
 
-  // [Risco] Conta suspensa por suspeita de manipulação
   if (user?.suspendedAt) {
     return NextResponse.json(
       { error: "Sua conta está suspensa por atividade suspeita. Entre em contato com o suporte.", code: "ACCOUNT_SUSPENDED" },
@@ -75,11 +69,9 @@ export async function POST(req: Request) {
     );
   }
 
-  // [Jogo Responsável] Auto-exclusão
   const exclusionGuard = guardSelfExclusion(user?.selfExcludedUntil ?? null);
   if (!exclusionGuard.ok) return NextResponse.json({ error: exclusionGuard.error, code: exclusionGuard.code }, { status: 422 });
 
-  // [Jogo Responsável] Termos aceitos
   if (!user?.agreedToTermsAt) {
     return NextResponse.json({ error: "Você precisa aceitar os Termos de Uso antes de apostar.", code: "TERMS_NOT_ACCEPTED" }, { status: 422 });
   }
@@ -94,7 +86,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: `Limite de ${MAX_ACTIVE_BETS_PER_PROFILE} apostas ativas atingido.` }, { status: 422 });
   }
 
-  // [Jogo Responsável] Limites de perda
   const [dailyLossGuard, weeklyLossGuard] = await Promise.all([
     guardDailyLossLimit(userId, amount),
     guardWeeklyLossLimit(userId, amount),
@@ -107,15 +98,9 @@ export async function POST(req: Request) {
   const historyGuard = guardMinMatchHistory(stats);
   if (!historyGuard.ok) return NextResponse.json({ error: historyGuard.error, code: historyGuard.code }, { status: 422 });
 
-  // Calcular odds: WIN_LOSS usa o engine existente; eventos usam calcEventOdds
-  let selectedOdds: number;
-  if (eventType === "WIN_LOSS") {
-    const odds = calculateOdds(stats);
-    selectedOdds = prediction === "WIN" ? odds.winOdds : odds.loseOdds;
-  } else {
-    const eventOdds = calcEventOdds(eventType as never, stats, targetValue!);
-    selectedOdds = prediction === "OVER" ? eventOdds.overOdds : eventOdds.underOdds;
-  }
+  // Sempre WIN — combo multiplica probabilidades; sem teto para combos
+  const { winProbability } = calculateOdds(stats);
+  const { odds: selectedOdds } = calculateComboOdds(winProbability, conditions, stats);
 
   const potentialPayout = calculatePayout(amount, selectedOdds);
 
@@ -124,6 +109,10 @@ export async function POST(req: Request) {
 
   const dailyWinGuard = await guardDailyWinningsCap(userId, potentialPayout);
   if (!dailyWinGuard.ok) return NextResponse.json({ error: dailyWinGuard.error, code: dailyWinGuard.code }, { status: 422 });
+
+  const condDesc = conditions.length > 0
+    ? ` + ${conditions.map((c) => `${c.type}>${c.threshold}`).join(", ")}`
+    : "";
 
   const result = await prisma.$transaction(async (tx) => {
     const updated = await tx.wallet.updateMany({
@@ -136,7 +125,7 @@ export async function POST(req: Request) {
     await tx.transaction.create({
       data: {
         walletId: wallet!.id, type: "BET_PLACED", amount, status: "COMPLETED",
-        description: `Aposta Dota 2 — ${eventType === "WIN_LOSS" ? (prediction === "WIN" ? "Vitória" : "Derrota") : `${eventType} ${prediction}`}`,
+        description: `Aposta Dota 2 — Vitória${condDesc}`,
       },
     });
 
@@ -145,10 +134,13 @@ export async function POST(req: Request) {
 
     const bet = await tx.bet.create({
       data: {
-        userId, gameProfileId, prediction, amount, odds: selectedOdds,
-        potentialPayout, status: "ACTIVE", eventType,
-        targetValue: targetValue ?? null,
-        matchData: JSON.parse(JSON.stringify({ stats, knownTeammatesSnapshot })),
+        userId, gameProfileId,
+        prediction: "WIN",
+        amount, odds: selectedOdds,
+        potentialPayout, status: "ACTIVE",
+        eventType: "WIN_LOSS",
+        targetValue: null,
+        matchData: JSON.parse(JSON.stringify({ stats, knownTeammatesSnapshot, conditions })),
       },
     });
 

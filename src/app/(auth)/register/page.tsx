@@ -1,18 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertBox } from "@/components/ui/alert-box";
-import { UserPlus, Zap } from "lucide-react";
+import { UserPlus, Zap, Gift } from "lucide-react";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [refCode, setRefCode] = useState("");
+
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get("ref");
+    if (code) setRefCode(code.toUpperCase());
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,6 +32,7 @@ export default function RegisterPage() {
         name: form.get("name"),
         email: form.get("email"),
         password: form.get("password"),
+        refCode: refCode || undefined,
       }),
     });
     const data = await res.json();
@@ -65,9 +72,15 @@ export default function RegisterPage() {
                 Criar Conta
               </h1>
             </div>
-            <p className="font-ui text-sm text-[var(--text-muted)] mb-6">
+            <p className="font-ui text-sm text-[var(--text-muted)] mb-4">
               Gratuito · Comece a apostar em minutos
             </p>
+            {refCode && (
+              <div className="mb-4 flex items-center gap-2 px-3 py-2 border border-[var(--neon)] bg-[var(--neon-dim)]">
+                <Gift size={12} className="text-[var(--neon)] shrink-0" />
+                <span className="font-mono text-xs text-[var(--neon)]">Convite: <strong>{refCode}</strong></span>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">

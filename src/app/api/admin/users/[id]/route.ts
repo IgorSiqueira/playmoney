@@ -10,6 +10,8 @@ const patchSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("blockDeposits") }),
   z.object({ action: z.literal("unblockDeposits") }),
   z.object({ action: z.literal("setDepositLimit"), limit: z.number().min(0).nullable() }),
+  z.object({ action: z.literal("enableInvite") }),
+  z.object({ action: z.literal("disableInvite") }),
 ]);
 
 async function requireAdmin() {
@@ -54,6 +56,10 @@ export async function PATCH(
     const limit = parsed.data.limit;
     await prisma.user.update({ where: { id }, data: { depositLimit: limit } });
     void logAdminAction(admin.id, admin.email, "SET_DEPOSIT_LIMIT", id, { targetEmail: target.email, limit });
+  } else if (action === "enableInvite") {
+    await prisma.user.update({ where: { id }, data: { canGenerateInvites: true } });
+  } else if (action === "disableInvite") {
+    await prisma.user.update({ where: { id }, data: { canGenerateInvites: false } });
   }
 
   return NextResponse.json({ ok: true });

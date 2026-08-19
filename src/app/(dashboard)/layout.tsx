@@ -9,12 +9,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   const dbUser = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { role: true },
+    select: { role: true, canGenerateInvites: true },
   });
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar user={{ ...session.user, role: dbUser?.role ?? "USER" }} />
+      <Sidebar user={{ ...session.user, role: dbUser?.role ?? "USER", canGenerateInvites: dbUser?.canGenerateInvites ?? false }} />
       <main className="flex-1 overflow-y-auto bg-[#0a0e1a]">
         <div className="max-w-4xl mx-auto px-6 py-8">{children}</div>
       </main>

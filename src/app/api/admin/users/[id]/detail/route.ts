@@ -18,7 +18,7 @@ export async function GET(
     where: { id },
     select: {
       id: true, name: true, email: true, role: true,
-      suspendedAt: true, depositsBlocked: true, depositLimit: true, createdAt: true,
+      suspendedAt: true, depositsBlocked: true, depositLimit: true, canGenerateInvites: true, createdAt: true,
       wallet: { select: { balance: true, bonusBalance: true } },
       bets: {
         orderBy: { createdAt: "desc" },

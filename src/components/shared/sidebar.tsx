@@ -8,11 +8,11 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, CreditCard, Gamepad2, Target,
   LogOut, ChevronRight, Zap, Settings, ShieldAlert,
-  User, Trophy, Users, Flag, BarChart2, Wrench, FileText,
+  User, Trophy, Users, Flag, BarChart2, Wrench, FileText, Gift,
 } from "lucide-react";
 
 interface SidebarProps {
-  user: { name?: string | null; email?: string | null; role?: string | null };
+  user: { name?: string | null; email?: string | null; role?: string | null; canGenerateInvites?: boolean };
 }
 
 const navItems = [
@@ -21,6 +21,7 @@ const navItems = [
   { href: "/games/dota2", label: "Dota 2",           icon: Gamepad2 },
   { href: "/bets",        label: "Apostas",          icon: Target },
   { href: "/analytics",   label: "Analytics",        icon: BarChart2 },
+  { href: "/invite",      label: "Convites",         icon: Gift, requireInvite: true },
   { href: "/leaderboard", label: "Leaderboard",      icon: Trophy },
   { href: "/profile",     label: "Perfil",           icon: User },
   { href: "/settings",    label: "Configurações",    icon: Settings },
@@ -56,7 +57,7 @@ export function Sidebar({ user }: SidebarProps) {
         <div className="font-ui text-[11px] font-semibold text-[var(--text-muted)] px-3 mb-3 uppercase tracking-wide">
           Navegação
         </div>
-        {navItems.map(({ href, label, icon: Icon }) => {
+        {navItems.filter((item) => !("requireInvite" in item) || user.canGenerateInvites).map(({ href, label, icon: Icon }) => {
           // exact match para / e /dashboard, prefix match para sub-rotas
           const active = href === "/dashboard" ? pathname === href : pathname === href || pathname.startsWith(href + "/");
           return (
@@ -103,6 +104,7 @@ export function Sidebar({ user }: SidebarProps) {
               { href: "/admin/settlements", label: "Liquidações",  icon: Trophy },
               { href: "/admin/risk",        label: "Risk Flags",   icon: Flag },
               { href: "/admin/platform",    label: "Plataforma",   icon: Wrench },
+              { href: "/admin/invites",     label: "Convites",     icon: Gift },
               { href: "/admin/logs",        label: "Logs",         icon: FileText },
             ].map(({ href, label, icon: Icon }) => {
               const active = pathname === href || pathname.startsWith(href + "/");

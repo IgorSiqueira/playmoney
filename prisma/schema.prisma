@@ -62,8 +62,9 @@ model User {
   updatedAt         DateTime  @updatedAt
 
   suspendedAt     DateTime?
-  depositsBlocked Boolean   @default(false)
-  depositLimit    Decimal?  @db.Decimal(10, 2)
+  depositsBlocked    Boolean   @default(false)
+  depositLimit       Decimal?  @db.Decimal(10, 2)
+  canGenerateInvites Boolean   @default(false)
 
   accounts      Account[]
   sessions      Session[]
@@ -72,6 +73,8 @@ model User {
   bets          Bet[]
   riskFlags     RiskFlag[]  @relation("UserRiskFlags")
   riskReviews   RiskFlag[]  @relation("AdminRiskReviews")
+  invite        Invite?     @relation("InviteCreator")
+  inviteUse     InviteUse?  @relation("InvitedUser")
 }
 
 model Account {
@@ -178,6 +181,26 @@ model Bet {
 
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   gameProfile GameProfile @relation(fields: [gameProfileId], references: [id])
+}
+
+model Invite {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  creatorId String   @unique
+  createdAt DateTime @default(now())
+
+  creator User        @relation("InviteCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  uses    InviteUse[]
+}
+
+model InviteUse {
+  id        String   @id @default(cuid())
+  inviteId  String
+  userId    String   @unique
+  createdAt DateTime @default(now())
+
+  invite Invite @relation(fields: [inviteId], references: [id], onDelete: Cascade)
+  user   User   @relation("InvitedUser", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model PlatformSettings {

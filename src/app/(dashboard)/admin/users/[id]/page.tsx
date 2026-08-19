@@ -6,7 +6,7 @@ import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import {
   Ban, CircleCheck, Lock, Unlock, DollarSign,
-  TrendingDown, TrendingUp, X, AlertTriangle,
+  TrendingDown, TrendingUp, X, Link2, Link2Off,
 } from "lucide-react";
 
 interface UserDetail {
@@ -17,6 +17,7 @@ interface UserDetail {
   suspendedAt: string | null;
   depositsBlocked: boolean;
   depositLimit: number | null;
+  canGenerateInvites: boolean;
   createdAt: string;
   wallet: { balance: string; bonusBalance: string } | null;
   bets: {
@@ -173,6 +174,11 @@ export default function AdminUserPage() {
             Limite: {formatCurrency(user.depositLimit)}
           </span>
         )}
+        {user.canGenerateInvites && (
+          <span className="font-display text-[11px] tracking-widest uppercase px-2 py-1 border border-[var(--neon)] text-[var(--neon)]">
+            Pode convidar
+          </span>
+        )}
       </div>
 
       {/* Info cards */}
@@ -272,6 +278,27 @@ export default function AdminUserPage() {
                 onClick={() => startTransition(() => { setLimitInput(""); patchUser("setDepositLimit", { limit: null }); })}
               >
                 Remover
+              </ActionButton>
+            )}
+          </div>
+        </div>
+
+        {/* Invite permission */}
+        <div className="border border-[var(--border)] bg-[var(--surface-2)] p-4 space-y-3">
+          <div>
+            <div className="font-display text-xs tracking-widest text-[var(--text-bright)] uppercase mb-0.5">Convites</div>
+            <p className="font-ui text-xs text-[var(--text-muted)]">
+              Autorizar permite que esse usuário gere seu link de convite e convide novas pessoas para a plataforma.
+            </p>
+          </div>
+          <div className="flex gap-2">
+            {!user.canGenerateInvites ? (
+              <ActionButton disabled={isPending} onClick={() => startTransition(() => patchUser("enableInvite"))}>
+                <Link2 size={11} className="inline mr-1.5" />Autorizar convites
+              </ActionButton>
+            ) : (
+              <ActionButton danger disabled={isPending} onClick={() => startTransition(() => patchUser("disableInvite"))}>
+                <Link2Off size={11} className="inline mr-1.5" />Revogar permissão
               </ActionButton>
             )}
           </div>

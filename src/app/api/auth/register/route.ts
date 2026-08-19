@@ -9,6 +9,7 @@ const registerSchema = z.object({
   name: z.string().min(2).max(60),
   email: z.string().email().max(254),
   password: z.string().min(6).max(128),
+  refCode: z.string().max(20).optional(),
 });
 
 export async function POST(req: Request) {
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Dados inválidos" }, { status: 400 });
     }
 
-    const { name, email, password } = parsed.data;
+    const { name, email, password, refCode } = parsed.data;
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
@@ -49,6 +50,10 @@ export async function POST(req: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    const invite = refCode
+      ? await prisma.invite.findUnique({ where: { code: refCode.toUpperCase() } })
+      : null;
+
     const user = await prisma.user.create({
       data: {
         name,
@@ -57,6 +62,10 @@ export async function POST(req: Request) {
         wallet: { create: { balance: 0 } },
       },
     });
+
+    if (invite) {
+      await prisma.inviteUse.create({ data: { inviteId: invite.id, userId: user.id } });
+    }
 
     return NextResponse.json({ id: user.id, email: user.email, name: user.name }, { status: 201 });
   } catch (error) {

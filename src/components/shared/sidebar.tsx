@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, CreditCard, Gamepad2, Target,
   LogOut, ChevronRight, Zap, Settings, ShieldAlert,
-  User, Trophy, Users, Flag, BarChart2,
+  User, Trophy, Users, Flag, BarChart2, Wrench, FileText,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -102,6 +102,8 @@ export function Sidebar({ user }: SidebarProps) {
               { href: "/admin/users",       label: "Usuários",     icon: Users },
               { href: "/admin/settlements", label: "Liquidações",  icon: Trophy },
               { href: "/admin/risk",        label: "Risk Flags",   icon: Flag },
+              { href: "/admin/platform",    label: "Plataforma",   icon: Wrench },
+              { href: "/admin/logs",        label: "Logs",         icon: FileText },
             ].map(({ href, label, icon: Icon }) => {
               const active = pathname === href || pathname.startsWith(href + "/");
               return (

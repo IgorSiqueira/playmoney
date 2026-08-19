@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { guardBodySize } from "@/lib/bet-guards";
 
-const DAILY_DEPOSIT_LIMIT = 2000; // R$ 2.000 por dia
+const DEFAULT_DAILY_DEPOSIT_LIMIT = 2000; // R$ 2.000 por dia — fallback quando não há config global
 
 const depositSchema = z.object({
   amount: z.number().min(10).max(10000),
@@ -60,14 +60,30 @@ export async function POST(req: Request) {
 
   const { amount } = parsed.data;
 
-  // [Security 6] Limite diário de depósito: R$ 2.000
   const startOfDay = new Date();
   startOfDay.setHours(0, 0, 0, 0);
 
-  const wallet = await prisma.wallet.findUnique({ where: { userId } });
+  // Fetch platform settings, user deposit restrictions, and wallet in parallel
+  const [platformSettings, userRestrictions, wallet] = await Promise.all([
+    prisma.platformSettings.findFirst(),
+    prisma.user.findUnique({ where: { id: userId }, select: { depositsBlocked: true, depositLimit: true } }),
+    prisma.wallet.findUnique({ where: { userId } }),
+  ]);
+
+  if (platformSettings?.depositsBlocked) {
+    return NextResponse.json({ error: "Depósitos estão temporariamente desabilitados na plataforma." }, { status: 503 });
+  }
+  if (userRestrictions?.depositsBlocked) {
+    return NextResponse.json({ error: "Seus depósitos estão bloqueados. Entre em contato com o suporte." }, { status: 403 });
+  }
+
   if (!wallet) {
     return NextResponse.json({ error: "Carteira não encontrada" }, { status: 404 });
   }
+
+  const effectiveLimit = Number(
+    userRestrictions?.depositLimit ?? platformSettings?.globalDepositLimit ?? DEFAULT_DAILY_DEPOSIT_LIMIT
+  );
 
   const depositsToday = await prisma.transaction.aggregate({
     where: {
@@ -80,13 +96,13 @@ export async function POST(req: Request) {
   });
 
   const totalToday = Number(depositsToday._sum.amount ?? 0);
-  if (totalToday + amount > DAILY_DEPOSIT_LIMIT) {
-    const remaining = Math.max(0, DAILY_DEPOSIT_LIMIT - totalToday);
+  if (totalToday + amount > effectiveLimit) {
+    const remaining = Math.max(0, effectiveLimit - totalToday);
     return NextResponse.json(
       {
         error: `Limite diário de depósito atingido. Você ainda pode depositar R$ ${remaining.toFixed(2)} hoje.`,
         remainingToday: remaining,
-        dailyLimit: DAILY_DEPOSIT_LIMIT,
+        dailyLimit: effectiveLimit,
       },
       { status: 422 }
     );

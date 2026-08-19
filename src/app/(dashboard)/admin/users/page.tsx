@@ -3,7 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Users, TrendingUp, TrendingDown, ShieldAlert, Ban, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { Users, TrendingUp, TrendingDown, ShieldAlert, Ban, CheckCircle2, Settings2 } from "lucide-react";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 
 export default async function AdminUsersPage() {
@@ -85,8 +86,8 @@ export default async function AdminUsersPage() {
         </div>
 
         {/* Header */}
-        <div className="grid grid-cols-[1fr_5rem_5rem_4rem_4rem_5rem_6rem] gap-2 px-4 py-2 border-b border-[var(--border)]">
-          {["Usuário", "Saldo", "P&L", "WR%", "Apostas", "Status", "Cadastro"].map((h) => (
+        <div className="grid grid-cols-[1fr_5rem_5rem_4rem_4rem_5rem_6rem_3rem] gap-2 px-4 py-2 border-b border-[var(--border)]">
+          {["Usuário", "Saldo", "P&L", "WR%", "Apostas", "Status", "Cadastro", ""].map((h) => (
             <span key={h} className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{h}</span>
           ))}
         </div>
@@ -97,7 +98,7 @@ export default async function AdminUsersPage() {
             return (
               <div
                 key={u.id}
-                className="grid grid-cols-[1fr_5rem_5rem_4rem_4rem_5rem_6rem] gap-2 items-center px-4 py-3 border border-[var(--border)] bg-[var(--surface-2)] hover:border-[var(--border-mid)] hover:bg-[var(--surface-hover)] transition-all duration-150"
+                className="grid grid-cols-[1fr_5rem_5rem_4rem_4rem_5rem_6rem_3rem] gap-2 items-center px-4 py-3 border border-[var(--border)] bg-[var(--surface-2)] hover:border-[var(--border-mid)] hover:bg-[var(--surface-hover)] transition-all duration-150"
                 style={{ borderColor: u.isExcluded ? "rgba(255,58,110,0.3)" : undefined }}
               >
                 {/* User info */}
@@ -166,6 +167,15 @@ export default async function AdminUsersPage() {
 
                 {/* Created at */}
                 <span className="font-mono text-[11px] text-[var(--text-muted)]">{formatDate(u.createdAt)}</span>
+
+                {/* Manage */}
+                <Link
+                  href={`/admin/users/${u.id}`}
+                  className="flex items-center justify-center p-1.5 border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--neon)] hover:text-[var(--neon)] transition-all"
+                  title="Gerenciar usuário"
+                >
+                  <Settings2 size={13} />
+                </Link>
               </div>
             );
           })}

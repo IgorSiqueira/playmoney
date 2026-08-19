@@ -16,18 +16,214 @@ import {
 import { AlertBox } from "@/components/ui/alert-box";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 
+interface OddsFactors {
+  baseWinRate: number;
+  formAdjustment: number;
+  streakAdjustment: number;
+  kdaAdjustment: number;
+  rankAdjustment: number;
+  gpmAdjustment: number;
+  finalProbability: number;
+  last5WR: number;
+  older15WR: number;
+  currentStreak: { count: number; type: "WIN" | "LOSS" | "NONE" };
+  form: "hot" | "warming" | "neutral" | "cooling" | "cold";
+}
+
 interface GameProfile {
   id: string; externalId: string; displayName: string | null; avatarUrl: string | null;
   stats: {
     winRate: number; totalMatches: number; recentWinRate: number; averageKDA: number;
     averageKills: number; averageDeaths: number; averageAssists: number; averageGPM: number;
     rankTier?: number;
-    odds: { winOdds: number; loseOdds: number; winProbability: number; riskLevel: string };
+    odds: {
+      winOdds: number; loseOdds: number; winProbability: number; riskLevel: string;
+      factors?: OddsFactors;
+    };
   } | null;
   lastSyncAt: string | null;
 }
 
 type Prediction = "WIN" | "OVER" | "UNDER";
+
+const FORM_CONFIG = {
+  hot:     { label: "Em Chamas",  icon: "🔥", color: "var(--neon)" },
+  warming: { label: "Aquecendo",  icon: "↗",  color: "var(--gold)" },
+  neutral: { label: "Neutro",     icon: "→",  color: "var(--text-muted)" },
+  cooling: { label: "Esfriando",  icon: "↘",  color: "var(--gold)" },
+  cold:    { label: "Fria",       icon: "❄",  color: "var(--danger)" },
+} as const;
+
+function pct(v: number, sign = true): string {
+  const s = sign && v > 0 ? "+" : "";
+  return `${s}${(v * 100).toFixed(0)}%`;
+}
+
+function WinLossOddsPanel({
+  odds,
+}: {
+  odds: NonNullable<GameProfile["stats"]>["odds"];
+}) {
+  const [showBreakdown, setShowBreakdown] = useState(false);
+  const f = odds.factors;
+  const form = f ? FORM_CONFIG[f.form] : null;
+
+  return (
+    <div className="border border-[var(--neon)] bg-[var(--neon-dim)] overflow-hidden">
+      {/* Main odds row */}
+      <div className="relative p-4 flex items-center gap-5">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <Trophy size={12} style={{ color: "var(--neon)" }} />
+            <span className="font-display text-[11px] tracking-[0.25em] uppercase text-[var(--neon)]">
+              Vitória na próxima partida
+            </span>
+            {form && (
+              <span
+                className="ml-auto font-mono text-[11px] font-bold flex items-center gap-1"
+                style={{ color: form.color }}
+              >
+                {form.icon} {form.label}
+              </span>
+            )}
+          </div>
+          <div
+            className="font-mono text-4xl font-black text-[var(--neon)]"
+            style={{ textShadow: "0 0 20px rgba(0,128,255,0.6)" }}
+          >
+            {odds.winOdds}x
+          </div>
+          <div className="flex items-center gap-4 mt-0.5 flex-wrap">
+            <span className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">
+              Prob. · {(odds.winProbability * 100).toFixed(0)}%
+            </span>
+            {f && f.currentStreak.type !== "NONE" && (
+              <span
+                className="font-mono text-[11px]"
+                style={{ color: f.currentStreak.type === "WIN" ? "var(--neon)" : "var(--danger)" }}
+              >
+                {f.currentStreak.count}{" "}
+                {f.currentStreak.type === "WIN" ? "vitória" : "derrota"}
+                {f.currentStreak.count > 1 ? "s" : ""} seguida
+                {f.currentStreak.count > 1 ? "s" : ""}
+              </span>
+            )}
+            {f && (
+              <button
+                onClick={() => setShowBreakdown((v) => !v)}
+                className="font-mono text-[11px] text-[var(--neon)] hover:underline ml-auto"
+              >
+                {showBreakdown ? "▲ ocultar" : "▼ ver fatores"}
+              </button>
+            )}
+          </div>
+        </div>
+        <div
+          className="absolute bottom-0 left-0 right-0 h-px"
+          style={{ background: "linear-gradient(90deg, transparent, var(--neon), transparent)" }}
+        />
+      </div>
+
+      {/* Breakdown table */}
+      {f && showBreakdown && (
+        <div className="border-t border-[rgba(0,128,255,0.2)] bg-[rgba(0,128,255,0.04)]">
+          <div className="px-4 py-1 font-display text-[10px] tracking-[0.2em] text-[var(--neon)] uppercase opacity-60">
+            Composição das odds
+          </div>
+          <table className="w-full">
+            <tbody>
+              {[
+                {
+                  label: "Win rate base (últimas 20)",
+                  value: pct(f.baseWinRate, false),
+                  note: `Ú5: ${pct(f.last5WR, false)} · A15: ${pct(f.older15WR, false)}`,
+                  color: "var(--text)",
+                },
+                {
+                  label: "Forma recente (Ú5 vs A15)",
+                  value: pct(f.formAdjustment),
+                  note:
+                    f.formAdjustment > 0.01
+                      ? "Melhorando"
+                      : f.formAdjustment < -0.01
+                        ? "Piorando"
+                        : "Estável",
+                  color:
+                    f.formAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
+                },
+                {
+                  label: `Sequência (${f.currentStreak.count} partidas)`,
+                  value: pct(f.streakAdjustment),
+                  note:
+                    f.currentStreak.type === "WIN"
+                      ? "Bônus por sequência positiva"
+                      : f.currentStreak.type === "LOSS"
+                        ? "Penalidade por sequência negativa"
+                        : "Sem sequência ativa",
+                  color:
+                    f.streakAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
+                },
+                {
+                  label: "KDA",
+                  value: pct(f.kdaAdjustment),
+                  note: "Kills+Assists vs Deaths",
+                  color:
+                    f.kdaAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
+                },
+                {
+                  label: "Rank / medalha",
+                  value: pct(f.rankAdjustment),
+                  note: "Ajuste por nível de habilidade",
+                  color:
+                    f.rankAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
+                },
+                {
+                  label: "Tendência GPM",
+                  value: pct(f.gpmAdjustment),
+                  note: "Gold/min nas últimas 5 vs anteriores",
+                  color:
+                    f.gpmAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
+                },
+              ].map(({ label, value, note, color }) => (
+                <tr
+                  key={label}
+                  className="border-t border-[rgba(0,128,255,0.08)] hover:bg-[rgba(0,128,255,0.04)]"
+                >
+                  <td className="px-4 py-2">
+                    <div className="font-display text-[11px] tracking-wide text-[var(--text)] uppercase">
+                      {label}
+                    </div>
+                    <div className="font-mono text-[10px] text-[var(--text-muted)]">{note}</div>
+                  </td>
+                  <td className="px-4 py-2 text-right">
+                    <span className="font-mono text-sm font-bold" style={{ color }}>
+                      {value}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              <tr className="border-t border-[rgba(0,128,255,0.3)]">
+                <td className="px-4 py-2">
+                  <span className="font-display text-[11px] tracking-widest text-[var(--neon)] uppercase font-bold">
+                    Probabilidade final
+                  </span>
+                </td>
+                <td className="px-4 py-2 text-right">
+                  <span
+                    className="font-mono text-base font-black text-[var(--neon)]"
+                    style={{ textShadow: "0 0 8px rgba(0,128,255,0.5)" }}
+                  >
+                    {pct(f.finalProbability, false)}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Dota2Page() {
   const [profile, setProfile] = useState<GameProfile | null>(null);
@@ -283,23 +479,7 @@ export default function Dota2Page() {
 
           {/* Odds display */}
           {eventType === "WIN_LOSS" && odds ? (
-            <div className="relative border border-[var(--neon)] bg-[var(--neon-dim)] p-4 overflow-hidden flex items-center gap-5">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <Trophy size={12} style={{ color: "var(--neon)" }} />
-                  <span className="font-display text-[11px] tracking-[0.25em] uppercase text-[var(--neon)]">Vitória na próxima partida</span>
-                </div>
-                <div className="font-mono text-4xl font-black text-[var(--neon)]"
-                  style={{ textShadow: "0 0 20px var(--neon)99" }}>
-                  {odds.winOdds}x
-                </div>
-                <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mt-0.5">
-                  Prob. · {(odds.winProbability * 100).toFixed(0)}%
-                </div>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 h-0.5"
-                style={{ background: "linear-gradient(90deg, transparent, var(--neon), transparent)" }} />
-            </div>
+            <WinLossOddsPanel odds={odds} />
           ) : eventType !== "WIN_LOSS" ? (
             <div className="space-y-3">
               <div className="space-y-2">

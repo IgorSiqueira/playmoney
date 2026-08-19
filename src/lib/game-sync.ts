@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { fetchPlayerProfile, fetchRecentMatches, calculatePlayerStats } from "@/lib/opendota";
-import { calculateOdds } from "@/lib/odds";
+import { calculateDynamicOdds } from "@/lib/odds";
 
 /**
  * Syncs a user's Dota 2 game profile: recent matches, stats, odds.
@@ -31,7 +31,7 @@ export async function syncDota2Profile(userId: string) {
       });
     }
 
-    const odds = calculateOdds(stats);
+    const odds = calculateDynamicOdds(recentMatches, stats);
     const statsJson = JSON.parse(
       JSON.stringify({ ...stats, odds, recentMatches: recentMatches.slice(0, 10) })
     );

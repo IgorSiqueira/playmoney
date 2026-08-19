@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, CreditCard, Gamepad2, Target,
   LogOut, ChevronRight, Zap, Settings, ShieldAlert,
-  User, Trophy, Users, Flag,
+  User, Trophy, Users, Flag, BarChart2,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -20,6 +20,7 @@ const navItems = [
   { href: "/wallet",      label: "Carteira",         icon: CreditCard },
   { href: "/games/dota2", label: "Dota 2",           icon: Gamepad2 },
   { href: "/bets",        label: "Apostas",          icon: Target },
+  { href: "/analytics",   label: "Analytics",        icon: BarChart2 },
   { href: "/leaderboard", label: "Leaderboard",      icon: Trophy },
   { href: "/profile",     label: "Perfil",           icon: User },
   { href: "/settings",    label: "Configurações",    icon: Settings },

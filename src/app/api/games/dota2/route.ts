@@ -3,7 +3,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { fetchPlayerProfile, fetchRecentMatches, calculatePlayerStats, normalizePlayerId } from "@/lib/opendota";
-import { calculateOdds } from "@/lib/odds";
+import { calculateDynamicOdds } from "@/lib/odds";
 import { syncDota2Profile } from "@/lib/game-sync";
 
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
@@ -100,7 +100,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const odds = calculateOdds(stats);
+  const odds = calculateDynamicOdds(recentMatches, stats);
   const statsJson = JSON.parse(JSON.stringify({ ...stats, odds, recentMatches: recentMatches.slice(0, 10) }));
 
   // [E1] Bloquear hedge: Steam ID já vinculado a outro usuário

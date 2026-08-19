@@ -120,6 +120,19 @@ export async function fetchRecentMatches(accountId: number, limit = 20): Promise
   return res.json();
 }
 
+export async function fetchHeroNames(): Promise<Record<number, string>> {
+  try {
+    const res = await fetch("https://api.opendota.com/api/heroes", {
+      next: { revalidate: 86400 },
+    });
+    if (!res.ok) return {};
+    const heroes: { id: number; localized_name: string }[] = await res.json();
+    return Object.fromEntries(heroes.map((h) => [h.id, h.localized_name]));
+  } catch {
+    return {};
+  }
+}
+
 export async function fetchMatchDetails(matchId: string): Promise<OpenDotaMatch | null> {
   const res = await fetchWithRetry(`${BASE_URL}/matches/${matchId}`, { next: { revalidate: 60 } }, 3);
   if (!res?.ok) return null;

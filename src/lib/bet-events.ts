@@ -27,7 +27,13 @@ function normalCDF(z: number): number {
   return z >= 0 ? 1 - tail : tail;
 }
 
-export type StatDistribution = "poisson" | "normal";
+// Calibração do modelo de probabilidade por condição:
+//   threshold = avg      → P ≈ 82%  → odds combinada ≈ 4× (5-leg combo)
+//   threshold = 2 × avg  → P ≈ 67%  → odds combinada ≈ 9× (5-leg combo)
+// Derivação: 0.51 × P^4 = 0.92/4.0 → P=0.818 → K=0.915
+//            0.51 × P^4 = 0.92/9.0 → P=0.669 → SLOPE=(0.915−0.440)/1.0=0.475
+const COND_K     = 0.915;
+const COND_SLOPE = 0.475;
 
 // ── Definições de eventos ──────────────────────────────────────────────────────
 
@@ -72,35 +78,17 @@ export type EventType = keyof typeof EVENT_TYPES;
 // ── Odds por evento ────────────────────────────────────────────────────────────
 
 /**
- * Calcula P(stat > target) com base na média histórica usando a distribuição
- * estatística apropriada para cada tipo de dado:
+ * P(stat > target | média histórica do jogador).
  *
- * - "poisson": dados de contagem (kills, assists) — Poisson normal approx com
- *   correção de continuidade: z = (avg − target − 0.5) / √avg
- * - "normal": dados contínuos (GPM, XPM) — Normal(μ=avg, σ=avg×CV) com CV
- *   empírico de 0.22 para stats de economia no Dota 2:
- *   z = (avg − target) / (avg × 0.22)
- *
- * Resultado clamped em [0.05, 0.95] — a distribuição cuida das probabilidades
- * extremas de forma muito mais precisa do que um clamp em [0.20, 0.80].
+ * Usa distância relativa à própria média do jogador — não depende de
+ * distribuição específica por tipo de stat. Comportamento calibrado:
+ *   - threshold = avg      → P ≈ 82% (aposta fácil, casa favorecida)
+ *   - threshold = 2 × avg  → P ≈ 67% (combo 5-leg ≈ 9× de odd)
  */
-export function calcOverProbability(
-  average: number,
-  target: number,
-  dist: StatDistribution = "poisson",
-): number {
+export function calcOverProbability(average: number, target: number): number {
   if (average <= 0) return 0.5;
-
-  let z: number;
-  if (dist === "poisson") {
-    // Aproximação normal de Poisson(λ=average) com correção de continuidade
-    z = (average - target - 0.5) / Math.sqrt(average);
-  } else {
-    // Normal(μ=average, σ=average×CV) — CV ≈ 0.22 para GPM/XPM no Dota
-    z = (average - target) / (average * 0.22);
-  }
-
-  return Math.max(0.05, Math.min(0.95, normalCDF(z)));
+  const pctAbove = (target - average) / average;
+  return Math.max(0.05, Math.min(0.95, normalCDF(COND_K - pctAbove * COND_SLOPE)));
 }
 
 export interface ComboCondition {
@@ -130,8 +118,7 @@ export function calculateComboOdds(
       : cond.type === "ASSISTS" ? stats.averageAssists
       : cond.type === "GPM"     ? stats.averageGPM
       : stats.averageXPM;
-    const dist: StatDistribution = (cond.type === "GPM" || cond.type === "XPM") ? "normal" : "poisson";
-    combinedProb *= calcOverProbability(avg, cond.threshold, dist);
+    combinedProb *= calcOverProbability(avg, cond.threshold);
   }
   const isCombo = conditions.length > 0;
   const rawOdds = (1 / combinedProb) * (1 - HOUSE_EDGE);

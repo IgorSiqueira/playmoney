@@ -131,13 +131,21 @@ export function calculateDynamicOdds(
   const xpmDelta      = prevXPM > 0 ? (lastXPM - prevXPM) / prevXPM : 0;
   const xpmAdjustment = Math.max(-0.02, Math.min(0.02, xpmDelta * 0.1));
 
-  // ── Final probability ─────────────────────────────────────────────────────
+  // ── Final probability (correlation-adjusted) ──────────────────────────────
+  // Factors within each cluster are correlated — summing them naively inflates
+  // the signal. Each secondary factor is discounted by its intra-cluster corr.
+  // Cross-cluster diminishing returns (~0.50 correlation between perf & economy).
+
+  // Cluster 1: recent performance (form + streak) — intra-corr ≈ 0.65
+  const performanceAdj = formAdjustment + streakAdjustment * 0.35;
+  // Cluster 2: player skill (KDA + rank) — intra-corr ≈ 0.40
+  const skillAdj = kdaAdjustment + rankAdjustment * 0.60;
+  // Cluster 3: economy (GPM + XPM) — intra-corr ≈ 0.85
+  const economyAdj = gpmAdjustment + xpmAdjustment * 0.15;
+
   const finalProbability = Math.max(
     0.25,
-    Math.min(
-      0.75,
-      baseWinRate + formAdjustment + streakAdjustment + kdaAdjustment + rankAdjustment + gpmAdjustment + xpmAdjustment,
-    ),
+    Math.min(0.75, baseWinRate + performanceAdj + skillAdj * 0.75 + economyAdj * 0.5625),
   );
 
   // ── Form label ────────────────────────────────────────────────────────────

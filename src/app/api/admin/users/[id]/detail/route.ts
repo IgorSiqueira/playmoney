@@ -20,6 +20,11 @@ export async function GET(
       id: true, name: true, email: true, role: true,
       suspendedAt: true, depositsBlocked: true, depositLimit: true, canGenerateInvites: true, createdAt: true,
       wallet: { select: { balance: true, bonusBalance: true } },
+      gameProfiles: {
+        where: { game: "DOTA2" },
+        select: { id: true, externalId: true, displayName: true, avatarUrl: true, lastSyncAt: true },
+        take: 1,
+      },
       bets: {
         orderBy: { createdAt: "desc" },
         take: 20,

@@ -6,7 +6,7 @@ import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import {
   Ban, CircleCheck, Lock, Unlock, DollarSign,
-  TrendingDown, TrendingUp, X, Link2, Link2Off,
+  TrendingDown, TrendingUp, X, Link2, Link2Off, Gamepad2,
 } from "lucide-react";
 
 interface UserDetail {
@@ -20,6 +20,7 @@ interface UserDetail {
   canGenerateInvites: boolean;
   createdAt: string;
   wallet: { balance: string; bonusBalance: string } | null;
+  gameProfiles: { id: string; externalId: string; displayName: string | null; avatarUrl: string | null; lastSyncAt: string }[];
   bets: {
     id: string;
     status: string;
@@ -59,6 +60,8 @@ export default function AdminUserPage() {
   const [limitInput, setLimitInput] = useState("");
   const [balanceInput, setBalanceInput] = useState("");
   const [reasonInput, setReasonInput] = useState("");
+  const [steamInput, setSteamInput] = useState("");
+  const [steamLoading, setSteamLoading] = useState(false);
   const [feedback, setFeedback] = useState<{ msg: string; ok: boolean } | null>(null);
 
   async function load() {
@@ -100,6 +103,23 @@ export default function AdminUserPage() {
     } else {
       const e = await res.json(); flash(e.error ?? "Erro", false);
     }
+  }
+
+  async function changeSteam() {
+    if (!steamInput.trim()) { flash("Informe o Steam ID", false); return; }
+    setSteamLoading(true);
+    const res = await fetch(`/api/admin/users/${id}/steam`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ steamId: steamInput.trim() }),
+    });
+    if (res.ok) {
+      flash("Conta Steam atualizada com sucesso", true);
+      setSteamInput(""); void load();
+    } else {
+      const e = await res.json(); flash(e.error ?? "Erro ao trocar conta Steam", false);
+    }
+    setSteamLoading(false);
   }
 
   async function cancelBet(betId: string) {
@@ -332,6 +352,37 @@ export default function AdminUserPage() {
             />
             <ActionButton disabled={isPending} onClick={() => startTransition(adjustBalance)}>
               <DollarSign size={11} className="inline mr-1.5" />Aplicar
+            </ActionButton>
+          </div>
+        </div>
+
+        {/* Steam account */}
+        <div className="border border-[var(--border)] bg-[var(--surface-2)] p-4 space-y-3">
+          <div>
+            <div className="font-display text-xs tracking-widest text-[var(--text-bright)] uppercase mb-0.5">Conta Steam (Dota 2)</div>
+            <p className="font-ui text-xs text-[var(--text-muted)]">
+              Troca o perfil Steam vinculado. Exige que o usuário não tenha apostas ativas.
+            </p>
+          </div>
+          {user.gameProfiles[0] && (
+            <div className="flex items-center gap-2 font-mono text-xs text-[var(--text-muted)] border border-[var(--border)] px-3 py-2 bg-[var(--surface-1)]">
+              <Gamepad2 size={11} className="text-[var(--neon)] shrink-0" />
+              <span className="text-[var(--text)]">{user.gameProfiles[0].displayName ?? "—"}</span>
+              <span className="opacity-50">·</span>
+              <span>ID {user.gameProfiles[0].externalId}</span>
+            </div>
+          )}
+          <div className="flex gap-2 items-center flex-wrap">
+            <input
+              type="text"
+              value={steamInput}
+              onChange={(e) => setSteamInput(e.target.value)}
+              placeholder="Account ID ou Steam64 ID"
+              className="font-mono text-sm bg-[var(--surface-1)] border border-[var(--border)] px-3 py-2 text-[var(--text)] flex-1 min-w-48 focus:outline-none focus:border-[var(--neon)]"
+            />
+            <ActionButton disabled={steamLoading || isPending} onClick={() => startTransition(changeSteam)}>
+              <Gamepad2 size={11} className="inline mr-1.5" />
+              {steamLoading ? "Verificando..." : "Trocar conta"}
             </ActionButton>
           </div>
         </div>

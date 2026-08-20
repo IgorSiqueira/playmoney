@@ -181,7 +181,6 @@ export default async function AdminSettlementsPage({
                         userName={bet.user.name ?? "?"}
                         betAmount={formatCurrency(Number(bet.amount))}
                         potentialPayout={formatCurrency(Number(bet.potentialPayout))}
-                        onDone={() => window.location.reload()}
                       />
                     )}
                   </div>

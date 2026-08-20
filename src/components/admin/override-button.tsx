@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,10 +12,10 @@ interface Props {
   userName:       string;
   betAmount:      string; // formatted
   potentialPayout: string; // formatted
-  onDone: () => void;
 }
 
-export function OverrideButton({ betId, userName, betAmount, potentialPayout, onDone }: Props) {
+export function OverrideButton({ betId, userName, betAmount, potentialPayout }: Props) {
+  const router = useRouter();
   const [open,    setOpen]    = useState(false);
   const [outcome, setOutcome] = useState<"WON" | "LOST" | null>(null);
   const [reason,  setReason]  = useState("");
@@ -35,7 +36,7 @@ export function OverrideButton({ betId, userName, betAmount, potentialPayout, on
     const data = await res.json();
     if (res.ok) {
       setDone(true);
-      setTimeout(onDone, 1200);
+      setTimeout(() => router.refresh(), 1200);
     } else {
       setError(data.error || "Erro ao aplicar override");
     }

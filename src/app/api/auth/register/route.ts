@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { rateLimit, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
-import { guardBodySize } from "@/lib/bet-guards";
+import { readJsonBody } from "@/lib/bet-guards";
 
 const registerSchema = z.object({
   name: z.string().min(2).max(60),
@@ -15,17 +15,15 @@ const registerSchema = z.object({
 export async function POST(req: Request) {
   const ip = getClientIp(req);
 
-  // [V7] Limite de tamanho do body
-  const bodySizeGuard = guardBodySize(req.headers.get("content-length"));
-  if (!bodySizeGuard.ok) return new Response(JSON.stringify({ error: bodySizeGuard.error }), { status: 413 });
-
   // [Security 7] Rate limit: 5 registros por hora por IP
   const rl = await rateLimit(`register:${ip}`, 5, 60 * 60 * 1000);
   if (!rl.ok) return rateLimitResponse(rl.resetAt);
 
   try {
-    const body = await req.json();
-    const parsed = registerSchema.safeParse(body);
+    const bodyResult = await readJsonBody(req);
+    if (!bodyResult.ok) return NextResponse.json({ error: bodyResult.error }, { status: bodyResult.status });
+
+    const parsed = registerSchema.safeParse(bodyResult.data);
 
     if (!parsed.success) {
       return NextResponse.json({ error: "Dados inválidos" }, { status: 400 });

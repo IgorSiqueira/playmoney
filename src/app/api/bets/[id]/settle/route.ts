@@ -16,7 +16,7 @@ import {
   guardMatchLobbyType,
   guardMatchMinDuration,
   guardMatchGameMode,
-  guardBodySize,
+  readJsonBody,
 } from "@/lib/bet-guards";
 
 const MATCH_MAX_AGE_DAYS = 30;
@@ -38,13 +38,11 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const rl = await rateLimit(`settle:${userId}`, 10, 60 * 60 * 1000);
   if (!rl.ok) return rateLimitResponse(rl.resetAt);
 
-  // [V7] Limite de tamanho do body
-  const bodySizeGuard = guardBodySize(req.headers.get("content-length"));
-  if (!bodySizeGuard.ok) return NextResponse.json({ error: bodySizeGuard.error }, { status: 413 });
-
   const { id } = await params;
-  const body = await req.json();
-  const parsed = settleSchema.safeParse(body);
+  const bodyResult = await readJsonBody(req);
+  if (!bodyResult.ok) return NextResponse.json({ error: bodyResult.error }, { status: bodyResult.status });
+
+  const parsed = settleSchema.safeParse(bodyResult.data);
   if (!parsed.success) {
     return NextResponse.json({ error: "Match ID inválido" }, { status: 400 });
   }
@@ -234,7 +232,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     }
     betWon = (bet.prediction === "WIN" && playerWon) || (bet.prediction === "LOSE" && !playerWon);
 
-    // Verificar condições do combo (sistema novo) — reutiliza betData já tipado acima
+    // Verificar condições do combo (sistema novo)
     if (betWon) {
       for (const cond of betData?.conditions ?? []) {
         try {
@@ -242,7 +240,15 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
             betWon = false;
             break;
           }
-        } catch {
+        } catch (err) {
+          if (err instanceof Error && err.message === "XPM_NOT_AVAILABLE") {
+            // OpenDota não retornou XPM para este jogador — não podemos julgar a condição.
+            // Retornamos 422 para que o usuário tente novamente mais tarde (parse pode estar incompleto).
+            return NextResponse.json(
+              { error: "Os dados de XPM desta partida ainda não estão disponíveis na OpenDota. Aguarde alguns minutos e tente novamente.", code: "XPM_NOT_AVAILABLE" },
+              { status: 422 }
+            );
+          }
           // tipo de condição desconhecido — ignora sem anular a aposta
         }
       }
@@ -323,8 +329,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   });
 
   // Fire-and-forget: avalia sinais de risco e sincroniza perfil sem bloquear a resposta
-  void evaluateBetSignals(userId);
-  void syncDota2Profile(userId);
+  void evaluateBetSignals(userId).catch((e) => console.error("[settle] evaluateBetSignals failed:", e));
+  void syncDota2Profile(userId).catch((e) => console.error("[settle] syncDota2Profile failed:", e));
 
   return NextResponse.json({
     bet: result,

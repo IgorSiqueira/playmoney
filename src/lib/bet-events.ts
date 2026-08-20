@@ -7,7 +7,7 @@
  *  - verificação do resultado a partir dos dados da partida (OpenDota)
  */
 
-import type { PlayerStats, OpenDotaMatchPlayer } from "./opendota";
+import type { OpenDotaMatchPlayer } from "./opendota";
 
 const HOUSE_EDGE = 0.08;
 const MAX_ODDS   = 1.80;
@@ -54,16 +54,6 @@ export type EventType = keyof typeof EVENT_TYPES;
 
 // ── Odds por evento ────────────────────────────────────────────────────────────
 
-/** Retorna a média histórica do jogador para o evento escolhido */
-export function getAverageStat(eventType: EventType, stats: PlayerStats): number {
-  switch (eventType) {
-    case "KILLS":   return stats.averageKills;
-    case "ASSISTS": return stats.averageAssists;
-    case "GPM":     return stats.averageGPM;
-    default:        return 0;
-  }
-}
-
 /**
  * Calcula P(stat > target) com base na média histórica.
  *
@@ -79,14 +69,6 @@ export function calcOverProbability(average: number, target: number): number {
   if (average <= 0) return 0.5;
   const raw = 0.5 + (average - target) / (average * 2);
   return Math.max(0.20, Math.min(0.80, raw));
-}
-
-export interface EventOddsResult {
-  overOdds: number;
-  underOdds: number;
-  overProbability: number;
-  underProbability: number;
-  averageStat: number;
 }
 
 export interface ComboCondition {
@@ -127,25 +109,6 @@ export function calculateComboOdds(
   };
 }
 
-/** Calcula odds de OVER e UNDER para um evento de stat com alvo específico */
-export function calcEventOdds(
-  eventType: EventType,
-  stats: PlayerStats,
-  targetValue: number
-): EventOddsResult {
-  const average  = getAverageStat(eventType, stats);
-  const overProb = calcOverProbability(average, targetValue);
-  const underProb = 1 - overProb;
-
-  return {
-    overOdds:        parseFloat((Math.min(MAX_ODDS, (1 / overProb)  * (1 - HOUSE_EDGE))).toFixed(2)),
-    underOdds:       parseFloat((Math.min(MAX_ODDS, (1 / underProb) * (1 - HOUSE_EDGE))).toFixed(2)),
-    overProbability:  overProb,
-    underProbability: underProb,
-    averageStat:      average,
-  };
-}
-
 // ── Verificação do resultado ───────────────────────────────────────────────────
 
 /**
@@ -169,7 +132,15 @@ export function verifyEventOutcome(
     case "KILLS":   actual = player.kills;               break;
     case "ASSISTS": actual = player.assists;             break;
     case "GPM":     actual = player.gold_per_min;        break;
-    case "XPM":     actual = player.xp_per_min ?? 0;    break;
+    case "XPM":
+      // xp_per_min pode estar ausente no endpoint /matches/{id} — se vier nulo,
+      // não podemos julgar a condição: lançamos erro para que o settle rejeite
+      // e o usuário receba uma mensagem clara em vez de perder por dados faltantes.
+      if (player.xp_per_min === undefined || player.xp_per_min === null) {
+        throw new Error("XPM_NOT_AVAILABLE");
+      }
+      actual = player.xp_per_min;
+      break;
     default:
       throw new Error(`Tipo de evento desconhecido: ${eventType}`);
   }

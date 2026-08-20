@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { reviewFlag } from "@/lib/risk";
+import { logAdminAction } from "@/lib/admin-log";
 
 export async function POST(
   _req: Request,
@@ -12,7 +13,7 @@ export async function POST(
 
   const admin = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { role: true },
+    select: { role: true, email: true },
   });
   if (admin?.role !== "ADMIN") return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
 
@@ -23,6 +24,10 @@ export async function POST(
   if (flag.reviewedAt) return NextResponse.json({ error: "Flag já revisada" }, { status: 409 });
 
   await reviewFlag(flagId, session.user.id);
+
+  void logAdminAction(session.user.id, admin.email ?? "", "REVIEW_RISK_FLAG", flag.userId, { flagId }).catch(
+    (e) => console.error("[admin-log] review flag failed:", e)
+  );
 
   return NextResponse.json({ ok: true });
 }
@@ -37,7 +42,7 @@ export async function PUT(
 
   const admin = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { role: true },
+    select: { role: true, email: true },
   });
   if (admin?.role !== "ADMIN") return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
 
@@ -49,6 +54,10 @@ export async function PUT(
     where: { id: flag.userId },
     data: { suspendedAt: new Date() },
   });
+
+  void logAdminAction(session.user.id, admin.email ?? "", "MANUAL_SUSPEND_USER", flag.userId, { flagId }).catch(
+    (e) => console.error("[admin-log] manual suspend failed:", e)
+  );
 
   return NextResponse.json({ ok: true });
 }

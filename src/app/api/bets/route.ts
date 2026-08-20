@@ -2,14 +2,14 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { calculateOdds, calculatePayout } from "@/lib/odds";
-import { calculatePlayerStats } from "@/lib/opendota";
+import { calculateDynamicOdds, calculatePayout } from "@/lib/odds";
+import { calculatePlayerStatsWithMatches } from "@/lib/opendota";
 import { calculateComboOdds } from "@/lib/bet-events";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import {
   guardMinMatchHistory, guardMaxPayout, guardProfileFreshness,
-  guardDailyWinningsCap, guardBodySize,
-  guardSelfExclusion, guardDailyLossLimit, guardWeeklyLossLimit,
+  guardDailyWinningsCap, readJsonBody, guardSelfExclusion,
+  guardDailyLossLimit, guardWeeklyLossLimit,
 } from "@/lib/bet-guards";
 
 const MAX_ACTIVE_BETS_PER_PROFILE = 5;
@@ -45,14 +45,13 @@ export async function POST(req: Request) {
 
   const userId = session.user.id;
 
-  const bodySizeGuard = guardBodySize(req.headers.get("content-length"));
-  if (!bodySizeGuard.ok) return NextResponse.json({ error: bodySizeGuard.error }, { status: 413 });
-
   const rl = await rateLimit(`bets:${userId}`, 20, 60 * 60 * 1000);
   if (!rl.ok) return rateLimitResponse(rl.resetAt);
 
-  const body = await req.json();
-  const parsed = createBetSchema.safeParse(body);
+  const bodyResult = await readJsonBody(req);
+  if (!bodyResult.ok) return NextResponse.json({ error: bodyResult.error }, { status: bodyResult.status });
+
+  const parsed = createBetSchema.safeParse(bodyResult.data);
   if (!parsed.success) return NextResponse.json({ error: "Dados inválidos" }, { status: 400 });
 
   const { gameProfileId, amount, conditions } = parsed.data;
@@ -93,13 +92,13 @@ export async function POST(req: Request) {
   if (!dailyLossGuard.ok)  return NextResponse.json({ error: dailyLossGuard.error,  code: dailyLossGuard.code  }, { status: 422 });
   if (!weeklyLossGuard.ok) return NextResponse.json({ error: weeklyLossGuard.error, code: weeklyLossGuard.code }, { status: 422 });
 
-  const stats = await calculatePlayerStats(Number(gameProfile.externalId));
+  const { stats, recentMatches } = await calculatePlayerStatsWithMatches(Number(gameProfile.externalId));
 
   const historyGuard = guardMinMatchHistory(stats);
   if (!historyGuard.ok) return NextResponse.json({ error: historyGuard.error, code: historyGuard.code }, { status: 422 });
 
-  // Sempre WIN — combo multiplica probabilidades; sem teto para combos
-  const { winProbability } = calculateOdds(stats);
+  // Usa dynamic odds (mesma fórmula do frontend) para consistência UI↔API
+  const { winProbability } = calculateDynamicOdds(recentMatches, stats);
   const { odds: selectedOdds } = calculateComboOdds(winProbability, conditions, stats);
 
   const potentialPayout = calculatePayout(amount, selectedOdds);

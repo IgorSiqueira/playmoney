@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { logAdminAction } from "@/lib/admin-log";
 
 const overrideSchema = z.object({
   outcome: z.enum(["WON", "LOST"]),
@@ -20,7 +21,7 @@ export async function POST(
   // Verificar role ADMIN
   const admin = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { role: true },
+    select: { role: true, email: true },
   });
   if (admin?.role !== "ADMIN") {
     return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
@@ -109,6 +110,10 @@ export async function POST(
 
     return updated;
   });
+
+  void logAdminAction(session.user.id, admin.email ?? "", "OVERRIDE_BET", userId, {
+    betId: id, outcome, reason: reason ?? null, payout: betWon ? Number(bet.potentialPayout) : 0,
+  }).catch((e) => console.error("[admin-log] override bet failed:", e));
 
   return NextResponse.json({ bet: result, betWon, payout: betWon ? Number(bet.potentialPayout) : 0 });
 }

@@ -7,7 +7,14 @@ declare global {
 
 function createRedis(): Redis | null {
   const url = process.env.REDIS_URL;
-  if (!url) return null;
+  if (!url) {
+    if (process.env.NODE_ENV === "production") {
+      // Rate limiting falls back to in-memory, which does NOT work across multiple instances.
+      // In production this means rate limits are per-instance only — a real gap.
+      console.warn("[redis] REDIS_URL not set in production — rate limiting is per-instance only");
+    }
+    return null;
+  }
 
   const client = new Redis(url, {
     maxRetriesPerRequest: 1,

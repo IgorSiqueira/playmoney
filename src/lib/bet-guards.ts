@@ -480,19 +480,36 @@ export function guardMatchGameMode(gameMode: number): GuardResult {
 }
 
 /**
- * [V7] Rejeita bodies acima de MAX_BODY_BYTES.
- * Deve ser chamado antes de fazer JSON.parse do body.
+ * [V7] Rejeita bodies acima de MAX_BODY_BYTES baseado no header Content-Length.
+ * @deprecated Use readJsonBody que verifica o tamanho real do body.
  */
 export function guardBodySize(contentLength: string | null): GuardResult {
   if (contentLength !== null) {
     const bytes = parseInt(contentLength, 10);
     if (!isNaN(bytes) && bytes > LIMITS.MAX_BODY_BYTES) {
-      return {
-        ok: false,
-        error: "Payload muito grande.",
-        code: "PAYLOAD_TOO_LARGE",
-      };
+      return { ok: false, error: "Payload muito grande.", code: "PAYLOAD_TOO_LARGE" };
     }
   }
   return { ok: true };
+}
+
+type ReadJsonBodyResult<T> =
+  | { ok: true; data: T }
+  | { ok: false; error: string; status: 413 | 400 };
+
+/**
+ * [V7] Lê o body real da request e verifica o tamanho ANTES de parsear JSON.
+ * Não confia no header Content-Length (pode ser manipulado).
+ * Retorna { ok: true, data } ou { ok: false, error, status }.
+ */
+export async function readJsonBody<T = unknown>(req: Request): Promise<ReadJsonBodyResult<T>> {
+  const text = await req.text();
+  if (text.length > LIMITS.MAX_BODY_BYTES) {
+    return { ok: false, error: "Payload muito grande.", status: 413 };
+  }
+  try {
+    return { ok: true, data: JSON.parse(text) as T };
+  } catch {
+    return { ok: false, error: "JSON inválido.", status: 400 };
+  }
 }

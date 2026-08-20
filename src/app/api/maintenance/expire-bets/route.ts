@@ -17,10 +17,15 @@ export async function POST(req: Request) {
   return runExpiry();
 }
 
-// GET público pode ser protegido por secret header em produção
+// GET para cron externo — exige MAINTENANCE_SECRET obrigatório no header
 export async function GET(req: Request) {
+  const expectedSecret = process.env.MAINTENANCE_SECRET;
+  // Se a variável não estiver configurada, falha seguro — nunca permite acesso anônimo
+  if (!expectedSecret) {
+    return NextResponse.json({ error: "MAINTENANCE_SECRET não configurado no servidor." }, { status: 503 });
+  }
   const secret = req.headers.get("x-maintenance-secret");
-  if (secret !== process.env.MAINTENANCE_SECRET && process.env.MAINTENANCE_SECRET) {
+  if (!secret || secret !== expectedSecret) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
   }
   return runExpiry();

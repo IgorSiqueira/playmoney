@@ -1,16 +1,60 @@
 const BASE_URL = "https://api.opendota.com/api";
 
+// ── Circuit breaker ───────────────────────────────────────────────────────────
+// Prevents hammering OpenDota when it's down. Opens after 5 consecutive
+// failures; stays open for 30s, then allows one probe (HALF_OPEN).
+const CB = {
+  state: "CLOSED" as "CLOSED" | "OPEN" | "HALF_OPEN",
+  failures: 0,
+  openedAt: 0,
+  FAILURE_THRESHOLD: 5,
+  RESET_MS: 30_000,
+};
+
+function cbRecordSuccess() {
+  CB.state = "CLOSED";
+  CB.failures = 0;
+}
+
+function cbRecordFailure() {
+  CB.failures++;
+  if (CB.failures >= CB.FAILURE_THRESHOLD) {
+    CB.state = "OPEN";
+    CB.openedAt = Date.now();
+    console.warn("[opendota] circuit breaker OPEN — too many failures");
+  }
+}
+
+function cbAllowRequest(): boolean {
+  if (CB.state === "CLOSED") return true;
+  if (CB.state === "OPEN") {
+    if (Date.now() - CB.openedAt > CB.RESET_MS) {
+      CB.state = "HALF_OPEN";
+      return true;
+    }
+    return false;
+  }
+  // HALF_OPEN: allow exactly one probe
+  return true;
+}
+
 async function fetchWithRetry(url: string, options: RequestInit & { next?: { revalidate?: number } }, retries = 3): Promise<Response | null> {
+  if (!cbAllowRequest()) {
+    console.warn("[opendota] circuit breaker OPEN — request blocked:", url);
+    return null;
+  }
+
   for (let attempt = 0; attempt < retries; attempt++) {
     try {
       const res = await fetch(url, options);
-      if (res.ok) return res;
-      if (res.status === 404) return res; // don't retry 404
+      if (res.ok) { cbRecordSuccess(); return res; }
+      if (res.status === 404) { cbRecordSuccess(); return res; } // don't retry 404
       if (res.status === 429 || res.status >= 500) {
         if (attempt < retries - 1) {
           await new Promise((r) => setTimeout(r, 300 * 2 ** attempt));
           continue;
         }
+        cbRecordFailure();
       }
       return res;
     } catch {
@@ -18,6 +62,7 @@ async function fetchWithRetry(url: string, options: RequestInit & { next?: { rev
         await new Promise((r) => setTimeout(r, 300 * 2 ** attempt));
         continue;
       }
+      cbRecordFailure();
     }
   }
   return null;
@@ -142,7 +187,17 @@ export async function fetchMatchDetails(matchId: string): Promise<OpenDotaMatch 
   return res.json();
 }
 
+export interface PlayerStatsWithMatches {
+  stats: PlayerStats;
+  recentMatches: PlayerRecentMatch[];
+}
+
 export async function calculatePlayerStats(accountId: number): Promise<PlayerStats> {
+  const { stats } = await calculatePlayerStatsWithMatches(accountId);
+  return stats;
+}
+
+export async function calculatePlayerStatsWithMatches(accountId: number): Promise<PlayerStatsWithMatches> {
   const [profile, recentMatches] = await Promise.all([
     fetchPlayerProfile(accountId),
     fetchRecentMatches(accountId, 20),
@@ -150,11 +205,14 @@ export async function calculatePlayerStats(accountId: number): Promise<PlayerSta
 
   if (!recentMatches.length) {
     return {
-      winRate: 0.5, totalMatches: 0, recentWinRate: 0.5, averageKDA: 1,
-      averageKills: 5, averageDeaths: 5, averageAssists: 8, averageGPM: 400, averageXPM: 500,
-      rankTier: profile?.rank_tier,
-      mmrEstimate: profile?.mmr_estimate?.estimate,
-      profilePrivate: profile?.profile?.fh_unavailable === true,
+      stats: {
+        winRate: 0.5, totalMatches: 0, recentWinRate: 0.5, averageKDA: 1,
+        averageKills: 5, averageDeaths: 5, averageAssists: 8, averageGPM: 400, averageXPM: 500,
+        rankTier: profile?.rank_tier,
+        mmrEstimate: profile?.mmr_estimate?.estimate,
+        profilePrivate: profile?.profile?.fh_unavailable === true,
+      },
+      recentMatches: [],
     };
   }
 
@@ -173,17 +231,20 @@ export async function calculatePlayerStats(accountId: number): Promise<PlayerSta
   const avgXPM    = recentMatches.reduce((a, m) => a + (m.xp_per_min    ?? 0), 0) / recentMatches.length;
 
   return {
-    winRate: recentWinRate,
-    totalMatches: recentMatches.length,
-    recentWinRate,
-    averageKDA: avgKDA,
-    averageKills:   parseFloat(avgKills.toFixed(1)),
-    averageDeaths:  parseFloat(avgDeaths.toFixed(1)),
-    averageAssists: parseFloat(avgAssts.toFixed(1)),
-    averageGPM:     parseFloat(avgGPM.toFixed(0)),
-    averageXPM:     parseFloat(avgXPM.toFixed(0)),
-    rankTier: profile?.rank_tier,
-    mmrEstimate: profile?.mmr_estimate?.estimate,
+    stats: {
+      winRate: recentWinRate,
+      totalMatches: recentMatches.length,
+      recentWinRate,
+      averageKDA: avgKDA,
+      averageKills:   parseFloat(avgKills.toFixed(1)),
+      averageDeaths:  parseFloat(avgDeaths.toFixed(1)),
+      averageAssists: parseFloat(avgAssts.toFixed(1)),
+      averageGPM:     parseFloat(avgGPM.toFixed(0)),
+      averageXPM:     parseFloat(avgXPM.toFixed(0)),
+      rankTier: profile?.rank_tier,
+      mmrEstimate: profile?.mmr_estimate?.estimate,
+    },
+    recentMatches,
   };
 }
 

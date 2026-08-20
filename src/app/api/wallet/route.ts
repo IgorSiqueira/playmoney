@@ -3,7 +3,8 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
-import { guardBodySize } from "@/lib/bet-guards";
+import { readJsonBody } from "@/lib/bet-guards";
+import { PLATFORM } from "@/lib/platform-config";
 
 const DEFAULT_DAILY_DEPOSIT_LIMIT = 2000; // R$ 2.000 por dia — fallback quando não há config global
 
@@ -43,16 +44,14 @@ export async function POST(req: Request) {
 
   const userId = session.user.id;
 
-  // [V7] Limite de tamanho do body
-  const bodySizeGuard = guardBodySize(req.headers.get("content-length"));
-  if (!bodySizeGuard.ok) return NextResponse.json({ error: bodySizeGuard.error }, { status: 413 });
-
   // [Security 7] Rate limit: 10 depósitos por hora por usuário
   const rl = await rateLimit(`deposit:${userId}`, 10, 60 * 60 * 1000);
   if (!rl.ok) return rateLimitResponse(rl.resetAt);
 
-  const body = await req.json();
-  const parsed = depositSchema.safeParse(body);
+  const bodyResult = await readJsonBody(req);
+  if (!bodyResult.ok) return NextResponse.json({ error: bodyResult.error }, { status: bodyResult.status });
+
+  const parsed = depositSchema.safeParse(bodyResult.data);
 
   if (!parsed.success) {
     return NextResponse.json({ error: "Valor inválido" }, { status: 400 });
@@ -108,22 +107,25 @@ export async function POST(req: Request) {
     );
   }
 
-  // ── Bônus de primeiro depósito ─────────────────────────────────────────────
-  // 50% do valor depositado, máximo R$ 50, apenas no primeiro depósito
-  const BONUS_RATE    = 0.5;
-  const BONUS_CAP     = 50;
-  const MIN_BONUS_DEP = 20; // depósito mínimo para ganhar bônus
-  const bonusAmount   = !wallet.depositBonusClaimed && amount >= MIN_BONUS_DEP
-    ? Math.min(amount * BONUS_RATE, BONUS_CAP)
-    : 0;
-
   const result = await prisma.$transaction(async (tx) => {
+    // Check-and-set atômico: updateMany só atualiza se depositBonusClaimed ainda for false.
+    // Em requisições concorrentes, a segunda encontra 0 linhas e não ganha bônus.
+    let bonusAmount = 0;
+    if (amount >= PLATFORM.MIN_BONUS_DEP) {
+      const claimed = await tx.wallet.updateMany({
+        where: { userId, depositBonusClaimed: false },
+        data: { depositBonusClaimed: true },
+      });
+      if (claimed.count > 0) {
+        bonusAmount = Math.min(amount * PLATFORM.BONUS_RATE, PLATFORM.BONUS_CAP);
+      }
+    }
+
     const updatedWallet = await tx.wallet.update({
       where: { userId },
       data: {
-        balance:             { increment: amount + bonusAmount },
-        bonusBalance:        { increment: bonusAmount },
-        depositBonusClaimed: bonusAmount > 0 ? true : wallet.depositBonusClaimed,
+        balance:      { increment: amount + bonusAmount },
+        bonusBalance: { increment: bonusAmount },
       },
     });
 
@@ -145,8 +147,8 @@ export async function POST(req: Request) {
           type:        "BONUS",
           amount:      bonusAmount,
           status:      "COMPLETED",
-          description: `Bônus de boas-vindas (50% do depósito, máx. R$ 50)`,
-          metadata:    { depositAmount: amount, bonusRate: BONUS_RATE },
+          description: `Bônus de boas-vindas (${PLATFORM.BONUS_RATE * 100}% do depósito, máx. R$ ${PLATFORM.BONUS_CAP})`,
+          metadata:    { depositAmount: amount, bonusRate: PLATFORM.BONUS_RATE },
         },
       });
     }

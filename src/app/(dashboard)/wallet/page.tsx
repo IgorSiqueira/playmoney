@@ -198,6 +198,10 @@ export default function WalletPage() {
             {error && <AlertBox variant="error">{error}</AlertBox>}
             {success && <AlertBox variant="success">+{success} creditado com sucesso</AlertBox>}
 
+            <p className="font-ui text-[10px] text-[var(--text-muted)] text-center">
+              Ambiente de demonstração — nenhuma transação financeira real é processada.
+            </p>
+
             <Button type="submit" className="w-full" variant="gold" disabled={loading || !amount}>
               {loading ? "Processando..." : "Depositar"}
             </Button>
@@ -243,6 +247,10 @@ export default function WalletPage() {
 
             {withdrawError && <AlertBox variant="error">{withdrawError}</AlertBox>}
             {withdrawSuccess && <AlertBox variant="success">{withdrawSuccess} solicitado — PIX em até 1 dia útil</AlertBox>}
+
+            <p className="font-ui text-[10px] text-[var(--text-muted)] text-center">
+              Ambiente de demonstração — nenhuma transferência PIX real é realizada.
+            </p>
 
             <div className="flex items-center justify-between">
               <Button

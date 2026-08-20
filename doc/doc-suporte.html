@@ -1,0 +1,616 @@
+<title>PlayMoney — Suporte</title>
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --bg2: #F8FAFC;
+    --bg3: #EEF2F7;
+    --border: #E2E8F0;
+    --border2: #CBD5E1;
+    --text: #0F172A;
+    --text2: #334155;
+    --muted: #64748B;
+    --accent: #0080FF;
+    --accent-dim: rgba(0,128,255,.08);
+    --accent-border: rgba(0,128,255,.2);
+    --green: #059669;
+    --green-bg: #ECFDF5;
+    --green-border: #A7F3D0;
+    --red: #DC2626;
+    --red-bg: #FEF2F2;
+    --red-border: #FECACA;
+    --yellow: #D97706;
+    --yellow-bg: #FFFBEB;
+    --yellow-border: #FDE68A;
+    --purple: #7C3AED;
+    --purple-bg: #F5F3FF;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0F172A;
+      --bg2: #1E293B;
+      --bg3: #334155;
+      --border: #334155;
+      --border2: #475569;
+      --text: #F1F5F9;
+      --text2: #CBD5E1;
+      --muted: #94A3B8;
+      --accent-dim: rgba(0,128,255,.12);
+      --green: #34D399;
+      --green-bg: rgba(4,120,87,.15);
+      --green-border: rgba(52,211,153,.3);
+      --red: #F87171;
+      --red-bg: rgba(185,28,28,.15);
+      --red-border: rgba(248,113,113,.3);
+      --yellow: #FCD34D;
+      --yellow-bg: rgba(146,64,14,.15);
+      --yellow-border: rgba(252,211,77,.3);
+      --purple: #A78BFA;
+      --purple-bg: rgba(109,40,217,.15);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0F172A; --bg2: #1E293B; --bg3: #334155;
+    --border: #334155; --border2: #475569;
+    --text: #F1F5F9; --text2: #CBD5E1; --muted: #94A3B8;
+    --accent-dim: rgba(0,128,255,.12);
+    --green: #34D399; --green-bg: rgba(4,120,87,.15); --green-border: rgba(52,211,153,.3);
+    --red: #F87171; --red-bg: rgba(185,28,28,.15); --red-border: rgba(248,113,113,.3);
+    --yellow: #FCD34D; --yellow-bg: rgba(146,64,14,.15); --yellow-border: rgba(252,211,77,.3);
+    --purple: #A78BFA; --purple-bg: rgba(109,40,217,.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--accent);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .header-badge {
+    background: rgba(255,255,255,.2);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+  .header-title { color: #fff; font-size: 17px; font-weight: 700; }
+  .header-sub { color: rgba(255,255,255,.7); font-size: 13px; margin-left: auto; }
+
+  /* LAYOUT */
+  .layout { display: flex; max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; gap: 40px; }
+  aside {
+    width: 220px;
+    min-width: 220px;
+    position: sticky;
+    top: 76px;
+    align-self: flex-start;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+  .aside-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin: 16px 0 6px;
+    padding: 0 8px;
+  }
+  aside a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 8px;
+    border-radius: 6px;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+  }
+  aside a:hover { background: var(--bg3); color: var(--accent); }
+  aside a .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
+
+  main { flex: 1; min-width: 0; }
+
+  /* TYPOGRAPHY */
+  h1 { font-size: 26px; font-weight: 800; margin-bottom: 6px; line-height: 1.2; }
+  h2 { font-size: 18px; font-weight: 700; margin: 44px 0 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+  h2 .icon { display: inline-block; margin-right: 8px; }
+  h3 { font-size: 15px; font-weight: 600; margin: 24px 0 10px; color: var(--text); }
+  p { color: var(--text2); margin-bottom: 12px; line-height: 1.7; }
+  strong { color: var(--text); }
+  .lead { font-size: 15px; color: var(--muted); margin-bottom: 32px; line-height: 1.7; }
+
+  /* STATUS CHIPS */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid;
+  }
+  .chip::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .chip-green { color: var(--green); background: var(--green-bg); border-color: var(--green-border); }
+  .chip-red { color: var(--red); background: var(--red-bg); border-color: var(--red-border); }
+  .chip-yellow { color: var(--yellow); background: var(--yellow-bg); border-color: var(--yellow-border); }
+  .chip-blue { color: var(--accent); background: var(--accent-dim); border-color: var(--accent-border); }
+  .chip-purple { color: var(--purple); background: var(--purple-bg); border-color: rgba(124,58,237,.25); }
+
+  /* CALLOUTS */
+  .callout {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 12px 0 20px;
+    border: 1px solid;
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+  .callout-title { font-weight: 700; margin-bottom: 4px; font-size: 13px; }
+  .callout-green { background: var(--green-bg); border-color: var(--green-border); }
+  .callout-green .callout-title { color: var(--green); }
+  .callout-red { background: var(--red-bg); border-color: var(--red-border); }
+  .callout-red .callout-title { color: var(--red); }
+  .callout-yellow { background: var(--yellow-bg); border-color: var(--yellow-border); }
+  .callout-yellow .callout-title { color: var(--yellow); }
+  .callout-blue { background: var(--accent-dim); border-color: var(--accent-border); }
+  .callout-blue .callout-title { color: var(--accent); }
+
+  /* FLOW STEPS */
+  .flow { position: relative; padding-left: 28px; margin: 16px 0 24px; }
+  .flow::before { content: ''; position: absolute; left: 9px; top: 12px; bottom: 12px; width: 2px; background: var(--border); }
+  .step { position: relative; margin-bottom: 20px; }
+  .step:last-child { margin-bottom: 0; }
+  .step-num {
+    position: absolute;
+    left: -28px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 2px;
+  }
+  .step-title { font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+  .step-desc { font-size: 13.5px; color: var(--text2); }
+
+  /* FAQ */
+  .faq-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .faq-q {
+    padding: 14px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg2);
+    user-select: none;
+  }
+  .faq-q::after { content: '▾'; margin-left: auto; color: var(--muted); font-size: 12px; }
+  .faq-a {
+    padding: 14px 18px;
+    font-size: 13.5px;
+    color: var(--text2);
+    border-top: 1px solid var(--border);
+    line-height: 1.7;
+  }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; margin: 12px 0 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { text-align: left; padding: 10px 14px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--bg2); border-bottom: 1px solid var(--border); }
+  td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text2); }
+  tr:last-child td { border-bottom: none; }
+  td strong { color: var(--text); }
+  code { font-family: 'Courier New', monospace; font-size: 12px; background: var(--bg3); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; color: var(--accent); }
+
+  /* RESPONSE TEMPLATE */
+  .template {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    font-size: 13.5px;
+    color: var(--text2);
+    margin: 10px 0 20px;
+    line-height: 1.75;
+    font-style: italic;
+  }
+  .template-label { font-style: normal; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: 8px; }
+
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 0 20px; }
+
+  /* WHO DOES WHAT */
+  .role-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .role-card-header {
+    padding: 12px 16px;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .role-suporte { background: var(--accent-dim); color: var(--accent); }
+  .role-admin { background: var(--purple-bg); color: var(--purple); }
+  .role-card ul { list-style: none; padding: 12px 0; }
+  .role-card li { padding: 8px 16px; font-size: 13.5px; color: var(--text2); display: flex; align-items: flex-start; gap: 8px; }
+  .role-card li::before { content: '→'; color: var(--muted); flex-shrink: 0; margin-top: 1px; }
+
+  section { scroll-margin-top: 70px; }
+
+  @media (max-width: 760px) {
+    aside { display: none; }
+    .two-col { grid-template-columns: 1fr; }
+    header { padding: 0 16px; }
+    .layout { padding: 24px 16px 60px; }
+  }
+</style>
+
+<header>
+  <div class="header-badge">Suporte</div>
+  <div class="header-title">PlayMoney — Central de Suporte</div>
+  <div class="header-sub">Guia operacional · Atualizado em 2026</div>
+</header>
+
+<div class="layout">
+  <aside>
+    <div class="aside-title">Visão geral</div>
+    <a href="#sobre"><span class="dot"></span>O que é o PlayMoney</a>
+    <a href="#jornada"><span class="dot"></span>Jornada do Usuário</a>
+    <div class="aside-title">Operação</div>
+    <a href="#cadastro"><span class="dot"></span>Cadastro e Acesso</a>
+    <a href="#carteira"><span class="dot"></span>Carteira e Saldo</a>
+    <a href="#apostas"><span class="dot"></span>Apostas</a>
+    <a href="#convites"><span class="dot"></span>Convites</a>
+    <div class="aside-title">Atendimento</div>
+    <a href="#faq"><span class="dot"></span>Problemas Frequentes</a>
+    <a href="#respostas"><span class="dot"></span>Respostas Prontas</a>
+    <a href="#quem-faz"><span class="dot"></span>Suporte vs. Admin</a>
+    <a href="#admin-panel"><span class="dot"></span>Painel Admin</a>
+  </aside>
+
+  <main>
+    <h1>Central de Suporte PlayMoney</h1>
+    <p class="lead">Este guia cobre tudo que a equipe de suporte precisa para atender usuários, entender as regras do sistema e saber quando escalar para o time de administração.</p>
+
+    <!-- ─── SOBRE ───────────────── -->
+    <section id="sobre">
+      <h2><span class="icon">🎮</span>O que é o PlayMoney</h2>
+      <p>O PlayMoney é uma plataforma de <strong>apostas em performance própria no Dota 2</strong>. O usuário vincula sua conta Steam, escolhe uma partida que vai jogar, aposta no próprio desempenho e recebe o resultado quando a partida termina.</p>
+      <p>O diferencial: o usuário não está apostando contra outras pessoas ou em times aleatórios — ele está apostando <strong>na própria habilidade</strong>. As odds são calculadas automaticamente com base no histórico das últimas 20 partidas do jogador.</p>
+      <div class="callout callout-yellow">
+        <div class="callout-title">Ambiente de demonstração</div>
+        Atualmente o PlayMoney opera como plataforma de demonstração. Nenhuma transação financeira real é processada. Os depósitos e saques são simulados.
+      </div>
+    </section>
+
+    <!-- ─── JORNADA ────────────── -->
+    <section id="jornada">
+      <h2><span class="icon">🗺️</span>Jornada do Usuário</h2>
+      <div class="flow">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-title">Cadastro (com convite)</div>
+          <div class="step-desc">O usuário acessa um link de convite e cria conta com e-mail e senha. Sem convite, não é possível se cadastrar (plataforma fechada).</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-title">Depósito inicial</div>
+          <div class="step-desc">Na página Carteira, o usuário deposita via PIX simulado. Depósito mínimo: R$ 10. Um bônus de boas-vindas (50% do depósito, até R$ 50) é creditado automaticamente se o depósito for ≥ R$ 20.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-title">Vincular conta Steam</div>
+          <div class="step-desc">Na página Dota 2, o usuário informa o Steam ID. O sistema busca automaticamente o perfil e o histórico de partidas via OpenDota.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-title">Fazer uma aposta</div>
+          <div class="step-desc">O usuário escolhe uma aposta simples (Vitória/Derrota) ou combo (Vitória + metas de kills, assists, GPM ou XPM). A odd é exibida antes da confirmação.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-title">Jogar a partida</div>
+          <div class="step-desc">O usuário joga a partida no Dota 2 normalmente. O ID da partida é gerado ao final.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-title">Liquidar a aposta</div>
+          <div class="step-desc">O usuário informa o ID da partida na plataforma. O sistema consulta a OpenDota, verifica o resultado e credita ou debita o saldo automaticamente.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">7</div>
+          <div class="step-title">Saque (opcional)</div>
+          <div class="step-desc">Com pelo menos 1 aposta liquidada, o usuário pode solicitar saque via PIX. Mínimo: R$ 20. O saldo bônus não é diretamente sacável.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── CADASTRO ───────────── -->
+    <section id="cadastro">
+      <h2><span class="icon">👤</span>Cadastro e Acesso</h2>
+      <h3>Requisitos para cadastro</h3>
+      <ul style="list-style: none; padding: 0; margin: 0 0 16px;">
+        <li style="padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--text2);">✓ &nbsp;Link de convite válido (gerado por outro usuário autorizado)</li>
+        <li style="padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--text2);">✓ &nbsp;E-mail não cadastrado na plataforma</li>
+        <li style="padding: 8px 0; color: var(--text2);">✓ &nbsp;Aceite dos termos e confirmação de maioridade (+18)</li>
+      </ul>
+      <h3>Regras de segurança no cadastro</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Limitação</th><th>Valor</th></tr></thead>
+          <tbody>
+            <tr><td>Tentativas de registro por IP</td><td>5 tentativas em 15 minutos</td></tr>
+            <tr><td>Contas criadas por IP</td><td>3 por 24 horas</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-blue">
+        <div class="callout-title">Usuário diz que não consegue se cadastrar</div>
+        Peça o link de convite completo. Se o link for válido e o problema persistir, o IP pode estar sob rate limit temporário (aguardar 15 minutos). Se o e-mail já foi cadastrado antes, oriente a recuperar senha.
+      </div>
+    </section>
+
+    <!-- ─── CARTEIRA ───────────── -->
+    <section id="carteira">
+      <h2><span class="icon">💰</span>Carteira e Saldo</h2>
+      <h3>Tipos de saldo</h3>
+      <div class="two-col">
+        <div class="callout callout-green">
+          <div class="callout-title">Saldo Principal</div>
+          Gerado por depósitos, ganhos de apostas e créditos manuais admin. É sacável.
+        </div>
+        <div class="callout callout-blue">
+          <div class="callout-title">Saldo Bônus</div>
+          Bônus de boas-vindas (50% do 1º depósito, máx. R$ 50). Pode ser usado em apostas, mas não é sacável diretamente.
+        </div>
+      </div>
+      <h3>Regras de depósito</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Regra</th><th>Valor padrão</th><th>Pode ser alterado?</th></tr></thead>
+          <tbody>
+            <tr><td>Mínimo por depósito</td><td>R$ 10</td><td>Não (hardcoded)</td></tr>
+            <tr><td>Máximo por depósito</td><td>R$ 10.000</td><td>Não (hardcoded)</td></tr>
+            <tr><td>Limite diário</td><td>R$ 2.000</td><td>Sim — via painel admin (por usuário ou global)</td></tr>
+            <tr><td>Rate limit</td><td>10 depósitos/hora</td><td>Não</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Regras de saque</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Regra</th><th>Valor</th></tr></thead>
+          <tbody>
+            <tr><td>Mínimo por saque</td><td>R$ 20</td></tr>
+            <tr><td>Máximo por saque</td><td>R$ 50.000</td></tr>
+            <tr><td>Pré-requisito</td><td>Ao menos 1 aposta liquidada (WON ou LOST)</td></tr>
+            <tr><td>Rate limit</td><td>3 saques/hora</td></tr>
+            <tr><td>Saldo bônus</td><td>Não é sacável diretamente</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-yellow">
+        <div class="callout-title">Usuário diz que não consegue sacar</div>
+        Verificar: (1) se tem pelo menos 1 aposta liquidada — se não, é regra do sistema; (2) se o saldo disponível é maior que R$ 20 descontando o saldo bônus; (3) se os depósitos do usuário estão bloqueados pelo admin.
+      </div>
+    </section>
+
+    <!-- ─── APOSTAS ────────────── -->
+    <section id="apostas">
+      <h2><span class="icon">🎯</span>Apostas</h2>
+      <h3>Tipos disponíveis</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tipo</th><th>Descrição</th><th>Exemplo</th></tr></thead>
+          <tbody>
+            <tr><td><span class="chip chip-blue">WIN_LOSS</span></td><td>Apostas simples em vitória ou derrota</td><td>"Vou ganhar essa partida" → odd 1.65×</td></tr>
+            <tr><td><span class="chip chip-purple">Combo</span></td><td>Vitória + metas de performance (kills, assists, GPM, XPM)</td><td>"Vou ganhar E ter mais de 8 kills" → odd 3.20×</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Status de uma aposta</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Status</th><th>Significado</th></tr></thead>
+          <tbody>
+            <tr><td><span class="chip chip-yellow">PENDING</span></td><td>Aposta criada mas ainda não ativa (raro)</td></tr>
+            <tr><td><span class="chip chip-blue">ACTIVE</span></td><td>Aguardando liquidação (usuário ainda não jogou ou não informou o ID)</td></tr>
+            <tr><td><span class="chip chip-green">WON</span></td><td>Aposta ganha — saldo creditado</td></tr>
+            <tr><td><span class="chip chip-red">LOST</span></td><td>Aposta perdida — valor debitado no momento da criação</td></tr>
+            <tr><td><span class="chip">CANCELLED</span></td><td>Aposta cancelada pelo admin — valor estornado</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Como as odds são calculadas</h3>
+      <p>As odds são <strong>automáticas e personalizadas</strong> para cada jogador, calculadas com base nas últimas 20 partidas no Dota 2. São considerados: taxa de vitórias recente, sequência de vitórias/derrotas, KDA médio, rank, tendência de GPM e XPM. Há uma margem da casa de <strong>8%</strong>.</p>
+      <div class="callout callout-blue">
+        <div class="callout-title">Usuário diz que a odd estava diferente quando apostou</div>
+        As odds são calculadas no momento da criação da aposta e ficam registradas na aposta — não mudam depois. Se o usuário está comparando com odds exibidas mais tarde, elas podem ter mudado porque novas partidas foram jogadas.
+      </div>
+      <h3>Liquidação da aposta</h3>
+      <p>O usuário informa o ID da partida na página "Meus Jogos". O sistema consulta a OpenDota automaticamente. Se a API estiver indisponível (manutenção ou instabilidade), o admin pode fazer override manual do resultado.</p>
+    </section>
+
+    <!-- ─── CONVITES ───────────── -->
+    <section id="convites">
+      <h2><span class="icon">🔗</span>Sistema de Convites</h2>
+      <p>O PlayMoney é uma plataforma <strong>fechada por convite</strong>. Apenas usuários autorizados pelo admin podem gerar links de convite. Cada usuário tem um único link de convite. O link pode ser compartilhado com múltiplas pessoas.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Ação</th><th>Quem pode fazer</th></tr></thead>
+          <tbody>
+            <tr><td>Gerar link de convite</td><td>Usuários com permissão habilitada pelo admin</td></tr>
+            <tr><td>Usar convite para se cadastrar</td><td>Qualquer pessoa com o link</td></tr>
+            <tr><td>Habilitar/desabilitar convites de um usuário</td><td>Admin (painel de usuários)</td></tr>
+            <tr><td>Ver quem foi convidado por quem</td><td>Admin (painel de convites)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ─── FAQ ───────────────── -->
+    <section id="faq">
+      <h2><span class="icon">❓</span>Problemas Frequentes</h2>
+      <div class="faq-item">
+        <div class="faq-q">Não consigo vincular minha conta Steam</div>
+        <div class="faq-a">
+          <p>Causas comuns: (1) <strong>Perfil privado</strong> — o perfil precisa ser público no Steam para a OpenDota conseguir ler. (2) <strong>Steam ID incorreto</strong> — orientar o usuário a usar o ID numérico do perfil (não o vanity URL). (3) <strong>Outra conta na plataforma já usa esse Steam ID</strong> — um mesmo Steam ID não pode ser vinculado a duas contas.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Apostei mas a partida não foi encontrada</div>
+        <div class="faq-a">
+          <p>A OpenDota demora alguns minutos para indexar uma partida após o fim. Orientar o usuário a aguardar <strong>5 a 10 minutos</strong> e tentar novamente. Se após 30 minutos ainda não funcionar, o admin pode realizar o override manual com o resultado correto.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Minha aposta foi para resultado errado</div>
+        <div class="faq-a">
+          <p>Verificar: (1) se o Match ID informado pertence de fato a uma partida do usuário; (2) se o resultado da OpenDota está correto (acesse opendota.com e verifique o match). Se houver discrepância, o admin pode fazer override. Registre o caso com print da tela do usuário e o Match ID.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Não recebi o bônus de boas-vindas</div>
+        <div class="faq-a">
+          <p>Requisitos: primeiro depósito deve ser de <strong>R$ 20 ou mais</strong>. O bônus é creditado apenas uma vez por conta. Se o usuário depositou menos de R$ 20 no primeiro depósito, o bônus não é retroativo — ele precisaria depositar mais (somando ao que já tem) e o sistema verificará o valor do primeiro depósito, não de depósitos subsequentes. Esclareça e, se necessário, solicite ao admin ajuste manual.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Tentei depositar mas recebi erro de limite</div>
+        <div class="faq-a">
+          <p>O usuário pode ter atingido o limite diário de R$ 2.000 ou ter um limite personalizado configurado pelo admin. Consulte o painel do usuário para ver o <code>depositLimit</code> configurado. Informe o limite atual e quando ele é resetado (meia-noite).</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Não consigo sacar — erro "nenhuma aposta liquidada"</div>
+        <div class="faq-a">
+          <p>Essa é uma regra de segurança do sistema: é necessário ter pelo menos uma aposta com resultado (ganhou ou perdeu) antes de sacar pela primeira vez. Oriente o usuário a jogar pelo menos uma partida e liquidar a aposta antes de solicitar o saque.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">A página diz que a plataforma está em manutenção</div>
+        <div class="faq-a">
+          <p>O admin ativou o modo de manutenção. Geralmente há um banner com previsão de retorno. Consulte a equipe de TI ou admin para saber quando será liberado. Informe ao usuário o horário previsto caso tenha essa informação.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">O usuário suspeita de outra conta usando seu Steam ID</div>
+        <div class="faq-a">
+          <p>Solicitar ao admin verificação do GameProfile com aquele externalId. Se confirmado, o admin pode reatribuir o Steam ID ao usuário legítimo usando o painel de troca de conta Steam.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── RESPOSTAS PRONTAS ──── -->
+    <section id="respostas">
+      <h2><span class="icon">💬</span>Respostas Prontas</h2>
+      <h3>Partida não encontrada</h3>
+      <div class="template">
+        <div class="template-label">Template</div>
+        Olá! A OpenDota, sistema que usamos para verificar os resultados das partidas, pode demorar alguns minutinhos para indexar uma partida recente. Aguarde cerca de 5 a 10 minutos e tente informar o Match ID novamente. Se o problema persistir após esse tempo, entre em contato novamente com o Match ID e eu verifico para você!
+      </div>
+      <h3>Saque bloqueado (sem apostas liquidadas)</h3>
+      <div class="template">
+        <div class="template-label">Template</div>
+        Para realizar o primeiro saque, é necessário ter pelo menos uma aposta concluída — seja ganho ou perda. Isso faz parte das nossas regras de segurança para evitar fraudes. Jogue uma partida, informe o Match ID na plataforma e, após a liquidação, você poderá solicitar o saque normalmente!
+      </div>
+      <h3>Bônus não creditado</h3>
+      <div class="template">
+        <div class="template-label">Template</div>
+        O bônus de boas-vindas é creditado automaticamente quando o primeiro depósito é de R$ 20 ou mais. Se o seu primeiro depósito foi menor que esse valor, o bônus não é aplicado retroativamente. Podemos verificar o histórico da sua conta e, se necessário, avaliar um ajuste manual com nossa equipe.
+      </div>
+    </section>
+
+    <!-- ─── QUEM FAZ O QUÊ ─────── -->
+    <section id="quem-faz">
+      <h2><span class="icon">⚙️</span>Suporte vs. Admin</h2>
+      <div class="two-col">
+        <div class="role-card">
+          <div class="role-card-header role-suporte">Suporte pode resolver</div>
+          <ul>
+            <li>Orientar sobre regras de saque, depósito e bônus</li>
+            <li>Explicar por que a odd foi aquela</li>
+            <li>Confirmar o status de uma aposta</li>
+            <li>Orientar sobre tempo de indexação de partidas</li>
+            <li>Explicar limite de depósito diário</li>
+            <li>Confirmar que o link de convite está funcionando</li>
+          </ul>
+        </div>
+        <div class="role-card">
+          <div class="role-card-header role-admin">Precisa escalar ao Admin</div>
+          <ul>
+            <li>Override manual de resultado de aposta</li>
+            <li>Cancelamento de aposta com estorno</li>
+            <li>Ajuste de saldo por erro do sistema</li>
+            <li>Suspender ou liberar usuário suspeito</li>
+            <li>Habilitar convites para um usuário</li>
+            <li>Trocar Steam ID vinculado à conta</li>
+            <li>Bloquear ou liberar depósitos do usuário</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── ADMIN PANEL ─────────── -->
+    <section id="admin-panel">
+      <h2><span class="icon">🛡️</span>Painel Admin — Visão Geral</h2>
+      <p>O painel admin fica em <code>/admin</code> e é visível somente para usuários com role ADMIN.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Seção do Painel</th><th>O que permite fazer</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Dashboard Admin</strong></td><td>KPIs gerais: total de usuários, apostas, saldo em circulação, taxa de vitórias</td></tr>
+            <tr><td><strong>Usuários</strong></td><td>Buscar usuários, ver detalhe, suspender, bloquear depósitos, ajustar limite, ajustar saldo, trocar Steam ID</td></tr>
+            <tr><td><strong>Liquidações</strong></td><td>Listar apostas ativas e liquidadas, aplicar override manual de resultado</td></tr>
+            <tr><td><strong>Risco</strong></td><td>Ver alertas automáticos de comportamento suspeito, revisar e agir sobre flags</td></tr>
+            <tr><td><strong>Logs</strong></td><td>Audit trail completo de todas as ações administrativas</td></tr>
+            <tr><td><strong>Convites</strong></td><td>Ver quem convidou quem, habilitar/desabilitar convites por usuário</td></tr>
+            <tr><td><strong>Plataforma</strong></td><td>Ativar modo manutenção, bloquear depósitos globais, definir limite global</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-red">
+        <div class="callout-title">Sinais de risco automáticos</div>
+        O sistema detecta automaticamente comportamentos suspeitos: apostas em partidas com aliados recorrentes (<code>PARTY_RECURRENCE</code>), precisão de apostas acima do esperado (<code>BET_ACCURACY</code>), adversários fracos (<code>WEAK_ENEMIES</code>) e pico abrupto na taxa de vitórias (<code>WIN_RATE_SPIKE</code>). O admin deve revisar e decidir se suspende o usuário.
+      </div>
+    </section>
+  </main>
+</div>

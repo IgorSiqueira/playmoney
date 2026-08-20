@@ -1,0 +1,670 @@
+<title>PlayMoney — Produto</title>
+<style>
+  :root {
+    --bg: #FAFAFA;
+    --bg2: #FFFFFF;
+    --bg3: #F3F4F6;
+    --border: #E5E7EB;
+    --text: #111827;
+    --text2: #374151;
+    --muted: #6B7280;
+    --accent: #0080FF;
+    --accent2: #0060CC;
+    --accent-dim: rgba(0,128,255,.07);
+    --accent-border: rgba(0,128,255,.18);
+    --good: #059669;
+    --good-bg: #ECFDF5;
+    --warn: #B45309;
+    --warn-bg: #FFFBEB;
+    --risk: #B91C1C;
+    --risk-bg: #FEF2F2;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0A0A0F;
+      --bg2: #111118;
+      --bg3: #1C1C26;
+      --border: #2A2A38;
+      --text: #F4F4F8;
+      --text2: #B0B0C4;
+      --muted: #6B6B85;
+      --accent-dim: rgba(0,128,255,.1);
+      --accent-border: rgba(0,128,255,.22);
+      --good: #34D399;
+      --good-bg: rgba(4,120,87,.15);
+      --warn: #FCD34D;
+      --warn-bg: rgba(146,64,14,.15);
+      --risk: #F87171;
+      --risk-bg: rgba(185,28,28,.15);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0A0A0F; --bg2: #111118; --bg3: #1C1C26; --border: #2A2A38;
+    --text: #F4F4F8; --text2: #B0B0C4; --muted: #6B6B85;
+    --accent-dim: rgba(0,128,255,.1); --accent-border: rgba(0,128,255,.22);
+    --good: #34D399; --good-bg: rgba(4,120,87,.15);
+    --warn: #FCD34D; --warn-bg: rgba(146,64,14,.15);
+    --risk: #F87171; --risk-bg: rgba(185,28,28,.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    height: 52px;
+    gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar-brand { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; font-weight: 800; color: var(--accent); letter-spacing: -.02em; }
+  .topbar-sep { width: 1px; height: 18px; background: var(--border); margin: 0 16px; }
+  .topbar-doc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: var(--muted); }
+  .topbar-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .pill {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--bg3);
+  }
+
+  /* HERO */
+  .hero {
+    border-bottom: 1px solid var(--border);
+    padding: 56px 80px 52px;
+    background: var(--bg2);
+  }
+  .hero-eyebrow {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1.15;
+    text-wrap: balance;
+    max-width: 680px;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .hero-metrics { display: flex; gap: 32px; flex-wrap: wrap; }
+  .hero-metric { }
+  .hero-metric .n {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .hero-metric .n span { color: var(--accent); }
+  .hero-metric .l { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
+
+  /* LAYOUT */
+  .layout { max-width: 900px; margin: 0 auto; padding: 52px 48px 100px; }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.25;
+    text-wrap: balance;
+    margin: 56px 0 6px;
+    color: var(--text);
+  }
+  .section-num {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .section-divider { height: 1px; background: var(--border); margin: 8px 0 24px; }
+
+  h3 {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--muted);
+    margin: 28px 0 10px;
+  }
+
+  p { color: var(--text2); margin-bottom: 14px; }
+  strong { color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  /* INSIGHT CALLOUT */
+  .insight {
+    border-left: 3px solid var(--accent);
+    padding: 14px 20px;
+    background: var(--accent-dim);
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+  .insight strong { color: var(--accent); }
+
+  /* DATA TABLE */
+  .table-wrap { overflow-x: auto; margin: 14px 0 24px; }
+  table { width: 100%; border-collapse: collapse; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13.5px; }
+  th { text-align: left; padding: 10px 14px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); border-bottom: 2px solid var(--border); }
+  td { padding: 13px 14px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .num { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--text); }
+
+  /* FACTOR BARS */
+  .factor { margin-bottom: 12px; }
+  .factor-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; }
+  .factor-name { color: var(--text2); }
+  .factor-info { color: var(--muted); font-size: 12px; }
+  .factor-bar { height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+  .factor-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width .4s ease; }
+
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 14px 0 24px; }
+
+  /* CARD */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 10px; }
+  .card-body { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+  /* RISK SIGNALS */
+  .signal { display: flex; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; align-items: flex-start; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .signal-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .signal-icon-high { background: var(--risk-bg); }
+  .signal-icon-med { background: var(--warn-bg); }
+  .signal-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .signal-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* USER JOURNEY MAP */
+  .journey { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 14px 0 24px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .journey-col { padding: 16px; border-right: 1px solid var(--border); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .journey-col:last-child { border-right: none; }
+  .journey-phase { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); margin-bottom: 8px; }
+  .journey-action { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .journey-item { font-size: 12px; color: var(--muted); padding: 3px 0; border-bottom: 1px dashed var(--border); line-height: 1.5; }
+  .journey-item:last-child { border-bottom: none; }
+
+  /* SIZING */
+  code { font-family: 'Courier New', monospace; font-size: 12px; background: var(--bg3); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; }
+
+  /* MINI CHART — calibration visual */
+  .calib-chart { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 14px 0 24px; position: relative; }
+  .calib-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 14px; font-weight: 700; }
+  canvas { width: 100%; display: block; }
+
+  /* OPPORTUNITY CARDS */
+  .opp { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 14px 0 24px; }
+  .opp-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .opp-priority { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; padding: 2px 8px; border-radius: 100px; display: inline-block; margin-bottom: 10px; }
+  .opp-high { background: var(--risk-bg); color: var(--risk); }
+  .opp-med { background: var(--warn-bg); color: var(--warn); }
+  .opp-low { background: var(--good-bg); color: var(--good); }
+  .opp-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .opp-desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+
+  section { scroll-margin-top: 64px; }
+
+  @media (max-width: 760px) {
+    .hero { padding: 36px 24px 32px; }
+    .hero h1 { font-size: 28px; }
+    .layout { padding: 36px 20px 80px; }
+    .two-col { grid-template-columns: 1fr; }
+    .journey { grid-template-columns: 1fr 1fr; }
+    .opp { grid-template-columns: 1fr; }
+    .topbar { padding: 0 20px; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="topbar-brand">PlayMoney</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-doc">Visão de Produto</div>
+  <div class="topbar-right">
+    <div class="pill">Confidencial</div>
+    <div class="pill">Agosto 2026</div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Documento de Produto — Equipe Interna</div>
+  <h1>Apostar na <em>própria habilidade</em> muda o jogo</h1>
+  <p class="hero-sub">PlayMoney é uma plataforma de apostas em performance própria no Dota 2. Usuários apostam no seu próprio desempenho, com odds calculadas automaticamente com base no histórico de 20 partidas.</p>
+  <div class="hero-metrics">
+    <div class="hero-metric"><div class="n">8<span>%</span></div><div class="l">Margem da casa</div></div>
+    <div class="hero-metric"><div class="n">6</div><div class="l">Fatores nas odds</div></div>
+    <div class="hero-metric"><div class="n">1.80<span>×</span></div><div class="l">Odd máxima simples</div></div>
+    <div class="hero-metric"><div class="n">∞</div><div class="l">Odd em combo</div></div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- ─── PROPOSTA ─────────────── -->
+  <section id="proposta">
+    <span class="section-num">01 — Proposta de valor</span>
+    <h2>O que torna o PlayMoney diferente</h2>
+    <div class="section-divider"></div>
+    <p>A maioria das plataformas de apostas coloca o usuário apostando <em>contra resultados que ele não controla</em>. No PlayMoney, o usuário aposta <strong>no próprio desempenho</strong>: ele é o atleta e o apostador ao mesmo tempo. Isso cria uma proposta única de engajamento.</p>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Apostas tradicionais</div>
+        <div class="card-body">Usuário aposta em times/jogadores externos. Resultado é externo. Sem influência. Engajamento passivo.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">PlayMoney</div>
+        <div class="card-body">Usuário aposta na própria partida. Ele influencia o resultado. Engajamento ativo — cada partida ganha outra dimensão.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>Insight central:</strong> o usuário não está apostando porque "acredita em odds" — ele está apostando porque <strong>confia na própria habilidade</strong>. Isso é intrinsecamente mais engajador e tem menor resistência emocional.
+    </div>
+  </section>
+
+  <!-- ─── JORNADA ───────────────── -->
+  <section id="jornada">
+    <span class="section-num">02 — Jornada do usuário</span>
+    <h2>Do cadastro à primeira aposta ganha</h2>
+    <div class="section-divider"></div>
+    <div class="journey">
+      <div class="journey-col">
+        <div class="journey-phase">Descoberta</div>
+        <div class="journey-action">Recebe convite de amigo</div>
+        <div class="journey-item">Link exclusivo do convidador</div>
+        <div class="journey-item">Cadastro com e-mail + senha</div>
+        <div class="journey-item">Aceite de termos + +18</div>
+      </div>
+      <div class="journey-col">
+        <div class="journey-phase">Ativação</div>
+        <div class="journey-action">Primeiro depósito + bônus</div>
+        <div class="journey-item">Depósito mín. R$ 20</div>
+        <div class="journey-item">Bônus automático 50%, até R$ 50</div>
+        <div class="journey-item">Vincula conta Steam</div>
+      </div>
+      <div class="journey-col">
+        <div class="journey-phase">Engajamento</div>
+        <div class="journey-action">Joga e aposta</div>
+        <div class="journey-item">Escolhe tipo de aposta</div>
+        <div class="journey-item">Vê odds personalizadas</div>
+        <div class="journey-item">Confirma a aposta</div>
+        <div class="journey-item">Joga a partida</div>
+      </div>
+      <div class="journey-col">
+        <div class="journey-phase">Retenção</div>
+        <div class="journey-action">Liquida e saca</div>
+        <div class="journey-item">Informa Match ID</div>
+        <div class="journey-item">Resultado automático</div>
+        <div class="journey-item">Saca ou reinveste</div>
+        <div class="journey-item">Repete o ciclo</div>
+      </div>
+    </div>
+    <p>O ciclo de engajamento é curto — uma partida de Dota 2 dura 30 a 60 minutos. O usuário pode ter múltiplas apostas liquidadas em um único dia de jogo.</p>
+  </section>
+
+  <!-- ─── ODDS ─────────────────── -->
+  <section id="odds">
+    <span class="section-num">03 — Motor de odds</span>
+    <h2>Como calculamos a probabilidade de vitória</h2>
+    <div class="section-divider"></div>
+    <p>As odds são calculadas automaticamente no momento em que o usuário abre a página de apostas, com base nas últimas <strong>20 partidas</strong> registradas na OpenDota. Não há intervenção manual — o modelo é completamente automático.</p>
+
+    <h3>Fatores considerados (6 variáveis)</h3>
+    <div class="factor">
+      <div class="factor-head"><span class="factor-name">Taxa de vitórias base (20 partidas)</span><span class="factor-info">Âncora principal</span></div>
+      <div class="factor-bar"><div class="factor-fill" style="width:100%"></div></div>
+    </div>
+    <div class="factor">
+      <div class="factor-head"><span class="factor-name">Forma recente (últimas 5 vs. anteriores 15)</span><span class="factor-info">Cluster: Performance — até ±8%</span></div>
+      <div class="factor-bar"><div class="factor-fill" style="width:70%"></div></div>
+    </div>
+    <div class="factor">
+      <div class="factor-head"><span class="factor-name">Sequência atual (win/loss streak)</span><span class="factor-info">Cluster: Performance — 35% do valor bruto</span></div>
+      <div class="factor-bar"><div class="factor-fill" style="width:40%"></div></div>
+    </div>
+    <div class="factor">
+      <div class="factor-head"><span class="factor-name">KDA médio</span><span class="factor-info">Cluster: Skill — até ±6%</span></div>
+      <div class="factor-bar"><div class="factor-fill" style="width:55%"></div></div>
+    </div>
+    <div class="factor">
+      <div class="factor-head"><span class="factor-name">Rank (MMR / medalha)</span><span class="factor-info">Cluster: Skill — 60% do valor bruto</span></div>
+      <div class="factor-bar"><div class="factor-fill" style="width:35%"></div></div>
+    </div>
+    <div class="factor">
+      <div class="factor-head"><span class="factor-name">Tendência de GPM e XPM (últimas 5 partidas)</span><span class="factor-info">Cluster: Economia — XPM vale 15% do GPM</span></div>
+      <div class="factor-bar"><div class="factor-fill" style="width:25%"></div></div>
+    </div>
+
+    <div class="insight">
+      <strong>Por que clusters?</strong> GPM e XPM têm correlação altíssima (~0.85) — um jogador rico em ouro também é rico em experiência. Somar os dois sem desconto infla artificialmente a odds. Os fatores são agrupados em clusters (Performance, Skill, Economia) e o secundário de cada par recebe um desconto proporcional à correlação. Isso mantém a margem da casa estável.
+    </div>
+
+    <h3>Margem e limites</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Parâmetro</th><th>Valor</th><th>Onde se aplica</th></tr></thead>
+        <tbody>
+          <tr><td>Margem da casa</td><td class="num">8%</td><td>Em toda aposta WIN_LOSS e combo</td></tr>
+          <tr><td>Odd máxima (aposta simples)</td><td class="num">1.80×</td><td>WIN_LOSS sem condições extras</td></tr>
+          <tr><td>Odd máxima (combo)</td><td>Sem limite</td><td>Quanto mais condições, maior a odd</td></tr>
+          <tr><td>Probabilidade mínima calculada</td><td class="num">25%</td><td>Qualquer resultado</td></tr>
+          <tr><td>Probabilidade máxima calculada</td><td class="num">75%</td><td>Qualquer resultado</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── APOSTAS ───────────────── -->
+  <section id="apostas">
+    <span class="section-num">04 — Produtos de aposta</span>
+    <h2>O que o usuário pode apostar</h2>
+    <div class="section-divider"></div>
+
+    <h3>Aposta simples — WIN_LOSS</h3>
+    <p>O produto principal. O usuário aposta na vitória ou derrota da própria partida. Odds entre <strong>1.25×</strong> e <strong>1.80×</strong>. Ativada para qualquer usuário com perfil Steam vinculado.</p>
+
+    <h3>Aposta combo — WIN + condições de stats</h3>
+    <p>O usuário aposta na vitória <em>e</em> em metas de performance pessoal. Cada condição adicional multiplica a probabilidade (tornando-a mais difícil) e, portanto, aumenta a odd. Sem teto de odd — combos com 3 ou 4 condições podem gerar odds de 5×, 10× ou mais.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Stat</th><th>Exemplo de condição</th><th>Modelo de probabilidade</th></tr></thead>
+        <tbody>
+          <tr><td>Kills</td><td>Ter mais de 8 abates</td><td>Poisson (distribuição de contagem)</td></tr>
+          <tr><td>Assists</td><td>Ter mais de 15 assistências</td><td>Poisson (distribuição de contagem)</td></tr>
+          <tr><td>GPM</td><td>Média de ouro por minuto acima de 550</td><td>Normal com CV 0.22 (distribuição contínua)</td></tr>
+          <tr><td>XPM</td><td>Média de XP por minuto acima de 600</td><td>Normal com CV 0.22 (distribuição contínua)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight">
+      <strong>Decisão técnica:</strong> o modelo usa distribuições estatísticas reais (Poisson para contagens, Normal para economia) em vez de uma fórmula linear. Isso garante que a probabilidade seja matematicamente correta — um jogador com média de 7 kills tem ~38% de chance de ter mais de 7 em uma partida específica (não 50% como uma fórmula linear ingênua diria).
+    </div>
+  </section>
+
+  <!-- ─── RISCO ─────────────────── -->
+  <section id="risco">
+    <span class="section-num">05 — Antifraude e risco</span>
+    <h2>Como o sistema detecta comportamentos suspeitos</h2>
+    <div class="section-divider"></div>
+    <p>O sistema detecta automaticamente quatro sinais de risco ao liquidar cada aposta. Quando um sinal é detectado, um <strong>RiskFlag</strong> é criado e aparece no painel admin para revisão humana.</p>
+
+    <div class="signal">
+      <div class="signal-icon signal-icon-high">🔁</div>
+      <div>
+        <div class="signal-title">PARTY_RECURRENCE — Adversários ou aliados recorrentes</div>
+        <div class="signal-desc">O jogador aparece repetidamente em partidas com as mesmas pessoas. Pode indicar conluio ou match-fixing — partidas combinadas onde o resultado é previsível.</div>
+      </div>
+    </div>
+    <div class="signal">
+      <div class="signal-icon signal-icon-high">🎯</div>
+      <div>
+        <div class="signal-title">BET_ACCURACY — Precisão de apostas acima do esperado</div>
+        <div class="signal-desc">A taxa de acertos do usuário é estatisticamente alta demais para ser atribuída à habilidade ou sorte. Pode indicar conhecimento prévio do resultado.</div>
+      </div>
+    </div>
+    <div class="signal">
+      <div class="signal-icon signal-icon-med">⚠️</div>
+      <div>
+        <div class="signal-title">WEAK_ENEMIES — Adversários consistentemente mais fracos</div>
+        <div class="signal-desc">O jogador aposta em partidas onde o MMR médio dos adversários é significativamente inferior ao seu. Maior probabilidade de vitória "garantida".</div>
+      </div>
+    </div>
+    <div class="signal">
+      <div class="signal-icon signal-icon-med">📈</div>
+      <div>
+        <div class="signal-title">WIN_RATE_SPIKE — Pico abrupto na taxa de vitórias</div>
+        <div class="signal-desc">A taxa de vitórias recente é muito superior ao histórico do jogador. Pode ser melhora genuína ou mudança de comportamento suspeita.</div>
+      </div>
+    </div>
+
+    <h3>Fluxo de revisão de risco</h3>
+    <p>O admin recebe o sinal no painel <strong>/admin/risk</strong>, pode aceitar a investigação (sinalizando que está revisando) ou suspender o usuário diretamente. Toda ação é registrada no audit log.</p>
+  </section>
+
+  <!-- ─── CONVITES ──────────────── -->
+  <section id="convites">
+    <span class="section-num">06 — Crescimento controlado</span>
+    <h2>Sistema de convites como funil de aquisição</h2>
+    <div class="section-divider"></div>
+    <p>O PlayMoney é uma plataforma <strong>fechada por convite</strong>. Novos usuários só podem se cadastrar através de um link de convite gerado por alguém já na plataforma e com permissão habilitada pelo admin.</p>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Vantagens do modelo</div>
+        <div class="card-body">
+          Crescimento controlado. Menor risco de fraude em escala. Cada usuário tem "pedigree" — sabe-se quem trouxe quem. Facilita rastreabilidade de comportamentos suspeitos.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Limitações atuais</div>
+        <div class="card-body">
+          Sem recompensa para o convidador — o sistema rastreia quem convidou quem, mas não há mecanismo de comissão ou bônus de referral implementado ainda.
+        </div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>Oportunidade:</strong> implementar bônus de referral (ex: 10% do bônus de quem você convidou) aumentaria o incentivo para que usuários ativos tragam novos jogadores qualificados.
+    </div>
+  </section>
+
+  <!-- ─── MÉTRICAS ──────────────── -->
+  <section id="metricas">
+    <span class="section-num">07 — Métricas e calibração</span>
+    <h2>Como medir a saúde do modelo</h2>
+    <div class="section-divider"></div>
+    <p>O endpoint <code>GET /api/admin/calibration</code> entrega dados de backtest dos últimos 90 dias comparando a probabilidade prevista pelo modelo com o resultado real observado.</p>
+
+    <h3>Métricas disponíveis</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Métrica</th><th>O que mede</th><th>Referência</th></tr></thead>
+        <tbody>
+          <tr><td>Brier Score</td><td>Erro quadrático médio entre probabilidade prevista e resultado real (0 = perfeito)</td><td class="num">≤ 0.20 = bom · ≤ 0.25 = aceitável</td></tr>
+          <tr><td>Curva de calibração</td><td>Para apostas com p=60%, o usuário ganhou em ~60% das vezes?</td><td>Diagonal = modelo calibrado</td></tr>
+          <tr><td>Win Rate geral</td><td>Porcentagem de apostas ganhas no período</td><td>Próximo de 50% é saudável</td></tr>
+          <tr><td>GGR teórico</td><td>Soma da margem esperada da casa por aposta</td><td>Verificar vs. GGR real para detectar viés</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="calib-chart">
+      <div class="calib-label">Exemplo: Curva de calibração ideal vs. modelo enviesado</div>
+      <canvas id="calibCanvas" height="180" role="img" aria-label="Gráfico de calibração: eixo X mostra probabilidade prevista, eixo Y mostra taxa real de vitórias. Linha diagonal representa calibração perfeita."></canvas>
+    </div>
+
+    <p>Se os pontos estiverem <strong>acima da diagonal</strong>: o modelo subestima as probabilidades — a casa está dando odds generosas demais (os apostadores ganham mais do que o modelo prevê). Ação: revisar os fatores de odds. Se os pontos estiverem <strong>abaixo da diagonal</strong>: o modelo superestima — odds muito conservadoras, menor engajamento.</p>
+  </section>
+
+  <!-- ─── OPORTUNIDADES ─────────── -->
+  <section id="oportunidades">
+    <span class="section-num">08 — Próximos passos</span>
+    <h2>Oportunidades de produto identificadas</h2>
+    <div class="section-divider"></div>
+    <div class="opp">
+      <div class="opp-card">
+        <div class="opp-priority opp-high">Alta prioridade</div>
+        <div class="opp-title">Bônus de referral</div>
+        <div class="opp-desc">Recompensar usuários que trazem novos jogadores. Estrutura de rastreamento já existe. Falta definir a regra de negócio e implementar a recompensa.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-priority opp-high">Alta prioridade</div>
+        <div class="opp-title">Outros jogos (LoL, CS2)</div>
+        <div class="opp-desc">O modelo de GameProfile suporta múltiplos jogos. A arquitetura está preparada para expansão com novas fontes de dados de performance.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-priority opp-med">Média prioridade</div>
+        <div class="opp-title">Liquidação automática</div>
+        <div class="opp-desc">Hoje o usuário informa o Match ID manualmente. Um worker poderia monitorar partidas finalizadas e liquidar automaticamente via webhook ou polling.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-priority opp-med">Média prioridade</div>
+        <div class="opp-title">Ranking e leaderboard</div>
+        <div class="opp-desc">A página de leaderboard já existe. Gamificação do ranking (insígnias, streaks visíveis) aumentaria retenção e competição saudável entre usuários.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-priority opp-low">Baixa prioridade</div>
+        <div class="opp-title">Dashboard analítico</div>
+        <div class="opp-desc">Para o usuário ver sua evolução histórica, métricas de performance, padrões de aposta e onde está deixando dinheiro na mesa.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-priority opp-low">Baixa prioridade</div>
+        <div class="opp-title">Apostas ao vivo</div>
+        <div class="opp-desc">Com a OpenDota em tempo real (ou Steam GameCoordinator), seria possível criar apostas mid-game em eventos que ainda vão acontecer dentro de uma partida.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONFIG ───────────────── -->
+  <section id="config">
+    <span class="section-num">09 — Parâmetros configuráveis</span>
+    <h2>O que o time de produto pode ajustar sem código</h2>
+    <div class="section-divider"></div>
+    <p>Algumas regras de negócio são configuráveis via variáveis de ambiente (sem redeploy de código) ou via painel admin (em tempo real).</p>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Via painel admin (tempo real)</div>
+        <div class="card-body" style="padding: 0;">
+          <div style="padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; color: var(--text2);">Modo de manutenção + banner</div>
+          <div style="padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; color: var(--text2);">Bloquear depósitos (global)</div>
+          <div style="padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; color: var(--text2);">Limite diário de depósito (global)</div>
+          <div style="padding: 8px 0; font-size: 13.5px; color: var(--text2);">Limite por usuário (individual)</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Via variáveis de ambiente</div>
+        <div class="card-body" style="padding: 0;">
+          <div style="padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; color: var(--text2);"><code>BONUS_RATE</code> — % do bônus (padrão 50%)</div>
+          <div style="padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; color: var(--text2);"><code>BONUS_CAP</code> — teto do bônus (padrão R$ 50)</div>
+          <div style="padding: 8px 0; font-size: 13.5px; color: var(--text2);"><code>MIN_BONUS_DEP</code> — mín. para ganhar bônus (R$ 20)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('calibCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = 180 * dpr;
+  ctx.scale(dpr, dpr);
+
+  const W = rect.width, H = 180;
+  const pad = { t: 12, r: 20, b: 32, l: 44 };
+  const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
+
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches && !document.documentElement.getAttribute('data-theme'));
+
+  const gridC = isDark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.06)';
+  const textC = isDark ? 'rgba(255,255,255,.4)' : 'rgba(0,0,0,.4)';
+  const accent = '#0080FF';
+  const orange = '#F59E0B';
+
+  // Grid
+  ctx.strokeStyle = gridC;
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + (gH * (1 - i / 4));
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + gW, y); ctx.stroke();
+    ctx.fillStyle = textC;
+    ctx.font = '10px -apple-system, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText((i * 25) + '%', pad.l - 6, y + 3);
+  }
+  for (let i = 0; i <= 4; i++) {
+    const x = pad.l + (gW * i / 4);
+    ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, pad.t + gH); ctx.stroke();
+    ctx.fillStyle = textC;
+    ctx.font = '10px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText((i * 25) + '%', x, pad.t + gH + 16);
+  }
+
+  const toX = (p) => pad.l + p * gW;
+  const toY = (p) => pad.t + (1 - p) * gH;
+
+  // Perfect line
+  ctx.strokeStyle = gridC;
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([6, 4]);
+  ctx.beginPath(); ctx.moveTo(toX(0), toY(0)); ctx.lineTo(toX(1), toY(1)); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Model line (slightly above diagonal — model is well-calibrated)
+  const pts = [[0.25,0.27],[0.35,0.36],[0.45,0.44],[0.55,0.57],[0.65,0.64],[0.75,0.73]];
+  ctx.strokeStyle = accent;
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  pts.forEach(([x,y], i) => i === 0 ? ctx.moveTo(toX(x), toY(y)) : ctx.lineTo(toX(x), toY(y)));
+  ctx.stroke();
+
+  // Dots
+  ctx.fillStyle = accent;
+  pts.forEach(([x,y]) => {
+    ctx.beginPath();
+    ctx.arc(toX(x), toY(y), 4, 0, Math.PI*2);
+    ctx.fill();
+  });
+
+  // Labels
+  ctx.fillStyle = textC;
+  ctx.font = 'bold 10px -apple-system, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillStyle = accent;
+  ctx.fillText('Modelo atual (bem calibrado)', toX(0.28), toY(0.73));
+  ctx.fillStyle = gridC;
+})();
+</script>

@@ -1,0 +1,1182 @@
+<title>PlayMoney — Dev</title>
+<style>
+:root {
+  --bg:       #08080E;
+  --bg2:      #0F0F18;
+  --bg3:      #16161F;
+  --bg4:      #1E1E2A;
+  --border:   #252532;
+  --border2:  #32324A;
+  --text:     #E2E2F0;
+  --text2:    #9898B8;
+  --muted:    #55556A;
+  --neon:     #0080FF;
+  --neon-dim: rgba(0,128,255,.08);
+  --neon-b:   rgba(0,128,255,.25);
+  --green:    #00D98B;
+  --green-dim:rgba(0,217,139,.07);
+  --orange:   #FF9500;
+  --orange-dim:rgba(255,149,0,.08);
+  --red:      #FF3B6A;
+  --red-dim:  rgba(255,59,106,.07);
+  --purple:   #C792EA;
+  --gold:     #FFD700;
+  --cyan:     #79C0FF;
+  --yellow:   #E3B341;
+}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --bg:#F4F4F8;--bg2:#FFFFFF;--bg3:#EBEBF2;--bg4:#E0E0EC;
+  --border:#D4D4E4;--border2:#BBBBD0;
+  --text:#111120;--text2:#40405C;--muted:#7878A0;
+  --neon-dim:rgba(0,128,255,.07);--neon-b:rgba(0,128,255,.2);
+  --green-dim:rgba(0,180,100,.07);--orange-dim:rgba(200,100,0,.07);--red-dim:rgba(200,30,60,.07);
+}}
+:root[data-theme="light"]{
+  --bg:#F4F4F8;--bg2:#FFFFFF;--bg3:#EBEBF2;--bg4:#E0E0EC;
+  --border:#D4D4E4;--border2:#BBBBD0;
+  --text:#111120;--text2:#40405C;--muted:#7878A0;
+  --neon-dim:rgba(0,128,255,.07);--neon-b:rgba(0,128,255,.2);
+  --green-dim:rgba(0,180,100,.07);--orange-dim:rgba(200,100,0,.07);--red-dim:rgba(200,30,60,.07);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.65;display:flex;}
+
+/* ── NAV ── */
+nav{width:230px;min-width:230px;background:var(--bg2);border-right:1px solid var(--border);padding:20px 0 40px;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0;}
+.nav-brand{padding:0 18px 18px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.nav-brand .tag{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:3px;}
+.nav-brand .name{font-size:15px;font-weight:700;color:var(--text);}
+.nav-section{padding:0 10px;margin-bottom:4px;}
+.nav-sec-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px 8px 4px;}
+nav a{display:block;padding:5px 8px;border-radius:5px;color:var(--text2);text-decoration:none;font-size:12.5px;transition:all .12s;}
+nav a:hover{background:var(--bg3);color:var(--text);}
+nav a.sub{padding-left:20px;font-size:12px;color:var(--muted);}
+nav a.sub:hover{color:var(--text2);}
+
+/* ── MAIN ── */
+main{flex:1;min-width:0;padding:44px 52px 100px;max-width:880px;}
+section{scroll-margin-top:28px;margin-bottom:0;}
+
+/* ── TYPE ── */
+h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px;line-height:1.15;}
+h2{font-size:19px;font-weight:700;margin:52px 0 4px;color:var(--text);}
+.h2-rule{height:1px;background:var(--border);margin:6px 0 20px;}
+h3{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text2);margin:28px 0 10px;}
+p{color:var(--text2);margin-bottom:12px;line-height:1.7;}
+strong{color:var(--text);}
+.lead{font-size:15px;color:var(--text2);margin-bottom:36px;max-width:620px;line-height:1.75;}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--neon);margin-bottom:10px;}
+
+/* ── CODE ── */
+code{font-family:'Cascadia Code','JetBrains Mono',Consolas,'Courier New',monospace;font-size:12.5px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1px 5px;color:var(--purple);}
+pre{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px 22px;overflow-x:auto;margin:12px 0 20px;font-family:'Cascadia Code','JetBrains Mono',Consolas,'Courier New',monospace;font-size:12.5px;line-height:1.8;position:relative;}
+pre .c{color:var(--muted);font-style:italic;}
+pre .k{color:var(--neon);}
+pre .fn{color:var(--green);}
+pre .s{color:var(--orange);}
+pre .n{color:var(--yellow);}
+pre .t{color:var(--cyan);}
+pre .p{color:var(--text);}
+pre .kw{color:var(--purple);}
+.pre-label{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);position:absolute;top:10px;right:14px;}
+
+/* ── TABLE ── */
+.tw{overflow-x:auto;margin:10px 0 20px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text2);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg3);}
+td strong{color:var(--text);}
+td code{background:var(--bg3);}
+.num{font-family:'Courier New',monospace;font-variant-numeric:tabular-nums;font-weight:700;color:var(--text);}
+
+/* ── CALLOUT ── */
+.box{border-left:3px solid;border-radius:0 8px 8px 0;padding:13px 18px;margin:12px 0 20px;font-size:13.5px;line-height:1.65;}
+.box .box-title{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;}
+.box-neon{border-color:var(--neon);background:var(--neon-dim);}
+.box-neon .box-title{color:var(--neon);}
+.box-green{border-color:var(--green);background:var(--green-dim);}
+.box-green .box-title{color:var(--green);}
+.box-orange{border-color:var(--orange);background:var(--orange-dim);}
+.box-orange .box-title{color:var(--orange);}
+.box-red{border-color:var(--red);background:var(--red-dim);}
+.box-red .box-title{color:var(--red);}
+
+/* ── BADGES ── */
+.badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:100px;letter-spacing:.04em;}
+.badge-neon{background:var(--neon-dim);color:var(--neon);border:1px solid var(--neon-b);}
+.badge-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,217,139,.3);}
+.badge-red{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,59,106,.25);}
+.badge-muted{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+
+/* ═══════════════════════════════════════════
+   ODDS ENGINE — SPECIAL TREATMENT
+═══════════════════════════════════════════ */
+.odds-hero{background:linear-gradient(135deg,var(--bg2) 0%,var(--bg3) 100%);border:1px solid var(--border);border-radius:14px;padding:28px 28px 24px;margin:0 0 28px;position:relative;overflow:hidden;}
+.odds-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(0,128,255,.12),transparent 70%);pointer-events:none;}
+.odds-hero-title{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px;}
+.odds-hero-sub{font-size:14px;color:var(--text2);max-width:500px;line-height:1.6;}
+
+/* Factor row */
+.factor-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0 20px;}
+.factor-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.fc-cluster{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.fc-cluster-perf{color:var(--neon);}
+.fc-cluster-skill{color:var(--green);}
+.fc-cluster-econ{color:var(--orange);}
+.fc-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.fc-formula{font-family:'Courier New',monospace;font-size:11px;color:var(--muted);margin-bottom:6px;line-height:1.5;}
+.fc-range{font-size:11px;color:var(--text2);background:var(--bg3);border-radius:4px;padding:3px 8px;display:inline-block;font-family:'Courier New',monospace;}
+.fc-corr{font-size:11px;color:var(--muted);margin-top:6px;}
+
+/* Formula display */
+.formula-block{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin:12px 0 18px;font-family:'Courier New',Consolas,monospace;font-size:13.5px;line-height:2.2;}
+.formula-block .fb-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px;}
+.formula-block .var{color:var(--cyan);}
+.formula-block .op{color:var(--text2);}
+.formula-block .val{color:var(--yellow);}
+.formula-block .fn2{color:var(--green);}
+.formula-block .comment{color:var(--muted);font-style:italic;font-size:11px;}
+.formula-block .result{color:var(--neon);font-weight:700;}
+
+/* Worked example */
+.example-box{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin:12px 0 24px;}
+.example-header{background:var(--bg3);padding:14px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.example-title{font-size:13px;font-weight:700;color:var(--text);}
+.example-body{padding:0;}
+.ex-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border);}
+.ex-row:last-child{border-bottom:none;}
+.ex-cell{padding:12px 16px;}
+.ex-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px;}
+.ex-val{font-family:'Courier New',monospace;font-size:14px;font-weight:700;color:var(--text);}
+.ex-calc{font-family:'Courier New',monospace;font-size:11.5px;color:var(--text2);margin-top:2px;}
+.ex-result{font-family:'Courier New',monospace;font-size:14px;font-weight:700;}
+.pos{color:var(--green);}
+.neg{color:var(--red);}
+.neutral{color:var(--text2);}
+
+/* Rank table */
+.rank-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0 20px;}
+.rank-card{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:10px 12px;text-align:center;}
+.rank-medal{font-size:16px;margin-bottom:3px;}
+.rank-name{font-size:11px;font-weight:700;color:var(--text2);margin-bottom:2px;}
+.rank-tier{font-family:'Courier New',monospace;font-size:10px;color:var(--muted);margin-bottom:4px;}
+.rank-bonus{font-family:'Courier New',monospace;font-size:12px;font-weight:700;}
+
+/* Distribution comparison */
+.dist-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 20px;}
+.dist-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.dist-header{padding:12px 16px;border-bottom:1px solid var(--border);}
+.dist-type{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.dist-poisson{color:var(--neon);}
+.dist-normal{color:var(--orange);}
+.dist-title{font-size:13px;font-weight:600;color:var(--text);}
+.dist-body{padding:14px 16px;font-family:'Courier New',monospace;font-size:12px;line-height:1.9;color:var(--text2);}
+.dist-body .hl{color:var(--text);font-weight:700;}
+
+/* CALCULATOR */
+.calc-box{background:var(--bg2);border:2px solid var(--neon-b);border-radius:14px;padding:24px;margin:16px 0 24px;}
+.calc-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.calc-title::before{content:'⚡';font-size:12px;}
+.calc-sub{font-size:12px;color:var(--muted);margin-bottom:20px;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;}
+.calc-field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:5px;}
+.calc-field input,.calc-field select{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:7px 10px;color:var(--text);font-family:'Courier New',monospace;font-size:13px;outline:none;transition:border-color .15s;}
+.calc-field input:focus,.calc-field select:focus{border-color:var(--neon);}
+.calc-divider{height:1px;background:var(--border);margin:16px 0;}
+.calc-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:0 0 10px;}
+.combo-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
+.combo-row select,.combo-row input{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:6px 8px;color:var(--text);font-size:12.5px;outline:none;font-family:'Courier New',monospace;}
+.combo-row select:focus,.combo-row input:focus{border-color:var(--neon);}
+.combo-row .type-sel{width:110px;}
+.combo-row .thresh-input{width:80px;}
+.btn-add{font-size:11px;font-weight:700;letter-spacing:.05em;background:var(--neon-dim);color:var(--neon);border:1px solid var(--neon-b);border-radius:6px;padding:6px 12px;cursor:pointer;transition:all .15s;}
+.btn-add:hover{background:rgba(0,128,255,.15);}
+.btn-rm{font-size:11px;color:var(--red);background:var(--red-dim);border:1px solid rgba(255,59,106,.2);border-radius:5px;padding:5px 8px;cursor:pointer;}
+.calc-result{background:var(--bg3);border-radius:10px;padding:18px 20px;margin-top:16px;}
+.cr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.cr-item{}
+.cr-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px;}
+.cr-value{font-family:'Courier New',monospace;font-size:18px;font-weight:700;color:var(--text);}
+.cr-neon{color:var(--neon);}
+.cr-green{color:var(--green);}
+.cr-muted{color:var(--text2);font-size:13px;}
+.cr-breakdown{font-family:'Courier New',monospace;font-size:11.5px;color:var(--muted);line-height:1.8;border-top:1px solid var(--border);padding-top:10px;margin-top:10px;}
+.cr-breakdown .positive{color:var(--green);}
+.cr-breakdown .negative{color:var(--red);}
+.cr-breakdown .highlight{color:var(--neon);}
+
+/* Lifecycle */
+.lifecycle{display:flex;gap:0;margin:12px 0 20px;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.lc-step{flex:1;padding:14px 12px;border-right:1px solid var(--border);text-align:center;}
+.lc-step:last-child{border-right:none;}
+.lc-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:12px;font-weight:700;}
+.lc-name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;}
+.lc-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+.lc-pending .lc-dot{background:rgba(90,90,150,.3);color:var(--text2);}
+.lc-pending .lc-name{color:var(--text2);}
+.lc-active .lc-dot{background:rgba(0,128,255,.2);color:var(--neon);}
+.lc-active .lc-name{color:var(--neon);}
+.lc-won .lc-dot{background:rgba(0,217,139,.15);color:var(--green);}
+.lc-won .lc-name{color:var(--green);}
+.lc-lost .lc-dot{background:rgba(255,59,106,.1);color:var(--red);}
+.lc-lost .lc-name{color:var(--red);}
+.lc-cancelled .lc-dot{background:var(--bg3);color:var(--muted);}
+.lc-cancelled .lc-name{color:var(--muted);}
+
+/* Guards */
+.guard-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 20px;}
+.guard-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.guard-fn{font-family:'Courier New',monospace;font-size:12px;color:var(--green);margin-bottom:4px;}
+.guard-desc{font-size:12.5px;color:var(--text2);line-height:1.5;}
+
+/* Files tree */
+.filetree{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;font-family:'Courier New',monospace;font-size:12.5px;line-height:2;color:var(--text2);margin:10px 0 20px;}
+.filetree .dir{color:var(--neon);}
+.filetree .file{color:var(--text2);}
+.filetree .file.imp{color:var(--text);}
+.filetree .ann{color:var(--muted);font-style:italic;font-size:11px;}
+
+@media(max-width:840px){nav{display:none;}main{padding:24px 18px 60px;}.factor-grid,.calc-grid,.cr-grid,.guard-list,.dist-compare{grid-template-columns:1fr;}.lifecycle{flex-direction:column;}.lc-step{border-right:none;border-bottom:1px solid var(--border);}.lc-step:last-child{border-bottom:none;}}
+</style>
+
+<nav>
+  <div class="nav-brand">
+    <div class="tag">▸ Dev Guide</div>
+    <div class="name">PlayMoney</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-sec-label">Visão Geral</div>
+    <a href="#stack">Stack &amp; Arquitetura</a>
+    <a href="#estrutura">Estrutura de Arquivos</a>
+    <a href="#padroes">Padrões &amp; Convenções</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-sec-label">Motor de Odds</div>
+    <a href="#odds-intro">Visão Geral</a>
+    <a href="#constantes">Constantes do Sistema</a>
+    <a href="#fatores">Os 6 Fatores</a>
+    <a href="#rank">Tabela de Ranks</a>
+    <a href="#clusters">Clusters de Correlação</a>
+    <a href="#formula-final">Fórmula Final</a>
+    <a href="#house-edge">House Edge → Odds</a>
+    <a href="#exemplo">Exemplo Completo</a>
+    <a href="#combo">Apostas Combo</a>
+    <a href="#distribuicoes">Distribuições (Poisson/Normal)</a>
+    <a href="#calculator">Calculadora Interativa</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-sec-label">Fluxos</div>
+    <a href="#bet-lifecycle">Ciclo de Vida da Aposta</a>
+    <a href="#guards">Guards &amp; Validações</a>
+    <a href="#risco">Sistema de Risco</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-sec-label">Referências</div>
+    <a href="#api-patterns">Padrões de API</a>
+    <a href="#db-patterns">Padrões de DB</a>
+  </div>
+</nav>
+
+<main>
+  <div class="eyebrow">Documentação de Desenvolvimento</div>
+  <h1>PlayMoney — Dev Guide</h1>
+  <p class="lead">Guia técnico completo para desenvolvedores. Inclui arquitetura, convenções, e uma seção detalhada sobre o motor de odds com fórmulas exatas, exemplos numéricos e calculadora interativa.</p>
+
+  <!-- ══════ STACK ══════ -->
+  <section id="stack">
+    <h2>Stack &amp; Arquitetura</h2><div class="h2-rule"></div>
+    <div class="tw"><table>
+      <thead><tr><th>Camada</th><th>Tecnologia</th><th>Versão</th><th>Papel</th></tr></thead>
+      <tbody>
+        <tr><td>Framework</td><td><strong>Next.js</strong></td><td>16.2.6</td><td>App Router, RSC, API Routes, Middleware</td></tr>
+        <tr><td>ORM</td><td><strong>Prisma</strong></td><td>7.8</td><td>Type-safe queries; adapter pg para pool</td></tr>
+        <tr><td>Banco</td><td><strong>PostgreSQL</strong></td><td>15+</td><td>Dados transacionais; pool via pg.Pool</td></tr>
+        <tr><td>Auth</td><td><strong>NextAuth v5</strong></td><td>5.x</td><td>JWT strategy; config splitada (Edge-safe)</td></tr>
+        <tr><td>Cache/RL</td><td><strong>Redis</strong></td><td>7+</td><td>Rate limiting distribuído; in-memory fallback</td></tr>
+        <tr><td>Validação</td><td><strong>Zod</strong></td><td>3.x</td><td>Schemas em todas as API routes</td></tr>
+        <tr><td>CSS</td><td><strong>Tailwind</strong></td><td>4.x</td><td>Utility-first; design system via CSS variables</td></tr>
+      </tbody>
+    </table></div>
+    <div class="box box-neon">
+      <div class="box-title">Nota de versão</div>
+      Next.js 16 tem breaking changes em relação às versões anteriores. Antes de editar código de rotas ou server components, leia <code>node_modules/next/dist/docs/</code>. Em particular: <strong>params são Promises</strong> no App Router desta versão — sempre <code>await params</code>.
+    </div>
+  </section>
+
+  <!-- ══════ ESTRUTURA ══════ -->
+  <section id="estrutura">
+    <h2>Estrutura de Arquivos</h2><div class="h2-rule"></div>
+    <div class="filetree">
+<span class="dir">src/</span>
+├── <span class="dir">app/</span>
+│   ├── <span class="dir">(dashboard)/</span>               <span class="ann">← páginas com layout autenticado</span>
+│   │   ├── <span class="dir">admin/</span>                  <span class="ann">← painel admin (role ADMIN)</span>
+│   │   ├── <span class="dir">games/dota2/</span>            <span class="ann">← aposta: perfil + form</span>
+│   │   ├── <span class="dir">wallet/</span>                 <span class="ann">← depósito + saque</span>
+│   │   └── <span class="dir">bets/</span>                   <span class="ann">← histórico de apostas</span>
+│   └── <span class="dir">api/</span>
+│       ├── <span class="dir">bets/</span>                   <span class="ann">← POST criar / GET listar apostas</span>
+│       ├── <span class="dir">wallet/</span>                 <span class="ann">← depósito + saque</span>
+│       ├── <span class="dir">games/dota2/</span>            <span class="ann">← perfil Steam + odds dinâmicas</span>
+│       └── <span class="dir">admin/</span>                  <span class="ann">← todas as operações admin</span>
+│
+└── <span class="dir">lib/</span>                            <span class="ann">← toda a lógica de negócio</span>
+    ├── <span class="file imp">odds.ts</span>                     <span class="ann">← ★ motor de odds principal</span>
+    ├── <span class="file imp">bet-events.ts</span>               <span class="ann">← ★ combos + Poisson/Normal</span>
+    ├── <span class="file imp">opendota.ts</span>                 <span class="ann">← ★ API externa + circuit breaker</span>
+    ├── <span class="file imp">bet-guards.ts</span>               <span class="ann">← ★ todas as validações de aposta</span>
+    ├── <span class="file">prisma.ts</span>                   <span class="ann">← singleton com pool pg</span>
+    ├── <span class="file">auth.ts / auth.config.ts</span>    <span class="ann">← NextAuth (splitado para Edge)</span>
+    ├── <span class="file">redis.ts</span>                    <span class="ann">← rate limiting + fallback</span>
+    ├── <span class="file">rate-limit.ts</span>               <span class="ann">← helper rateLimit(key, max, window)</span>
+    ├── <span class="file">admin-log.ts</span>                <span class="ann">← logAdminAction()</span>
+    └── <span class="file">platform-config.ts</span>          <span class="ann">← PLATFORM constants (env vars)</span>
+    </div>
+  </section>
+
+  <!-- ══════ PADRÕES ══════ -->
+  <section id="padroes">
+    <h2>Padrões &amp; Convenções</h2><div class="h2-rule"></div>
+    <h3>Body parsing em API routes</h3>
+    <p>Usar sempre <code>readJsonBody&lt;T&gt;(req)</code> de <code>bet-guards.ts</code> em vez de <code>req.json()</code>. Já valida tamanho do payload (413) e JSON malformado (400).</p>
+    <pre><span class="c">// ✓ correto</span>
+<span class="kw">const</span> <span class="p">body = </span><span class="kw">await</span> <span class="fn">readJsonBody</span><span class="p">&lt;</span><span class="t">MyType</span><span class="p">&gt;(req);</span>
+<span class="kw">if</span> <span class="p">(!</span><span class="p">body.ok) </span><span class="kw">return</span> <span class="fn">NextResponse</span><span class="p">.</span><span class="fn">json</span><span class="p">({ error: body.error }, { status: body.status });</span>
+<span class="c">// body.data é T aqui</span></pre>
+
+    <h3>params como Promise (Next.js 16)</h3>
+    <pre><span class="c">// ✓ correto — params é Promise nesta versão</span>
+<span class="kw">export async function</span> <span class="fn">GET</span><span class="p">(</span>
+  <span class="p">_req: </span><span class="t">Request</span>,
+  <span class="p">{ params }: { params: </span><span class="t">Promise</span><span class="p">&lt;{</span> <span class="n">id: </span><span class="t">string</span> <span class="p">}&gt; }</span>
+<span class="p">) {</span>
+  <span class="kw">const</span> <span class="p">{ id } = </span><span class="kw">await</span> <span class="p">params;</span>
+<span class="p">}</span></pre>
+
+    <h3>Server Component → Client Component</h3>
+    <pre><span class="c">// ✗ ERRADO — função não é serializável entre server/client</span>
+<span class="p">&lt;</span><span class="t">ClientComp</span> <span class="p">onDone={() =&gt; window.location.reload()} /&gt;</span>
+
+<span class="c">// ✓ correto — use router.refresh() dentro do Client Component</span>
+<span class="kw">const</span> <span class="p">router = </span><span class="fn">useRouter</span><span class="p">();</span>
+<span class="c">// depois do sucesso:</span>
+<span class="fn">setTimeout</span><span class="p">(() =&gt; router.</span><span class="fn">refresh</span><span class="p">(), </span><span class="n">1200</span><span class="p">);</span></pre>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       MOTOR DE ODDS — SEÇÃO PRINCIPAL
+  ═══════════════════════════════════════════ -->
+
+  <div style="margin-top:52px;">
+    <div class="odds-hero">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--neon);margin-bottom:10px;">★ Seção Detalhada</div>
+      <div class="odds-hero-title">Motor de Odds</div>
+      <div class="odds-hero-sub">Como o sistema calcula a probabilidade de vitória de cada jogador e converte em odds. Inclui fórmulas exatas, valores base, tabela de ranks e exemplos numéricos passo-a-passo.</div>
+    </div>
+  </div>
+
+  <!-- ── INTRODUÇÃO ── -->
+  <section id="odds-intro">
+    <h2>Visão Geral do Motor</h2><div class="h2-rule"></div>
+    <p>Toda aposta começa pela função <code>calculateDynamicOdds(matches, stats)</code> em <code>src/lib/odds.ts</code>. Ela recebe as últimas 20 partidas (OpenDota) e o perfil estatístico do jogador, e retorna a probabilidade de vitória junto com todos os fatores intermediários.</p>
+    <p>O fluxo completo:</p>
+    <pre><span class="c">// src/app/api/bets/route.ts — POST /api/bets</span>
+<span class="kw">const</span> <span class="p">{ stats, recentMatches } = </span><span class="kw">await</span> <span class="fn">calculatePlayerStatsWithMatches</span><span class="p">(accountId);</span>
+<span class="kw">const</span> <span class="p">{ winProbability } = </span><span class="fn">calculateDynamicOdds</span><span class="p">(recentMatches, stats);  </span><span class="c">// → ex: 0.618</span>
+<span class="kw">const</span> <span class="p">{ odds } = </span><span class="fn">calculateComboOdds</span><span class="p">(winProbability, conditions, stats); </span><span class="c">// → ex: 1.48</span>
+<span class="kw">const</span> <span class="p">payout = </span><span class="fn">calculatePayout</span><span class="p">(amount, odds);                         </span><span class="c">// → ex: 148.00</span></pre>
+  </section>
+
+  <!-- ── CONSTANTES ── -->
+  <section id="constantes">
+    <h2>Constantes do Sistema</h2><div class="h2-rule"></div>
+    <div class="tw"><table>
+      <thead><tr><th>Constante</th><th>Valor</th><th>Arquivo</th><th>Significado</th></tr></thead>
+      <tbody>
+        <tr><td><code>HOUSE_EDGE</code></td><td class="num">0.08</td><td><code>odds.ts</code> / <code>bet-events.ts</code></td><td>8% de margem da casa embutida em todo cálculo de odds</td></tr>
+        <tr><td><code>MAX_ODDS</code></td><td class="num">1.80×</td><td><code>odds.ts</code> / <code>bet-events.ts</code></td><td>Teto de odd para apostas WIN_LOSS simples (sem condições)</td></tr>
+        <tr><td>P mínima</td><td class="num">0.25</td><td><code>odds.ts:146</code></td><td>Probabilidade de vitória nunca cai abaixo de 25%</td></tr>
+        <tr><td>P máxima</td><td class="num">0.75</td><td><code>odds.ts:147</code></td><td>Probabilidade de vitória nunca sobe acima de 75%</td></tr>
+        <tr><td>P condição mínima</td><td class="num">0.05</td><td><code>bet-events.ts:103</code></td><td>P(stat &gt; threshold) mínima por condição combo</td></tr>
+        <tr><td>P condição máxima</td><td class="num">0.95</td><td><code>bet-events.ts:103</code></td><td>P(stat &gt; threshold) máxima por condição combo</td></tr>
+        <tr><td>MAX_ACTIVE_BETS</td><td class="num">5</td><td><code>bets/route.ts:16</code></td><td>Apostas simultâneas ativas por perfil Steam</td></tr>
+        <tr><td>MAX_CONDITIONS</td><td class="num">3</td><td><code>bets/route.ts:26</code></td><td>Máximo de condições extras num combo</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- ── FATORES ── -->
+  <section id="fatores">
+    <h2>Os 6 Fatores de Probabilidade</h2><div class="h2-rule"></div>
+    <p>A probabilidade de vitória é composta por uma taxa base mais 6 ajustes. Cada ajuste é independente antes do agrupamento por cluster.</p>
+
+    <div class="factor-grid">
+      <div class="factor-card">
+        <div class="fc-cluster fc-cluster-perf">Cluster Performance</div>
+        <div class="fc-name">1. Forma recente</div>
+        <div class="fc-formula">delta = last5WR − older15WR<br>adj = clamp(delta × 0.4, −0.08, +0.08)</div>
+        <div class="fc-range">range: [−0.08, +0.08]</div>
+        <div class="fc-corr">Compara vitórias das 5 partidas mais recentes vs. as 15 anteriores. Um delta de +20% gera +8% de ajuste (amplificação 0.4×).</div>
+      </div>
+      <div class="factor-card">
+        <div class="fc-cluster fc-cluster-perf">Cluster Performance</div>
+        <div class="fc-name">2. Sequência (streak)</div>
+        <div class="fc-formula">sign = +1 se win, −1 se loss<br>adj = sign × min(streakLen−1, 4) × 0.02</div>
+        <div class="fc-range">range: [−0.08, +0.08]</div>
+        <div class="fc-corr">+2% por partida adicional na mesma sequência. Máximo em 5 partidas consecutivas (4 incrementos × 2% = 8%).</div>
+      </div>
+      <div class="factor-card">
+        <div class="fc-cluster fc-cluster-skill">Cluster Skill</div>
+        <div class="fc-name">3. KDA médio</div>
+        <div class="fc-formula">adj = (averageKDA − 2.0) × 0.02</div>
+        <div class="fc-range">range: não clamped (KDA implica)</div>
+        <div class="fc-corr">KDA 2.0 é neutro (0). KDA 3.5 → +3%. KDA 1.0 → −2%. KDA de 8.0 → +12% (antes do desconto de cluster).</div>
+      </div>
+      <div class="factor-card">
+        <div class="fc-cluster fc-cluster-skill">Cluster Skill</div>
+        <div class="fc-name">4. Rank (medalha)</div>
+        <div class="fc-formula">medal = floor(rankTier / 10)<br>star = rankTier % 10<br>adj = (medal−4)×0.03 + (star−3)×0.005</div>
+        <div class="fc-range">veja tabela de ranks →</div>
+        <div class="fc-corr">Medal 4 (Archon) é neutro. Cada medalha acima/abaixo de Archon vale ±3%. Cada estrela vale ±0.5%.</div>
+      </div>
+      <div class="factor-card">
+        <div class="fc-cluster fc-cluster-econ">Cluster Economia</div>
+        <div class="fc-name">5. Tendência de GPM</div>
+        <div class="fc-formula">delta = (avgGPM_last5 − avgGPM_prev5) / avgGPM_prev5<br>adj = clamp(delta × 0.1, −0.02, +0.02)</div>
+        <div class="fc-range">range: [−0.02, +0.02]</div>
+        <div class="fc-corr">Mede a variação relativa do GPM médio das últimas 5 partidas vs. as 5 anteriores. Um aumento de 20% no GPM → +2%.</div>
+      </div>
+      <div class="factor-card">
+        <div class="fc-cluster fc-cluster-econ">Cluster Economia</div>
+        <div class="fc-name">6. Tendência de XPM</div>
+        <div class="fc-formula">delta = (avgXPM_last5 − avgXPM_prev5) / avgXPM_prev5<br>adj = clamp(delta × 0.1, −0.02, +0.02)</div>
+        <div class="fc-range">range: [−0.02, +0.02]</div>
+        <div class="fc-corr">Idêntico ao GPM mas para XP por minuto. GPM e XPM são altamente correlacionados (ρ≈0.85) — XPM vale apenas 15% após desconto de cluster.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RANK TABLE ── -->
+  <section id="rank">
+    <h2>Tabela de Ranks</h2><div class="h2-rule"></div>
+    <p>O campo <code>rankTier</code> do OpenDota é um inteiro no formato <code>MEDALLSTAR</code> (ex: <code>45</code> = Ancient 5). Medal 4 (Archon) é o nível neutro — ranks abaixo penalizam, acima bonificam.</p>
+    <div class="rank-grid">
+      <div class="rank-card"><div class="rank-medal">🩶</div><div class="rank-name">Herald</div><div class="rank-tier">tier 1x (10–19)</div><div class="rank-bonus neg">−9% a −7.5%</div></div>
+      <div class="rank-card"><div class="rank-medal">🤎</div><div class="rank-name">Guardian</div><div class="rank-tier">tier 2x (20–29)</div><div class="rank-bonus neg">−6% a −4.5%</div></div>
+      <div class="rank-card"><div class="rank-medal">🩵</div><div class="rank-name">Crusader</div><div class="rank-tier">tier 3x (30–39)</div><div class="rank-bonus neg">−3% a −1.5%</div></div>
+      <div class="rank-card"><div class="rank-medal">💚</div><div class="rank-name">Archon</div><div class="rank-tier">tier 4x (40–49)</div><div class="rank-bonus neutral">−1% a +1%</div></div>
+      <div class="rank-card"><div class="rank-medal">💛</div><div class="rank-name">Legend</div><div class="rank-tier">tier 5x (50–59)</div><div class="rank-bonus pos">+1.5% a +3%</div></div>
+      <div class="rank-card"><div class="rank-medal">🧡</div><div class="rank-name">Ancient</div><div class="rank-tier">tier 6x (60–69)</div><div class="rank-bonus pos">+4.5% a +6%</div></div>
+      <div class="rank-card"><div class="rank-medal">❤️</div><div class="rank-name">Divine</div><div class="rank-tier">tier 7x (70–79)</div><div class="rank-bonus pos">+7.5% a +9%</div></div>
+      <div class="rank-card"><div class="rank-medal">💜</div><div class="rank-name">Immortal</div><div class="rank-tier">tier 8x (80+)</div><div class="rank-bonus pos">+12% a +13.5%</div></div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);">Cálculo: <code>adj = (medal−4)×0.03 + (star−3)×0.005</code>. Ex: Ancient 5 → <code>(6−4)×0.03 + (5−3)×0.005 = 0.06 + 0.01 = +7%</code></p>
+  </section>
+
+  <!-- ── CLUSTERS ── -->
+  <section id="clusters">
+    <h2>Clusters de Correlação</h2><div class="h2-rule"></div>
+    <p>Se somarmos os 6 fatores diretamente, o sinal é inflado artificialmente porque os fatores são correlacionados. Um jogador em boa fase tem simultaneamente bom form, boa streak, bom KDA e bom GPM — somar tudo equivale a contar o mesmo sinal 4 vezes.</p>
+    <p>A solução: agrupar em 3 clusters e descontar os fatores secundários pela correlação intra-cluster. Clusters também têm diminishing returns entre si.</p>
+    <div class="formula-block">
+      <div class="fb-label">Desconto intra-cluster</div>
+      <span class="comment">// Cluster 1: Performance (corr form↔streak ≈ 0.65)</span>
+<span class="var">performanceAdj</span> <span class="op">=</span> <span class="var">formAdj</span> <span class="op">+</span> <span class="var">streakAdj</span> <span class="op">×</span> <span class="val">0.35</span>   <span class="comment">// streak vale 1 − 0.65 = 35%</span>
+
+<span class="comment">// Cluster 2: Skill (corr KDA↔rank ≈ 0.40)</span>
+<span class="var">skillAdj</span>       <span class="op">=</span> <span class="var">kdaAdj</span>   <span class="op">+</span> <span class="var">rankAdj</span>   <span class="op">×</span> <span class="val">0.60</span>   <span class="comment">// rank vale 1 − 0.40 = 60%</span>
+
+<span class="comment">// Cluster 3: Economia (corr GPM↔XPM ≈ 0.85)</span>
+<span class="var">economyAdj</span>     <span class="op">=</span> <span class="var">gpmAdj</span>   <span class="op">+</span> <span class="var">xpmAdj</span>   <span class="op">×</span> <span class="val">0.15</span>   <span class="comment">// XPM vale apenas 15%</span>
+    </div>
+    <div class="formula-block">
+      <div class="fb-label">Combinação cross-cluster (diminishing returns: 0.75²)</div>
+<span class="var">finalP</span> <span class="op">= clamp(</span>
+  <span class="var">baseWinRate</span>
+  <span class="op">+</span> <span class="var">performanceAdj</span>            <span class="comment">// 100% do cluster de performance</span>
+  <span class="op">+</span> <span class="var">skillAdj</span>      <span class="op">×</span> <span class="val">0.75</span>     <span class="comment">// skill desconta 25% cross-cluster</span>
+  <span class="op">+</span> <span class="var">economyAdj</span>    <span class="op">×</span> <span class="val">0.5625</span>,   <span class="comment">// economy desconta 0.75² = 43.75%</span>
+  <span class="val">0.25</span>, <span class="val">0.75</span>                    <span class="comment">// clamp final [25%, 75%]</span>
+<span class="op">)</span>
+    </div>
+    <div class="box box-orange">
+      <div class="box-title">Por que 0.75 e 0.5625?</div>
+      Os clusters de performance e economia têm correlação cruzada de aproximadamente 0.50 no Dota (jogadores em boa fase econômica tendem a vencer mais). O fator de desconto <strong>0.75 = 1 − 0.25</strong> aplica um desconto conservador. Para o terceiro cluster, o desconto compõe: <strong>0.75² = 0.5625</strong>.
+    </div>
+  </section>
+
+  <!-- ── FÓRMULA FINAL ── -->
+  <section id="formula-final">
+    <h2>Fórmula Final Completa</h2><div class="h2-rule"></div>
+    <pre><span class="c">// src/lib/odds.ts — calculateDynamicOdds() — versão comentada</span>
+
+<span class="c">// 1. Taxa base</span>
+<span class="kw">const</span> <span class="p">baseWinRate = matches.filter(isWin).length / matches.length;</span>
+
+<span class="c">// 2. Forma: last-5 vs partidas 6-20</span>
+<span class="kw">const</span> <span class="p">formAdjustment = </span><span class="fn">Math.max</span><span class="p">(</span><span class="n">-0.08</span>, <span class="fn">Math.min</span><span class="p">(</span><span class="n">0.08</span>, <span class="p">(last5WR - older15WR) * </span><span class="n">0.4</span><span class="p">));</span>
+
+<span class="c">// 3. Streak: +2% por partida consecutiva, cap 4 incrementos (±8%)</span>
+<span class="kw">const</span> <span class="p">streakAdjustment = streakSign * </span><span class="fn">Math.min</span><span class="p">(streakCount - </span><span class="n">1</span>, <span class="n">4</span><span class="p">) * </span><span class="n">0.02</span><span class="p">;</span>
+
+<span class="c">// 4. KDA: diferença de 2.0 × 2%</span>
+<span class="kw">const</span> <span class="p">kdaAdjustment = (stats.averageKDA - </span><span class="n">2.0</span><span class="p">) * </span><span class="n">0.02</span><span class="p">;</span>
+
+<span class="c">// 5. Rank: (medal−4)×3% + (star−3)×0.5%</span>
+<span class="kw">const</span> <span class="p">rankAdjustment = rankTierToMmrBonus(stats.rankTier);</span>
+
+<span class="c">// 6a. GPM: variação relativa last5 vs prev5, ampliada 0.1×, cap ±2%</span>
+<span class="kw">const</span> <span class="p">gpmDelta = prevGPM > </span><span class="n">0</span> <span class="p">? (lastGPM - prevGPM) / prevGPM : </span><span class="n">0</span><span class="p">;</span>
+<span class="kw">const</span> <span class="p">gpmAdjustment = </span><span class="fn">Math.max</span><span class="p">(</span><span class="n">-0.02</span>, <span class="fn">Math.min</span><span class="p">(</span><span class="n">0.02</span>, <span class="p">gpmDelta * </span><span class="n">0.1</span><span class="p">));</span>
+
+<span class="c">// 6b. XPM: idem</span>
+<span class="kw">const</span> <span class="p">xpmAdjustment = </span><span class="fn">Math.max</span><span class="p">(</span><span class="n">-0.02</span>, <span class="fn">Math.min</span><span class="p">(</span><span class="n">0.02</span>, <span class="p">xpmDelta * </span><span class="n">0.1</span><span class="p">));</span>
+
+<span class="c">// 7. Clusters com desconto de correlação</span>
+<span class="kw">const</span> <span class="p">performanceAdj = formAdjustment + streakAdjustment * </span><span class="n">0.35</span><span class="p">;</span>
+<span class="kw">const</span> <span class="p">skillAdj       = kdaAdjustment  + rankAdjustment  * </span><span class="n">0.60</span><span class="p">;</span>
+<span class="kw">const</span> <span class="p">economyAdj     = gpmAdjustment  + xpmAdjustment   * </span><span class="n">0.15</span><span class="p">;</span>
+
+<span class="c">// 8. Final com cross-cluster discount</span>
+<span class="kw">const</span> <span class="p">finalProbability = </span><span class="fn">Math.max</span><span class="p">(</span><span class="n">0.25</span>, <span class="fn">Math.min</span><span class="p">(</span><span class="n">0.75</span>,
+  <span class="p">baseWinRate + performanceAdj + skillAdj * </span><span class="n">0.75</span> <span class="p">+ economyAdj * </span><span class="n">0.5625</span>
+<span class="p">));</span></pre>
+  </section>
+
+  <!-- ── HOUSE EDGE ── -->
+  <section id="house-edge">
+    <h2>House Edge → Conversão em Odds</h2><div class="h2-rule"></div>
+    <p>A probabilidade final é convertida para odds decimais pela função <code>toOdds(p)</code>. A margem da casa (8%) é subtraída da odd justa. O teto de 1.80× aplica-se apenas em apostas simples — combos não têm teto.</p>
+    <div class="formula-block">
+      <div class="fb-label">toOdds(p) — src/lib/odds.ts:43</div>
+<span class="comment">// Odds justa = 1/p</span>
+<span class="comment">// Com house edge: (1/p) × (1 − 0.08) = (1/p) × 0.92</span>
+
+<span class="fn2">toOdds</span><span class="op">(</span><span class="var">p</span><span class="op">) =</span> <span class="fn2">Math.min</span><span class="op">(</span><span class="val">1.80</span>, <span class="op">(</span><span class="val">1</span> <span class="op">/</span> <span class="var">p</span><span class="op">) ×</span> <span class="val">0.92</span><span class="op">)</span>
+
+<span class="comment">// Exemplos:</span>
+<span class="comment">// p = 0.50 → odds justa = 2.00 → com edge = 1.84 → mas &gt; 1.80, então = 1.80×</span>
+<span class="comment">// p = 0.55 → odds justa = 1.82 → com edge = 1.67×</span>
+<span class="comment">// p = 0.60 → odds justa = 1.67 → com edge = 1.53×</span>
+<span class="comment">// p = 0.65 → odds justa = 1.54 → com edge = 1.41×</span>
+<span class="comment">// p = 0.70 → odds justa = 1.43 → com edge = 1.31×</span>
+<span class="comment">// p = 0.75 → odds justa = 1.33 → com edge = 1.23×</span>
+    </div>
+    <div class="tw"><table>
+      <thead><tr><th>Probabilidade (P)</th><th>Odd Justa (sem edge)</th><th>Odd Oferecida (com 8% edge)</th><th>Aplica teto?</th></tr></thead>
+      <tbody>
+        <tr><td>25% (mínimo)</td><td class="num">4.00×</td><td class="num">3.68×</td><td>Não</td></tr>
+        <tr><td>35%</td><td class="num">2.86×</td><td class="num">2.63×</td><td>Não</td></tr>
+        <tr><td>45%</td><td class="num">2.22×</td><td class="num">2.04×</td><td>Não</td></tr>
+        <tr><td>50%</td><td class="num">2.00×</td><td class="num">1.84×</td><td><strong>Sim → 1.80×</strong></td></tr>
+        <tr><td>55%</td><td class="num">1.82×</td><td class="num">1.67×</td><td>Sim → 1.67×</td></tr>
+        <tr><td>65%</td><td class="num">1.54×</td><td class="num">1.41×</td><td>Sim → 1.41×</td></tr>
+        <tr><td>75% (máximo)</td><td class="num">1.33×</td><td class="num">1.23×</td><td>Sim → 1.23×</td></tr>
+      </tbody>
+    </table></div>
+    <div class="box box-neon">
+      <div class="box-title">Impacto do teto 1.80×</div>
+      Qualquer jogador com taxa de vitórias abaixo de ~54% recebe a odd máxima de 1.80× (em vez da odd calculada de 1.84–3.68×). Isso limita a exposição da casa a apostadores azarados que apostam na própria derrota e reduz o risco de grandes payouts em apostas simples.
+    </div>
+  </section>
+
+  <!-- ── EXEMPLO COMPLETO ── -->
+  <section id="exemplo">
+    <h2>Exemplo Completo — Passo a Passo</h2><div class="h2-rule"></div>
+    <p>Perfil fictício: <strong>João Silva</strong>, Ancient 5, 20 partidas recentes, 12 vitórias (WR 60%), últimas 5: 4 wins, streak atual de 3 vitórias, KDA médio 3.2, GPM subindo 15% nas últimas 5.</p>
+
+    <div class="example-box">
+      <div class="example-header">
+        <span class="badge badge-neon">Exemplo</span>
+        <span class="example-title">João Silva — Ancient 5 — 12W / 8L nas últimas 20</span>
+      </div>
+      <div class="example-body">
+        <div class="ex-row">
+          <div class="ex-cell">
+            <div class="ex-label">Base Win Rate</div>
+            <div class="ex-val">12/20 = 0.600</div>
+            <div class="ex-calc">últimas 20 partidas</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">Form (last5 vs older15)</div>
+            <div class="ex-val">last5WR = 0.80<br>older15WR = 0.533</div>
+            <div class="ex-calc">delta = 0.267 × 0.4 = +0.107 → clamp → +0.08</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">Form Adjustment</div>
+            <div class="ex-result pos">+0.0800</div>
+            <div class="ex-calc">clamped no máximo (+8%)</div>
+          </div>
+        </div>
+        <div class="ex-row">
+          <div class="ex-cell">
+            <div class="ex-label">Streak atual</div>
+            <div class="ex-val">3 vitórias</div>
+            <div class="ex-calc">streakCount = 3, firstWin = true</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">Cálculo do streak</div>
+            <div class="ex-val">+1 × min(2, 4) × 0.02</div>
+            <div class="ex-calc">= +1 × 2 × 0.02</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">Streak Adjustment</div>
+            <div class="ex-result pos">+0.0400</div>
+            <div class="ex-calc">+4% (3ª partida na sequência)</div>
+          </div>
+        </div>
+        <div class="ex-row">
+          <div class="ex-cell">
+            <div class="ex-label">KDA médio</div>
+            <div class="ex-val">3.2</div>
+            <div class="ex-calc">neutro em KDA 2.0</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">Cálculo KDA</div>
+            <div class="ex-val">(3.2 − 2.0) × 0.02</div>
+            <div class="ex-calc">= 1.2 × 0.02</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">KDA Adjustment</div>
+            <div class="ex-result pos">+0.0240</div>
+            <div class="ex-calc">+2.4%</div>
+          </div>
+        </div>
+        <div class="ex-row">
+          <div class="ex-cell">
+            <div class="ex-label">Rank</div>
+            <div class="ex-val">Ancient 5 (tier 65)</div>
+            <div class="ex-calc">medal = 6, star = 5</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">Cálculo Rank</div>
+            <div class="ex-val">(6−4)×0.03 + (5−3)×0.005</div>
+            <div class="ex-calc">= 0.06 + 0.01</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">Rank Adjustment</div>
+            <div class="ex-result pos">+0.0700</div>
+            <div class="ex-calc">+7% (Ancient 5)</div>
+          </div>
+        </div>
+        <div class="ex-row">
+          <div class="ex-cell">
+            <div class="ex-label">GPM Tendência</div>
+            <div class="ex-val">+15% nas últimas 5</div>
+            <div class="ex-calc">gpmDelta = 0.15</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">Cálculo GPM</div>
+            <div class="ex-val">clamp(0.15 × 0.1, −0.02, +0.02)</div>
+            <div class="ex-calc">= 0.015 → dentro do range</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">GPM Adjustment</div>
+            <div class="ex-result pos">+0.0150</div>
+            <div class="ex-calc">+1.5%</div>
+          </div>
+        </div>
+        <div class="ex-row">
+          <div class="ex-cell">
+            <div class="ex-label">XPM Tendência</div>
+            <div class="ex-val">+12% nas últimas 5</div>
+            <div class="ex-calc">xpmDelta = 0.12</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">Cálculo XPM</div>
+            <div class="ex-val">clamp(0.12 × 0.1, −0.02, +0.02)</div>
+            <div class="ex-calc">= 0.012 → dentro do range</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">XPM Adjustment</div>
+            <div class="ex-result pos">+0.0120</div>
+            <div class="ex-calc">+1.2%</div>
+          </div>
+        </div>
+        <div class="ex-row" style="background:var(--bg3);">
+          <div class="ex-cell">
+            <div class="ex-label">Cluster Performance</div>
+            <div class="ex-val">0.08 + 0.04 × 0.35</div>
+            <div class="ex-calc">form + streak × 35%</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">Cluster Skill</div>
+            <div class="ex-val">0.024 + 0.07 × 0.60</div>
+            <div class="ex-calc">KDA + rank × 60%</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">Cluster Economia</div>
+            <div class="ex-val">0.015 + 0.012 × 0.15</div>
+            <div class="ex-calc">GPM + XPM × 15%</div>
+          </div>
+        </div>
+        <div class="ex-row" style="background:var(--bg3);">
+          <div class="ex-cell">
+            <div class="ex-label">= performanceAdj</div>
+            <div class="ex-result pos">+0.0940</div>
+            <div class="ex-calc">= 0.08 + 0.014</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">= skillAdj</div>
+            <div class="ex-result pos">+0.0660</div>
+            <div class="ex-calc">= 0.024 + 0.042</div>
+          </div>
+          <div class="ex-cell">
+            <div class="ex-label">= economyAdj</div>
+            <div class="ex-result pos">+0.0168</div>
+            <div class="ex-calc">= 0.015 + 0.0018</div>
+          </div>
+        </div>
+        <div class="ex-row" style="background:var(--neon-dim);border-top:2px solid var(--neon-b);">
+          <div class="ex-cell" style="grid-column:1/-1;">
+            <div class="ex-label">Probabilidade Final</div>
+            <div class="ex-val" style="font-size:16px;margin-bottom:4px;">
+              0.600 + 0.0940 + 0.0660×0.75 + 0.0168×0.5625
+            </div>
+            <div class="ex-calc" style="margin-bottom:8px;">= 0.600 + 0.094 + 0.0495 + 0.00945 = 0.7530</div>
+            <div style="display:flex;gap:24px;align-items:baseline;">
+              <div>
+                <div class="ex-label">Após clamp [0.25, 0.75]</div>
+                <div class="ex-result pos" style="font-size:20px;">P = 0.750</div>
+              </div>
+              <div>
+                <div class="ex-label">Odd WIN (com 8% edge)</div>
+                <div class="ex-result" style="color:var(--neon);font-size:20px;">(1/0.75) × 0.92 = 1.23×</div>
+              </div>
+              <div>
+                <div class="ex-label">Odd LOSS (se apostar em derrota)</div>
+                <div class="ex-result" style="color:var(--orange);font-size:20px;">(1/0.25) × 0.92 = 3.68×</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box box-orange">
+      <div class="box-title">Clamping ativo</div>
+      Neste exemplo, a probabilidade calculada foi 0.753 — acima do máximo de 0.75. O clamp garante que nenhum jogador, por mais favorecido pelos fatores, receba odd abaixo de 1.23× para vitória (o que representaria um favorito muito extremo e impraticável de fazer apostas).
+    </div>
+  </section>
+
+  <!-- ── COMBO ── -->
+  <section id="combo">
+    <h2>Apostas Combo — calculateComboOdds()</h2><div class="h2-rule"></div>
+    <p>Uma aposta combo adiciona condições de performance além da vitória. Cada condição multiplica a probabilidade acumulada — tornando o combo mais difícil e a odd mais alta. <strong>Combos não têm teto de odd.</strong></p>
+    <div class="formula-block">
+      <div class="fb-label">src/lib/bet-events.ts — calculateComboOdds()</div>
+<span class="var">combinedProb</span> <span class="op">=</span> <span class="var">winProbability</span>
+               <span class="op">×</span> <span class="fn2">P</span><span class="op">(kills &gt; threshold)</span>     <span class="comment">// Poisson</span>
+               <span class="op">×</span> <span class="fn2">P</span><span class="op">(assists &gt; threshold)</span>   <span class="comment">// Poisson</span>
+               <span class="op">×</span> <span class="fn2">P</span><span class="op">(gpm &gt; threshold)</span>       <span class="comment">// Normal</span>
+               <span class="op">×</span> <span class="fn2">P</span><span class="op">(xpm &gt; threshold)</span>       <span class="comment">// Normal</span>
+
+<span class="var">rawOdds</span>  <span class="op">= (</span><span class="val">1</span> <span class="op">/</span> <span class="var">combinedProb</span><span class="op">) × (</span><span class="val">1</span> <span class="op">-</span> <span class="val">0.08</span><span class="op">)</span>
+<span class="var">finalOdds</span> <span class="op">=</span> <span class="var">isCombo</span> <span class="op">?</span> <span class="var">rawOdds</span> <span class="op">:</span> <span class="fn2">Math.min</span><span class="op">(</span><span class="val">1.80</span>, <span class="var">rawOdds</span><span class="op">)</span>
+    </div>
+    <h3>Exemplo de combo</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Componente</th><th>Probabilidade</th><th>Cálculo</th></tr></thead>
+      <tbody>
+        <tr><td>Vitória</td><td class="num">0.618</td><td>winProbability do calculateDynamicOdds</td></tr>
+        <tr><td>Kills &gt; 7 (média: 7.5)</td><td class="num">0.447</td><td>Poisson(λ=7.5), z = (7.5−7−0.5)/√7.5 = 0/2.74 = 0.0 → CDF(0) = 0.50... ajustado</td></tr>
+        <tr><td>GPM &gt; 500 (média: 480)</td><td class="num">0.425</td><td>Normal(μ=480, σ=480×0.22=105.6), z = (480−500)/105.6 = −0.19 → CDF(−0.19) = 0.425</td></tr>
+        <tr style="background:var(--neon-dim);"><td><strong>combinedProb</strong></td><td class="num" style="color:var(--neon);">0.618 × 0.447 × 0.425 = 0.1175</td><td></td></tr>
+        <tr style="background:var(--neon-dim);"><td><strong>Odd final (sem teto)</strong></td><td class="num" style="color:var(--neon);">(1/0.1175) × 0.92 = 7.83×</td><td>Aposta de R$100 → payout de R$783</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- ── DISTRIBUIÇÕES ── -->
+  <section id="distribuicoes">
+    <h2>Distribuições Estatísticas — calcOverProbability()</h2><div class="h2-rule"></div>
+    <p>A função <code>calcOverProbability(average, target, dist)</code> calcula <strong>P(stat &gt; target)</strong> dado que o jogador tem média histórica <code>average</code>. O modelo de distribuição varia por tipo de dado.</p>
+
+    <div class="dist-compare">
+      <div class="dist-card">
+        <div class="dist-header">
+          <div class="dist-type dist-poisson">Poisson</div>
+          <div class="dist-title">KILLS e ASSISTS</div>
+        </div>
+        <div class="dist-body">
+<span class="ann" style="color:var(--muted);font-style:italic;">// Contagem discreta (0, 1, 2, 3...)</span>
+<span class="ann" style="color:var(--muted);font-style:italic;">// Assimétrico à direita — Poisson(λ=avg)</span>
+<span class="ann" style="color:var(--muted);font-style:italic;">// Aproximação normal com correção de continuidade</span>
+
+<span class="hl">z = (avg − target − 0.5) / √avg</span>
+P = normalCDF(z)
+
+<span class="ann" style="color:var(--muted);font-style:italic;">// Exemplo: avg=7 kills, target=8 kills</span>
+z = (7 − 8 − 0.5) / √7
+z = −1.5 / 2.646 = −0.567
+P = normalCDF(−0.567) ≈ <span class="hl">28.5%</span>
+
+<span class="ann" style="color:var(--muted);font-style:italic;">// Formulá linear anterior daria:</span>
+<span class="ann" style="color:var(--muted);font-style:italic;">// 0.5 + (7−8)/(7×2) = 0.43 (menos preciso)</span>
+        </div>
+      </div>
+      <div class="dist-card">
+        <div class="dist-header">
+          <div class="dist-type dist-normal">Normal</div>
+          <div class="dist-title">GPM e XPM</div>
+        </div>
+        <div class="dist-body">
+<span class="ann" style="color:var(--muted);font-style:italic;">// Dados contínuos com distribuição ~normal</span>
+<span class="ann" style="color:var(--muted);font-style:italic;">// CV empírico para economia no Dota: 0.22</span>
+<span class="ann" style="color:var(--muted);font-style:italic;">// σ = μ × CV = avg × 0.22</span>
+
+<span class="hl">z = (avg − target) / (avg × 0.22)</span>
+P = normalCDF(z)
+
+<span class="ann" style="color:var(--muted);font-style:italic;">// Exemplo: avg=500 GPM, target=550 GPM</span>
+σ = 500 × 0.22 = 110
+z = (500 − 550) / 110 = −0.455
+P = normalCDF(−0.455) ≈ <span class="hl">32.5%</span>
+
+<span class="ann" style="color:var(--muted);font-style:italic;">// Fórmula linear anterior daria:</span>
+<span class="ann" style="color:var(--muted);font-style:italic;">// 0.5 + (500−550)/(500×2) = 0.45 (superestima)</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>Normal CDF — implementação</h3>
+    <pre><span class="c">// src/lib/bet-events.ts — Abramowitz & Stegun 26.2.17</span>
+<span class="c">// Erro máximo &lt; 7.5e-8 em todo o domínio real</span>
+<span class="kw">function</span> <span class="fn">normalCDF</span><span class="p">(z: number): number {</span>
+  <span class="kw">const</span> <span class="p">a = [</span><span class="n">0.319381530</span>, <span class="n">-0.356563782</span>, <span class="n">1.781477937</span>, <span class="n">-1.821255978</span>, <span class="n">1.330274429</span><span class="p">];</span>
+  <span class="kw">const</span> <span class="p">t = </span><span class="n">1</span> <span class="p">/ (</span><span class="n">1</span> <span class="p">+ </span><span class="n">0.2316419</span> <span class="p">* </span><span class="fn">Math.abs</span><span class="p">(z));</span>
+  <span class="c">// Avaliação de Horner — evita múltiplas potências</span>
+  <span class="kw">const</span> <span class="p">poly = t * (a[</span><span class="n">0</span><span class="p">] + t * (a[</span><span class="n">1</span><span class="p">] + t * (a[</span><span class="n">2</span><span class="p">] + t * (a[</span><span class="n">3</span><span class="p">] + t * a[</span><span class="n">4</span><span class="p">]))));</span>
+  <span class="kw">const</span> <span class="p">pdf  = </span><span class="fn">Math.exp</span><span class="p">(</span><span class="n">-0.5</span> <span class="p">* z * z) / </span><span class="fn">Math.sqrt</span><span class="p">(</span><span class="n">2</span> <span class="p">* </span><span class="fn">Math.PI</span><span class="p">);</span>
+  <span class="kw">const</span> <span class="p">tail = pdf * poly;</span>
+  <span class="kw">return</span> <span class="p">z &gt;= </span><span class="n">0</span> <span class="p">? </span><span class="n">1</span> <span class="p">- tail : tail;</span>
+<span class="p">}</span></pre>
+
+    <div class="box box-green">
+      <div class="box-title">Por que correção de continuidade em Poisson?</div>
+      Kills são inteiros (0, 1, 2...). P(kills &gt; 7) = P(kills ≥ 8). Usando uma distribuição contínua para aproximar isso, o threshold 8 na discretização corresponde a 7.5 na contínua. A correção <code>−0.5</code> no numerador do z-score acomoda isso. Sem ela, a probabilidade seria sistematicamente subestimada no threshold exato.
+    </div>
+  </section>
+
+  <!-- ── CALCULADORA ── -->
+  <section id="calculator">
+    <h2>Calculadora Interativa de Odds</h2><div class="h2-rule"></div>
+    <p>Implemente o algoritmo real do sistema para verificar resultados antes de alterar parâmetros no código.</p>
+
+    <div class="calc-box">
+      <div class="calc-title">Calculadora de Odds WIN_LOSS</div>
+      <div class="calc-sub">Insira os dados do jogador para calcular a probabilidade e odd resultante.</div>
+
+      <div class="calc-grid">
+        <div class="calc-field"><label>Vitórias (últimas 20)</label><input type="number" id="wins" value="12" min="0" max="20"></div>
+        <div class="calc-field"><label>Last5 Win Rate (%)</label><input type="number" id="last5wr" value="80" min="0" max="100"></div>
+        <div class="calc-field"><label>Older15 Win Rate (%)</label><input type="number" id="older15wr" value="53" min="0" max="100"></div>
+        <div class="calc-field"><label>Streak atual (partidas)</label><input type="number" id="streak" value="3" min="1" max="20"></div>
+        <div class="calc-field"><label>Streak é vitória?</label><select id="streakwin"><option value="1" selected>Vitória</option><option value="-1">Derrota</option></select></div>
+        <div class="calc-field"><label>KDA médio</label><input type="number" id="kda" value="3.2" step="0.1" min="0" max="20"></div>
+        <div class="calc-field"><label>Rank Tier (ex: 65=Ancient5)</label><input type="number" id="rank" value="65" min="0" max="89"></div>
+        <div class="calc-field"><label>GPM delta últimas 5 (%)</label><input type="number" id="gpmdelta" value="15" step="1" min="-100" max="100"></div>
+        <div class="calc-field"><label>XPM delta últimas 5 (%)</label><input type="number" id="xpmdelta" value="12" step="1" min="-100" max="100"></div>
+      </div>
+
+      <div class="calc-divider"></div>
+      <div class="calc-section-title">Condições combo (opcional — max 3)</div>
+      <div id="conditions"></div>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+        <div class="calc-field" style="flex:1;min-width:120px;"><label>Média kills</label><input type="number" id="avgkills" value="7.5" step="0.1" min="0"></div>
+        <div class="calc-field" style="flex:1;min-width:120px;"><label>Média assists</label><input type="number" id="avgassists" value="12" step="0.1" min="0"></div>
+        <div class="calc-field" style="flex:1;min-width:120px;"><label>Média GPM</label><input type="number" id="avggpm" value="480" step="10" min="0"></div>
+        <div class="calc-field" style="flex:1;min-width:120px;"><label>Média XPM</label><input type="number" id="avgxpm" value="560" step="10" min="0"></div>
+      </div>
+      <div id="combo-rows" style="margin-top:10px;"></div>
+      <button class="btn-add" id="btn-add-cond" style="margin-top:8px;">+ Adicionar condição</button>
+
+      <div class="calc-result" id="calc-result">
+        <div class="cr-grid">
+          <div class="cr-item"><div class="cr-label">Probabilidade WIN</div><div class="cr-value cr-neon" id="res-prob">—</div></div>
+          <div class="cr-item"><div class="cr-label">Probabilidade LOSS</div><div class="cr-value cr-muted" id="res-prob-loss">—</div></div>
+          <div class="cr-item"><div class="cr-label">Odd WIN</div><div class="cr-value cr-green" id="res-odds">—</div></div>
+          <div class="cr-item"><div class="cr-label">Risco</div><div class="cr-value" id="res-risk">—</div></div>
+        </div>
+        <div class="cr-breakdown" id="res-breakdown">—</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ LIFECYCLE ══════ -->
+  <section id="bet-lifecycle">
+    <h2>Ciclo de Vida da Aposta</h2><div class="h2-rule"></div>
+    <div class="lifecycle">
+      <div class="lc-step lc-pending"><div class="lc-dot">P</div><div class="lc-name">Pending</div><div class="lc-desc">Default no schema. Raramente usado — bets passam direto para ACTIVE.</div></div>
+      <div class="lc-step lc-active"><div class="lc-dot">A</div><div class="lc-name">Active</div><div class="lc-desc">Valor debitado da carteira. Aguardando matchId para liquidação.</div></div>
+      <div class="lc-step lc-won"><div class="lc-dot">W</div><div class="lc-name">Won</div><div class="lc-desc">Match verificado. Payout creditado + transação BET_WON criada.</div></div>
+      <div class="lc-step lc-lost"><div class="lc-dot">L</div><div class="lc-name">Lost</div><div class="lc-desc">Match verificado. Nenhum crédito — valor já foi debitado na criação.</div></div>
+      <div class="lc-step lc-cancelled"><div class="lc-dot">C</div><div class="lc-name">Cancelled</div><div class="lc-desc">Admin cancelou. Valor estornado via transação de crédito.</div></div>
+    </div>
+    <h3>Onde está o código</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Transição</th><th>Arquivo</th><th>Função/Trigger</th></tr></thead>
+      <tbody>
+        <tr><td>→ ACTIVE</td><td><code>src/app/api/bets/route.ts</code></td><td>POST /api/bets — transação atômica com débito de carteira</td></tr>
+        <tr><td>ACTIVE → WON/LOST</td><td><code>src/app/api/bets/[id]/settle/route.ts</code></td><td>POST /api/bets/[id]/settle — consulta OpenDota pelo matchId</td></tr>
+        <tr><td>ACTIVE → CANCELLED</td><td><code>src/app/api/admin/bets/[id]/cancel/route.ts</code></td><td>POST /api/admin/bets/[id]/cancel — somente admin</td></tr>
+        <tr><td>ACTIVE → WON/LOST (forçado)</td><td><code>src/app/api/admin/bets/[id]/override/route.ts</code></td><td>POST /api/admin/bets/[id]/override — override manual</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- ══════ GUARDS ══════ -->
+  <section id="guards">
+    <h2>Guards &amp; Validações de Aposta</h2><div class="h2-rule"></div>
+    <p>Todas em <code>src/lib/bet-guards.ts</code>. Retornam <code>{ ok: true }</code> ou <code>{ ok: false, error: string, code: string }</code>.</p>
+    <div class="guard-list">
+      <div class="guard-item"><div class="guard-fn">guardSelfExclusion(selfExcludedUntil)</div><div class="guard-desc">Impede apostas enquanto o usuário tem autoexclusão ativa. Verifica data de expiração.</div></div>
+      <div class="guard-item"><div class="guard-fn">guardProfileFreshness(lastSyncAt)</div><div class="guard-desc">Perfil Steam deve ter sido sincronizado nas últimas 24h. Evita apostas com dados velhos de odds.</div></div>
+      <div class="guard-item"><div class="guard-fn">guardMinMatchHistory(stats)</div><div class="guard-desc">Mínimo de partidas no histórico para calcular odds confiáveis (evita 1–2 partidas distorcendo).</div></div>
+      <div class="guard-item"><div class="guard-fn">guardMaxPayout(potentialPayout)</div><div class="guard-desc">Teto de payout por aposta (protege exposição da casa em combos de odd muito alta).</div></div>
+      <div class="guard-item"><div class="guard-fn">guardDailyWinningsCap(userId, potentialPayout)</div><div class="guard-desc">Limite diário de ganhos possíveis por usuário (soma de payouts potenciais de bets ativas).</div></div>
+      <div class="guard-item"><div class="guard-fn">guardDailyLossLimit(userId, amount)</div><div class="guard-desc">Verifica limite de perda diária configurado na carteira do usuário (jogo responsável).</div></div>
+      <div class="guard-item"><div class="guard-fn">guardWeeklyLossLimit(userId, amount)</div><div class="guard-desc">Idem, mas para a janela semanal.</div></div>
+      <div class="guard-item"><div class="guard-fn">readJsonBody&lt;T&gt;(req)</div><div class="guard-desc">Lê e valida o corpo da request: tamanho máximo (413) + JSON válido (400). Use sempre em vez de req.json().</div></div>
+    </div>
+  </section>
+
+  <!-- ══════ RISCO ══════ -->
+  <section id="risco">
+    <h2>Sistema de Risco — Sinais Automáticos</h2><div class="h2-rule"></div>
+    <p>Após cada liquidação de aposta, <code>evaluateBetSignals(userId)</code> (fire-and-forget) detecta comportamentos suspeitos e cria <code>RiskFlag</code> no banco.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Signal</th><th>Detecta</th><th>Como</th></tr></thead>
+      <tbody>
+        <tr><td><code>PARTY_RECURRENCE</code></td><td>Mesmos aliados/adversários repetidamente</td><td>Compara knownTeammatesSnapshot salvo na criação da bet com os dados da partida</td></tr>
+        <tr><td><code>BET_ACCURACY</code></td><td>Taxa de acerto estatisticamente improvável</td><td>Compara win rate de apostas com win rate de partidas — diferença grande indica edge</td></tr>
+        <tr><td><code>WEAK_ENEMIES</code></td><td>Adversários consistentemente mais fracos</td><td>Compara MMR médio dos adversários vs. MMR do apostador no histórico recente</td></tr>
+        <tr><td><code>WIN_RATE_SPIKE</code></td><td>Pico abrupto de vitórias</td><td>Taxa de vitórias nas últimas 5 partidas muito acima da média histórica das últimas 20</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- ══════ PADRÕES API ══════ -->
+  <section id="api-patterns">
+    <h2>Padrões de API</h2><div class="h2-rule"></div>
+    <h3>Rate limiting</h3>
+    <pre><span class="kw">const</span> <span class="p">rl = </span><span class="kw">await</span> <span class="fn">rateLimit</span><span class="p">(</span><span class="s">`deposit:${userId}`</span>, <span class="n">10</span>, <span class="n">60 * 60 * 1000</span><span class="p">);</span>
+<span class="kw">if</span> <span class="p">(!</span><span class="p">rl.ok) </span><span class="kw">return</span> <span class="fn">rateLimitResponse</span><span class="p">(rl.resetAt);</span>
+<span class="c">// chave:string, max:number, windowMs:number</span></pre>
+
+    <h3>Admin log</h3>
+    <pre><span class="c">// Fire-and-forget — não bloqueia a resposta</span>
+<span class="kw">void</span> <span class="fn">logAdminAction</span><span class="p">(admin.id, admin.email, </span><span class="s">"SUSPEND_USER"</span>, <span class="p">targetId, { targetEmail })</span>
+  <span class="p">.</span><span class="fn">catch</span><span class="p">((e) => </span><span class="fn">console.error</span><span class="p">(</span><span class="s">"[admin-log] failed:"</span>, <span class="p">e));</span></pre>
+  </section>
+
+  <!-- ══════ DB PATTERNS ══════ -->
+  <section id="db-patterns">
+    <h2>Padrões de Banco de Dados</h2><div class="h2-rule"></div>
+    <h3>Débito atômico (anti-race-condition)</h3>
+    <pre><span class="c">// updateMany com condição WHERE balance &gt;= amount</span>
+<span class="c">// Se 0 linhas afetadas → saldo insuficiente (detectado sem race condition)</span>
+<span class="kw">const</span> <span class="p">updated = </span><span class="kw">await</span> <span class="p">tx.wallet.</span><span class="fn">updateMany</span><span class="p">({</span>
+  <span class="p">where: { userId, balance: { gte: amount } },</span>
+  <span class="p">data:  { balance: { decrement: amount } },</span>
+<span class="p">});</span>
+<span class="kw">if</span> <span class="p">(updated.count === </span><span class="n">0</span><span class="p">) </span><span class="kw">throw new</span> <span class="t">Error</span><span class="p">(</span><span class="s">"INSUFFICIENT_BALANCE"</span><span class="p">);</span></pre>
+
+    <h3>Bônus idempotente (sem race condition em depósitos concorrentes)</h3>
+    <pre><span class="c">// depositBonusClaimed: false → claimed atomicamente no UPDATE</span>
+<span class="c">// Segundo request paralelo encontra 0 linhas e não ganha bônus</span>
+<span class="kw">const</span> <span class="p">claimed = </span><span class="kw">await</span> <span class="p">tx.wallet.</span><span class="fn">updateMany</span><span class="p">({</span>
+  <span class="p">where: { userId, depositBonusClaimed: </span><span class="kw">false</span> <span class="p">},</span>
+  <span class="p">data:  { depositBonusClaimed: </span><span class="kw">true</span> <span class="p">},</span>
+<span class="p">});</span>
+<span class="kw">if</span> <span class="p">(claimed.count > </span><span class="n">0</span><span class="p">) { </span><span class="c">/* aplicar bônus */</span> <span class="p">}</span></pre>
+
+    <div class="box box-red">
+      <div class="box-title">Regras de transação</div>
+      Qualquer operação que envolva débito + crédito + log deve estar dentro de <code>prisma.$transaction()</code>. Se qualquer operação falhar, tudo é revertido. Nunca faça débito fora de uma transação.
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ── CALCULATOR ENGINE ──────────────────────────────────────────────────
+const HOUSE_EDGE = 0.08;
+const MAX_ODDS   = 1.80;
+
+function normalCDF(z) {
+  const a = [0.319381530, -0.356563782, 1.781477937, -1.821255978, 1.330274429];
+  const t = 1 / (1 + 0.2316419 * Math.abs(z));
+  const poly = t * (a[0] + t * (a[1] + t * (a[2] + t * (a[3] + t * a[4]))));
+  const pdf = Math.exp(-0.5 * z * z) / Math.sqrt(2 * Math.PI);
+  const tail = pdf * poly;
+  return z >= 0 ? 1 - tail : tail;
+}
+
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+function rankBonus(rankTier) {
+  if (!rankTier) return 0;
+  const medal = Math.floor(rankTier / 10);
+  const star  = rankTier % 10;
+  return (medal - 4) * 0.03 + (star - 3) * 0.005;
+}
+
+function calcOverProb(avg, target, dist) {
+  if (avg <= 0) return 0.5;
+  let z;
+  if (dist === 'poisson') {
+    z = (avg - target - 0.5) / Math.sqrt(avg);
+  } else {
+    z = (avg - target) / (avg * 0.22);
+  }
+  return clamp(normalCDF(z), 0.05, 0.95);
+}
+
+function toOdds(p) {
+  return Math.min(MAX_ODDS, (1 / p) * (1 - HOUSE_EDGE));
+}
+
+const combos = [];
+
+function addComboRow(type, threshold) {
+  const id = Date.now();
+  combos.push({ id, type: type || 'KILLS', threshold: threshold || 7 });
+  renderCombos();
+}
+
+function removeCombo(id) {
+  const i = combos.findIndex(c => c.id === id);
+  if (i >= 0) combos.splice(i, 1);
+  renderCombos();
+}
+
+function renderCombos() {
+  const container = document.getElementById('combo-rows');
+  container.innerHTML = '';
+  combos.forEach(c => {
+    const row = document.createElement('div');
+    row.className = 'combo-row';
+    row.innerHTML = `
+      <select class="type-sel" data-id="${c.id}" onchange="updateCombo(${c.id},'type',this.value); calculate();">
+        <option value="KILLS" ${c.type==='KILLS'?'selected':''}>KILLS</option>
+        <option value="ASSISTS" ${c.type==='ASSISTS'?'selected':''}>ASSISTS</option>
+        <option value="GPM" ${c.type==='GPM'?'selected':''}>GPM</option>
+        <option value="XPM" ${c.type==='XPM'?'selected':''}>XPM</option>
+      </select>
+      <span style="font-family:monospace;font-size:12px;color:var(--muted);">&gt;</span>
+      <input class="thresh-input" type="number" value="${c.threshold}" min="0" oninput="updateCombo(${c.id},'threshold',+this.value); calculate();">
+      <button class="btn-rm" onclick="removeCombo(${c.id}); calculate();">✕</button>
+    `;
+    container.appendChild(row);
+  });
+  calculate();
+}
+
+function updateCombo(id, field, value) {
+  const c = combos.find(x => x.id === id);
+  if (c) c[field] = value;
+}
+
+document.getElementById('btn-add-cond').onclick = () => {
+  if (combos.length >= 3) return;
+  addComboRow('KILLS', 8);
+};
+
+function g(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+function calculate() {
+  const wins       = clamp(Math.round(g('wins')), 0, 20);
+  const totalM     = 20;
+  const baseWR     = wins / totalM;
+  const last5WR    = clamp(g('last5wr') / 100, 0, 1);
+  const older15WR  = clamp(g('older15wr') / 100, 0, 1);
+  const streakLen  = Math.max(1, Math.round(g('streak')));
+  const streakSign = parseFloat(document.getElementById('streakwin').value);
+  const kda        = g('kda');
+  const rankTier   = Math.round(g('rank'));
+  const gpmDelta   = g('gpmdelta') / 100;
+  const xpmDelta   = g('xpmdelta') / 100;
+
+  const formAdj    = clamp((last5WR - older15WR) * 0.4, -0.08, 0.08);
+  const streakAdj  = streakSign * Math.min(streakLen - 1, 4) * 0.02;
+  const kdaAdj     = (kda - 2.0) * 0.02;
+  const rankAdj    = rankBonus(rankTier);
+  const gpmAdj     = clamp(gpmDelta * 0.1, -0.02, 0.02);
+  const xpmAdj     = clamp(xpmDelta * 0.1, -0.02, 0.02);
+
+  const perfAdj  = formAdj + streakAdj * 0.35;
+  const skillAdj = kdaAdj  + rankAdj   * 0.60;
+  const econAdj  = gpmAdj  + xpmAdj    * 0.15;
+
+  let finalP = clamp(baseWR + perfAdj + skillAdj * 0.75 + econAdj * 0.5625, 0.25, 0.75);
+
+  // Combo
+  const avgKills   = g('avgkills');
+  const avgAssists = g('avgassists');
+  const avgGPM     = g('avggpm');
+  const avgXPM     = g('avgxpm');
+
+  let comboP = finalP;
+  const comboLines = [];
+  combos.forEach(c => {
+    const avg  = c.type==='KILLS'?avgKills:c.type==='ASSISTS'?avgAssists:c.type==='GPM'?avgGPM:avgXPM;
+    const dist = (c.type==='GPM'||c.type==='XPM') ? 'normal' : 'poisson';
+    const p    = calcOverProb(avg, c.threshold, dist);
+    comboLines.push({ type: c.type, threshold: c.threshold, avg, dist, p });
+    comboP *= p;
+  });
+
+  const isCombo = combos.length > 0;
+  const rawOdds = (1 / comboP) * (1 - HOUSE_EDGE);
+  const finalOdds = isCombo ? rawOdds : Math.min(MAX_ODDS, rawOdds);
+
+  const risk = finalP >= 0.6 ? 'LOW' : finalP >= 0.45 ? 'MEDIUM' : 'HIGH';
+  const riskColors = { LOW: 'var(--green)', MEDIUM: 'var(--yellow)', HIGH: 'var(--red)' };
+  const riskLabels = { LOW: 'Baixo', MEDIUM: 'Médio', HIGH: 'Alto' };
+
+  document.getElementById('res-prob').textContent = (finalP * 100).toFixed(1) + '%';
+  document.getElementById('res-prob-loss').textContent = ((1 - finalP) * 100).toFixed(1) + '%';
+  document.getElementById('res-odds').textContent = finalOdds.toFixed(2) + '×';
+  const riskEl = document.getElementById('res-risk');
+  riskEl.textContent = riskLabels[risk];
+  riskEl.style.color = riskColors[risk];
+
+  const sign = v => v >= 0 ? `<span class="positive">+${(v*100).toFixed(2)}%</span>` : `<span class="negative">${(v*100).toFixed(2)}%</span>`;
+
+  let bd = `base_wr      = ${(baseWR*100).toFixed(1)}% (${wins}/20)\n`;
+  bd += `form_adj     = ${sign(formAdj)} (last5=${(last5WR*100).toFixed(0)}% vs older=${(older15WR*100).toFixed(0)}%)\n`;
+  bd += `streak_adj   = ${sign(streakAdj)} (${streakLen} consec. × ${streakSign>0?'+':'-'}2%)\n`;
+  bd += `kda_adj      = ${sign(kdaAdj)} (KDA ${kda.toFixed(1)} − 2.0 = ${(kda-2).toFixed(1)} × 2%)\n`;
+  bd += `rank_adj     = ${sign(rankAdj)} (rankTier ${rankTier})\n`;
+  bd += `gpm_adj      = ${sign(gpmAdj)} | xpm_adj = ${sign(xpmAdj)}\n`;
+  bd += `─────────────────────────────────────────────\n`;
+  bd += `perf_cluster = ${sign(perfAdj)} = form + streak×0.35\n`;
+  bd += `skill_cluster= ${sign(skillAdj)} = kda + rank×0.60\n`;
+  bd += `econ_cluster = ${sign(econAdj)} = gpm + xpm×0.15\n`;
+  bd += `─────────────────────────────────────────────\n`;
+  bd += `final_prob   = <span class="highlight">${(finalP*100).toFixed(2)}%</span> = base + perf + skill×0.75 + econ×0.5625\n`;
+  bd += `win_odds     = <span class="highlight">${finalOdds.toFixed(2)}×</span> ${isCombo?'(combo — sem teto)':'(simples — teto 1.80×)'}\n`;
+
+  if (comboLines.length > 0) {
+    bd += `─────────────────────────────────────────────\n`;
+    comboLines.forEach(l => {
+      bd += `${l.type.padEnd(8)} >  ${l.threshold} | avg=${l.avg} | P=${(l.p*100).toFixed(1)}% [${l.dist}]\n`;
+    });
+    bd += `combo_prob   = <span class="highlight">${(comboP*100).toFixed(2)}%</span> | combo_odds = <span class="highlight">${finalOdds.toFixed(2)}×</span>\n`;
+  }
+
+  document.getElementById('res-breakdown').innerHTML = bd;
+}
+
+// wire all inputs
+document.querySelectorAll('.calc-box input, .calc-box select').forEach(el => {
+  el.addEventListener('input', calculate);
+  el.addEventListener('change', calculate);
+});
+
+calculate();
+</script>

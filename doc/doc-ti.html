@@ -1,0 +1,677 @@
+<title>PlayMoney — TI</title>
+<style>
+  :root {
+    --bg: #0D1117;
+    --bg2: #161B22;
+    --bg3: #21262D;
+    --border: #30363D;
+    --border2: #3d444d;
+    --text: #E6EDF3;
+    --muted: #7D8590;
+    --neon: #0080FF;
+    --neon-dim: rgba(0,128,255,.1);
+    --green: #3FB950;
+    --green-dim: rgba(63,185,80,.1);
+    --red: #F85149;
+    --red-dim: rgba(248,81,73,.08);
+    --yellow: #E3B341;
+    --yellow-dim: rgba(227,179,65,.1);
+    --purple: #BC8CFF;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #F6F8FA;
+      --bg2: #FFFFFF;
+      --bg3: #EAEEF2;
+      --border: #D0D7DE;
+      --border2: #AFB8C1;
+      --text: #1F2328;
+      --muted: #656D76;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #F6F8FA;
+    --bg2: #FFFFFF;
+    --bg3: #EAEEF2;
+    --border: #D0D7DE;
+    --border2: #AFB8C1;
+    --text: #1F2328;
+    --muted: #656D76;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    width: 240px;
+    min-width: 240px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .nav-logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .nav-logo .tag {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 10px;
+    letter-spacing: .1em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .nav-logo .title { font-size: 16px; font-weight: 700; color: var(--text); }
+  .nav-section { padding: 0 12px; margin-bottom: 8px; }
+  .nav-label {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    padding: 6px 8px 4px;
+  }
+  nav a {
+    display: block;
+    padding: 6px 8px;
+    border-radius: 6px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    transition: all .15s;
+  }
+  nav a:hover { background: var(--bg3); color: var(--text); }
+
+  /* MAIN */
+  main { flex: 1; min-width: 0; padding: 40px 48px 80px; max-width: 860px; }
+
+  h1 { font-size: 28px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+  h2 { font-size: 20px; font-weight: 700; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 15px; font-weight: 600; margin: 28px 0 10px; color: var(--text); }
+  p { margin-bottom: 12px; color: var(--muted); line-height: 1.7; }
+  strong { color: var(--text); }
+
+  .lead { font-size: 15px; color: var(--muted); margin-bottom: 32px; line-height: 1.7; max-width: 600px; }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-weight: 600;
+    letter-spacing: .03em;
+  }
+  .badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+  .badge-blue { background: var(--neon-dim); color: var(--neon); border: 1px solid rgba(0,128,255,.3); }
+  .badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(227,179,65,.3); }
+  .badge-red { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,81,73,.25); }
+
+  /* CODE */
+  code {
+    font-family: 'Cascadia Code', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+    font-size: 12.5px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--purple);
+  }
+  pre {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 12px 0 20px;
+    font-family: 'Cascadia Code', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+    font-size: 12.5px;
+    line-height: 1.75;
+  }
+  pre .c { color: var(--muted); font-style: italic; }
+  pre .k { color: var(--neon); }
+  pre .s { color: var(--green); }
+  pre .v { color: var(--yellow); }
+  pre .p { color: var(--text); }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin: 12px 0 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+  }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg3); }
+  td code { background: var(--bg3); }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0 20px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .callout-info { border-color: var(--neon); background: var(--neon-dim); }
+  .callout-warn { border-color: var(--yellow); background: var(--yellow-dim); }
+  .callout-danger { border-color: var(--red); background: var(--red-dim); }
+  .callout-title {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .callout-info .callout-title { color: var(--neon); }
+  .callout-warn .callout-title { color: var(--yellow); }
+  .callout-danger .callout-title { color: var(--red); }
+
+  /* GRID CARDS */
+  .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 12px 0 20px; }
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .card-label {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .card-value { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .card-desc { font-size: 12px; color: var(--muted); }
+
+  /* ROUTE LIST */
+  .route { display: flex; align-items: baseline; gap: 10px; padding: 8px 12px; border-radius: 6px; margin: 2px 0; }
+  .route:hover { background: var(--bg3); }
+  .method {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 42px;
+    text-align: center;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .m-get { background: rgba(63,185,80,.15); color: var(--green); }
+  .m-post { background: rgba(0,128,255,.12); color: var(--neon); }
+  .m-put { background: rgba(227,179,65,.12); color: var(--yellow); }
+  .m-patch { background: rgba(188,140,255,.12); color: var(--purple); }
+  .m-delete { background: rgba(248,81,73,.1); color: var(--red); }
+  .route-path { font-family: 'Courier New', Consolas, monospace; font-size: 13px; color: var(--text); }
+  .route-desc { font-size: 12px; color: var(--muted); }
+
+  .arch-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 12px;
+    line-height: 2;
+    color: var(--muted);
+    margin: 12px 0 20px;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .arch-block .hl { color: var(--neon); }
+  .arch-block .gr { color: var(--green); }
+  .arch-block .ye { color: var(--yellow); }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  section { scroll-margin-top: 24px; }
+
+  @media (max-width: 760px) {
+    nav { display: none; }
+    main { padding: 24px 20px 60px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<nav>
+  <div class="nav-logo">
+    <div class="tag">▸ Equipe de TI</div>
+    <div class="title">PlayMoney</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Infraestrutura</div>
+    <a href="#stack">Stack Tecnológico</a>
+    <a href="#infra">Arquitetura</a>
+    <a href="#env">Variáveis de Ambiente</a>
+    <a href="#deploy">Deploy</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Banco de Dados</div>
+    <a href="#schema">Schema / Modelos</a>
+    <a href="#migrations">Migrations</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">API</div>
+    <a href="#routes">Rotas HTTP</a>
+    <a href="#auth">Autenticação</a>
+    <a href="#rate-limits">Rate Limits</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Confiabilidade</div>
+    <a href="#pool">Connection Pool</a>
+    <a href="#circuit">Circuit Breaker</a>
+    <a href="#redis">Redis / Cache</a>
+    <a href="#calibration">Calibração</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Operação</div>
+    <a href="#runbook">Runbook</a>
+    <a href="#admin-api">Admin API</a>
+  </div>
+</nav>
+
+<main>
+  <div class="header-meta">
+    <span class="badge badge-green">Versão Atual</span>
+    <span class="badge badge-blue">Next.js 16 · Prisma 7 · Node 20</span>
+  </div>
+  <h1>Manual Técnico — PlayMoney</h1>
+  <p class="lead">Documentação de infraestrutura, banco de dados e operação do sistema PlayMoney — plataforma de apostas em performance própria no Dota 2. Destinado à equipe de TI e desenvolvedores responsáveis por deploy, manutenção e suporte técnico.</p>
+
+  <!-- ─── STACK ─────────────────────── -->
+  <section id="stack">
+    <h2>Stack Tecnológico</h2>
+    <div class="card-grid">
+      <div class="card"><div class="card-label">Framework</div><div class="card-value">Next.js 16</div><div class="card-desc">App Router, SSR + RSC, API Routes</div></div>
+      <div class="card"><div class="card-label">ORM / DB</div><div class="card-value">Prisma 7</div><div class="card-desc">PostgreSQL via @prisma/adapter-pg</div></div>
+      <div class="card"><div class="card-label">Auth</div><div class="card-value">NextAuth v5</div><div class="card-desc">JWT session, credenciais + OAuth</div></div>
+      <div class="card"><div class="card-label">Cache / Rate</div><div class="card-value">Redis</div><div class="card-desc">Rate limiting; fallback em memória</div></div>
+      <div class="card"><div class="card-label">CSS</div><div class="card-value">Tailwind v4</div><div class="card-desc">CSS Variables, design system próprio</div></div>
+      <div class="card"><div class="card-label">Deploy</div><div class="card-value">Docker</div><div class="card-desc">Compose: app + postgres + redis</div></div>
+    </div>
+    <h3>Dependências críticas externas</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Serviço</th><th>Uso</th><th>Fallback</th></tr></thead>
+        <tbody>
+          <tr><td><strong>OpenDota API</strong></td><td>Busca perfil e partidas recentes do Dota 2</td><td>Circuit breaker: 5 falhas → 30 s bloqueado</td></tr>
+          <tr><td><strong>PostgreSQL</strong></td><td>Banco de dados principal (wallet, bets, users)</td><td>Sem fallback — crítico</td></tr>
+          <tr><td><strong>Redis</strong></td><td>Rate limiting distribuído</td><td>Limitação cai para in-memory por processo</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── ARQUITETURA ─────────────────── -->
+  <section id="infra">
+    <h2>Arquitetura</h2>
+    <div class="arch-block"><span class="hl">Internet</span>
+    │
+    ├── <span class="hl">Next.js App</span> (porta 3000)
+    │   ├── <span class="gr">/app/(dashboard)/</span>    → páginas SSR (React Server Components)
+    │   ├── <span class="gr">/app/api/</span>             → API routes (Edge-compatible handlers)
+    │   └── <span class="gr">/lib/</span>                 → auth, prisma, odds, bet-events, redis…
+    │
+    ├── <span class="ye">PostgreSQL</span> (porta 5432)
+    │   └── Pool de 10 conexões via pg.Pool → @prisma/adapter-pg
+    │
+    ├── <span class="ye">Redis</span> (porta 6379)
+    │   └── Rate limiting por IP/userId com TTL em milissegundos
+    │
+    └── <span class="ye">OpenDota API</span> (HTTPS externo)
+        └── Circuit breaker: CLOSED → OPEN (5 falhas) → HALF_OPEN (probe 30 s)</div>
+  </section>
+
+  <!-- ─── ENV ─────────────────────────── -->
+  <section id="env">
+    <h2>Variáveis de Ambiente</h2>
+    <div class="callout callout-danger">
+      <div class="callout-title">Atenção</div>
+      Nunca commite o arquivo <code>.env</code>. Use o <code>.env.example</code> como referência. Em produção, injete via secrets do orquestrador ou arquivo montado.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Variável</th><th>Obrigatória</th><th>Padrão</th><th>Descrição</th></tr></thead>
+        <tbody>
+          <tr><td><code>DATABASE_URL</code></td><td><span class="badge badge-red">Sim</span></td><td>—</td><td>Connection string PostgreSQL</td></tr>
+          <tr><td><code>AUTH_SECRET</code></td><td><span class="badge badge-red">Sim</span></td><td>—</td><td>Segredo JWT NextAuth — <code>openssl rand -base64 32</code></td></tr>
+          <tr><td><code>AUTH_URL</code></td><td><span class="badge badge-red">Sim</span></td><td>—</td><td>URL base do app (ex: https://playmoney.wizardtech.com.br)</td></tr>
+          <tr><td><code>REDIS_URL</code></td><td><span class="badge badge-yellow">Recomendada</span></td><td>—</td><td>redis://host:6379 — sem isso, rate limit é por processo</td></tr>
+          <tr><td><code>MAINTENANCE_SECRET</code></td><td><span class="badge badge-yellow">Recomendada</span></td><td>—</td><td>Bearer token para o endpoint de expire-bets</td></tr>
+          <tr><td><code>OPENDOTA_API_KEY</code></td><td><span class="badge badge-green">Opcional</span></td><td>vazio</td><td>Key da OpenDota (aumenta rate limit da API)</td></tr>
+          <tr><td><code>DB_POOL_MAX</code></td><td><span class="badge badge-green">Opcional</span></td><td>10</td><td>Máx conexões simultâneas no pool</td></tr>
+          <tr><td><code>DB_IDLE_TIMEOUT_MS</code></td><td><span class="badge badge-green">Opcional</span></td><td>30000</td><td>Encerra conexão ociosa após N ms</td></tr>
+          <tr><td><code>DB_CONNECT_TIMEOUT_MS</code></td><td><span class="badge badge-green">Opcional</span></td><td>5000</td><td>Falha se não adquirir conexão em N ms</td></tr>
+          <tr><td><code>BONUS_RATE</code></td><td><span class="badge badge-green">Opcional</span></td><td>0.5</td><td>Taxa do bônus de primeiro depósito (0.5 = 50%)</td></tr>
+          <tr><td><code>BONUS_CAP</code></td><td><span class="badge badge-green">Opcional</span></td><td>50</td><td>Teto do bônus em R$</td></tr>
+          <tr><td><code>MIN_BONUS_DEP</code></td><td><span class="badge badge-green">Opcional</span></td><td>20</td><td>Depósito mínimo para ganhar bônus</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── DEPLOY ─────────────────────── -->
+  <section id="deploy">
+    <h2>Deploy</h2>
+    <h3>Docker Compose (produção)</h3>
+    <p>O projeto tem <code>Dockerfile</code> e <code>docker-compose.yml</code> prontos. Serviços: <strong>app</strong> (Next.js), <strong>postgres</strong> e <strong>redis</strong>.</p>
+    <pre><span class="c"># Pull das mudanças e rebuild</span>
+<span class="k">git</span> <span class="v">pull</span>
+<span class="k">docker compose build</span> <span class="v">app</span>
+<span class="k">docker compose up -d</span> <span class="v">app</span>
+
+<span class="c"># Verificar logs</span>
+<span class="k">docker compose logs -f</span> <span class="v">app</span>
+
+<span class="c"># Status de todos os serviços</span>
+<span class="k">docker compose ps</span></pre>
+
+    <h3>Quando rodar migrations</h3>
+    <div class="callout callout-warn">
+      <div class="callout-title">Importante</div>
+      Migrations são necessárias <strong>somente</strong> quando o arquivo <code>prisma/schema.prisma</code> é alterado. Mudanças de lógica de negócio, UI ou API <strong>não requerem</strong> migration.
+    </div>
+    <pre><span class="c"># Verificar se há migrations pendentes</span>
+<span class="k">docker compose exec app npx prisma migrate status</span>
+
+<span class="c"># Aplicar migrations pendentes</span>
+<span class="k">docker compose exec app npx prisma migrate deploy</span></pre>
+
+    <h3>Rollback</h3>
+    <pre><span class="c"># Restaurar imagem anterior (se usando tags)</span>
+<span class="k">docker compose stop</span> <span class="v">app</span>
+<span class="k">docker tag</span> <span class="s">playmoney-app:previous playmoney-app:latest</span>
+<span class="k">docker compose up -d</span> <span class="v">app</span>
+
+<span class="c"># Via git (rebuild da versão anterior)</span>
+<span class="k">git checkout</span> <span class="s">&lt;commit-hash&gt;</span>
+<span class="k">docker compose build app &amp;&amp; docker compose up -d app</span></pre>
+  </section>
+
+  <!-- ─── SCHEMA ─────────────────────── -->
+  <section id="schema">
+    <h2>Schema do Banco de Dados</h2>
+    <h3>Modelos principais</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Modelo</th><th>Descrição</th><th>Campos-chave</th></tr></thead>
+        <tbody>
+          <tr><td><code>User</code></td><td>Conta do usuário</td><td>role (USER/ADMIN), suspendedAt, depositsBlocked, depositLimit, canGenerateInvites</td></tr>
+          <tr><td><code>Wallet</code></td><td>Carteira financeira (1:1 com User)</td><td>balance, bonusBalance, depositBonusClaimed, dailyLossLimit</td></tr>
+          <tr><td><code>Transaction</code></td><td>Extrato financeiro</td><td>type (DEPOSIT/WITHDRAWAL/BET_PLACED/BET_WON/BET_LOST/BONUS), status, amount</td></tr>
+          <tr><td><code>GameProfile</code></td><td>Conta Steam vinculada (DOTA2)</td><td>externalId (Steam account ID), stats (JSON), lastSyncAt</td></tr>
+          <tr><td><code>Bet</code></td><td>Aposta realizada</td><td>eventType, prediction, status, odds, amount, potentialPayout, matchId, matchData (JSON)</td></tr>
+          <tr><td><code>PlatformSettings</code></td><td>Config global (singleton)</td><td>depositsBlocked, globalDepositLimit, maintenanceMode, maintenanceBanner</td></tr>
+          <tr><td><code>AdminLog</code></td><td>Audit trail de ações admin</td><td>adminId, adminEmail, action, targetUserId, detail (JSON)</td></tr>
+          <tr><td><code>RiskFlag</code></td><td>Sinais de risco detectados</td><td>signal (PARTY_RECURRENCE / BET_ACCURACY / WEAK_ENEMIES / WIN_RATE_SPIKE), score</td></tr>
+          <tr><td><code>Invite</code></td><td>Link de convite (1:1 com User criador)</td><td>code (único), uses []</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Constraints de integridade críticos</h3>
+    <p><code>GameProfile @@unique([externalId, game])</code> — um Steam ID não pode ser vinculado a duas contas distintas (anti-hedge). <code>Wallet</code> é criada automaticamente no registro do usuário. <code>Bet.gameProfileId</code> é NOT NULL — toda aposta exige perfil Steam vinculado.</p>
+  </section>
+
+  <!-- ─── MIGRATIONS ─────────────────── -->
+  <section id="migrations">
+    <h2>Migrations</h2>
+    <pre><span class="c"># Criar nova migration (dev local)</span>
+<span class="k">npx prisma migrate dev</span> <span class="s">--name nome-descritivo</span>
+
+<span class="c"># Aplicar em produção (sem gerar arquivo)</span>
+<span class="k">npx prisma migrate deploy</span>
+
+<span class="c"># Verificar status</span>
+<span class="k">npx prisma migrate status</span>
+
+<span class="c"># Reset completo (DEV ONLY — destrói dados)</span>
+<span class="k">npx prisma migrate reset</span></pre>
+    <div class="callout callout-danger">
+      <div class="callout-title">Produção</div>
+      Nunca execute <code>migrate reset</code> em produção. Sempre faça backup antes de <code>migrate deploy</code>.
+    </div>
+  </section>
+
+  <!-- ─── ROTAS ─────────────────────── -->
+  <section id="routes">
+    <h2>Rotas HTTP (API)</h2>
+    <h3>Públicas</h3>
+    <div class="route"><span class="method m-post">POST</span><span class="route-path">/api/auth/register</span><span class="route-desc">Cadastro de novo usuário</span></div>
+    <div class="route"><span class="method m-post">POST</span><span class="route-path">/api/auth/[...nextauth]</span><span class="route-desc">Login, logout, sessão (NextAuth)</span></div>
+
+    <h3>Autenticadas — Usuário</h3>
+    <div class="route"><span class="method m-get">GET</span><span class="route-path">/api/wallet</span><span class="route-desc">Saldo + últimas 20 transações</span></div>
+    <div class="route"><span class="method m-post">POST</span><span class="route-path">/api/wallet</span><span class="route-desc">Depósito (rate limit: 10/h)</span></div>
+    <div class="route"><span class="method m-post">POST</span><span class="route-path">/api/wallet/withdraw</span><span class="route-desc">Saque (rate limit: 3/h; exige aposta liquidada)</span></div>
+    <div class="route"><span class="method m-get">GET</span><span class="route-path">/api/games/dota2</span><span class="route-desc">Perfil Steam + stats + odds dinâmicas</span></div>
+    <div class="route"><span class="method m-post">POST</span><span class="route-path">/api/bets</span><span class="route-desc">Criar aposta (WIN_LOSS ou combo)</span></div>
+    <div class="route"><span class="method m-post">POST</span><span class="route-path">/api/bets/[id]/settle</span><span class="route-desc">Liquidar aposta manualmente por match ID</span></div>
+    <div class="route"><span class="method m-get">GET</span><span class="route-path">/api/invite</span><span class="route-desc">Gerar/obter link de convite</span></div>
+    <div class="route"><span class="method m-patch">PATCH</span><span class="route-path">/api/user/settings</span><span class="route-desc">Atualizar configurações do usuário</span></div>
+
+    <h3>Admin (role ADMIN obrigatório)</h3>
+    <div class="route"><span class="method m-get">GET</span><span class="route-path">/api/admin/stats</span><span class="route-desc">KPIs gerais da plataforma</span></div>
+    <div class="route"><span class="method m-get">GET</span><span class="route-path">/api/admin/logs</span><span class="route-desc">Audit trail de ações admin</span></div>
+    <div class="route"><span class="method m-get">GET</span><span class="route-path">/api/admin/calibration</span><span class="route-desc">Backtest: probabilidade prevista vs real (90 dias)</span></div>
+    <div class="route"><span class="method m-get">GET</span><span class="route-path">/api/admin/risk</span><span class="route-desc">Listagem de sinais de risco</span></div>
+    <div class="route"><span class="method m-post">POST</span><span class="route-path">/api/admin/risk/[flagId]</span><span class="route-desc">Revisar sinal (aceitar investigação)</span></div>
+    <div class="route"><span class="method m-put">PUT</span><span class="route-path">/api/admin/risk/[flagId]</span><span class="route-desc">Suspender usuário via flag de risco</span></div>
+    <div class="route"><span class="method m-patch">PATCH</span><span class="route-path">/api/admin/users/[id]</span><span class="route-desc">suspend / unsuspend / blockDeposits / setDepositLimit / invite</span></div>
+    <div class="route"><span class="method m-get">GET</span><span class="route-path">/api/admin/users/[id]/detail</span><span class="route-desc">Detalhes completos do usuário + apostas</span></div>
+    <div class="route"><span class="method m-patch">PATCH</span><span class="route-path">/api/admin/users/[id]/balance</span><span class="route-desc">Ajuste manual de saldo</span></div>
+    <div class="route"><span class="method m-put">PUT</span><span class="route-path">/api/admin/users/[id]/steam</span><span class="route-desc">Trocar conta Steam do usuário</span></div>
+    <div class="route"><span class="method m-post">POST</span><span class="route-path">/api/admin/bets/[id]/cancel</span><span class="route-desc">Cancelar aposta e estornar valor</span></div>
+    <div class="route"><span class="method m-post">POST</span><span class="route-path">/api/admin/bets/[id]/override</span><span class="route-desc">Forçar resultado de aposta (WON/LOST)</span></div>
+    <div class="route"><span class="method m-get">GET</span><span class="route-path">/api/admin/platform</span><span class="route-desc">Ler configurações globais</span></div>
+    <div class="route"><span class="method m-patch">PATCH</span><span class="route-path">/api/admin/platform</span><span class="route-desc">Alterar manutenção, depósitos, limites</span></div>
+    <div class="route"><span class="method m-get">GET</span><span class="route-path">/api/admin/invites</span><span class="route-desc">Gestão de convites</span></div>
+
+    <h3>Sistema (cron/maintenance)</h3>
+    <div class="route"><span class="method m-post">POST</span><span class="route-path">/api/maintenance/expire-bets</span><span class="route-desc">Expirar apostas antigas — requer Bearer MAINTENANCE_SECRET</span></div>
+  </section>
+
+  <!-- ─── AUTH ─────────────────────── -->
+  <section id="auth">
+    <h2>Autenticação</h2>
+    <p>NextAuth v5 com estratégia <strong>JWT</strong> (sem tabela de sessões no banco). A config é dividida em dois arquivos para compatibilidade com o Edge Runtime do Next.js:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Arquivo</th><th>Responsabilidade</th></tr></thead>
+        <tbody>
+          <tr><td><code>src/lib/auth.config.ts</code></td><td>Providers, callbacks — compatível com Edge</td></tr>
+          <tr><td><code>src/lib/auth.ts</code></td><td>Instância com PrismaAdapter — somente Node.js</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>O role do usuário (<code>USER</code> / <code>ADMIN</code>) é embutido no token JWT no callback <code>session</code>. Para tornar um usuário admin, atualize diretamente no banco:</p>
+    <pre><span class="c">-- Promover usuário a admin</span>
+<span class="k">UPDATE</span> <span class="s">"User"</span> <span class="k">SET</span> <span class="v">role</span> = <span class="s">'ADMIN'</span> <span class="k">WHERE</span> <span class="v">email</span> = <span class="s">'email@dominio.com'</span>;</pre>
+    <div class="callout callout-warn">
+      <div class="callout-title">Token em cache</div>
+      O JWT fica no cookie do browser por 30 dias. Após promover um usuário, ele precisa fazer login novamente para o token refletir o novo role.
+    </div>
+  </section>
+
+  <!-- ─── RATE LIMITS ─────────────────── -->
+  <section id="rate-limits">
+    <h2>Rate Limits</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Endpoint</th><th>Limite</th><th>Janela</th><th>Chave</th></tr></thead>
+        <tbody>
+          <tr><td><code>POST /api/auth/register</code></td><td>5 tentativas</td><td>15 min</td><td>IP</td></tr>
+          <tr><td><code>POST /api/auth/register</code></td><td>3 contas</td><td>24 h</td><td>IP</td></tr>
+          <tr><td><code>POST /api/wallet</code> (depósito)</td><td>10</td><td>1 hora</td><td>userId</td></tr>
+          <tr><td><code>POST /api/wallet/withdraw</code></td><td>3</td><td>1 hora</td><td>userId</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Rate limiting usa Redis quando <code>REDIS_URL</code> está configurada. Sem Redis, o contador é em memória por processo — não é compartilhado entre múltiplos containers. Em deploy com mais de 1 instância, <strong>Redis é obrigatório</strong>.</p>
+  </section>
+
+  <!-- ─── POOL ─────────────────────── -->
+  <section id="pool">
+    <h2>Connection Pool</h2>
+    <p>O Prisma usa <code>pg.Pool</code> via <code>@prisma/adapter-pg</code>. O pool é criado uma vez na inicialização do processo e reutilizado via <code>globalThis</code> em desenvolvimento (evita múltiplos pools no hot-reload).</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Config</th><th>Env Var</th><th>Padrão</th><th>Descrição</th></tr></thead>
+        <tbody>
+          <tr><td>max</td><td><code>DB_POOL_MAX</code></td><td>10</td><td>Conexões simultâneas máximas</td></tr>
+          <tr><td>idleTimeoutMillis</td><td><code>DB_IDLE_TIMEOUT_MS</code></td><td>30 000</td><td>Fecha conexão ociosa após N ms</td></tr>
+          <tr><td>connectionTimeoutMillis</td><td><code>DB_CONNECT_TIMEOUT_MS</code></td><td>5 000</td><td>Erro se não conectar em N ms</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info">
+      <div class="callout-title">Tuning</div>
+      Para Supabase ou conexão via PgBouncer, mantenha <code>DB_POOL_MAX</code> baixo (2–5). Em conexão direta ao PostgreSQL, 10–20 é adequado para tráfego moderado.
+    </div>
+  </section>
+
+  <!-- ─── CIRCUIT BREAKER ────────────── -->
+  <section id="circuit">
+    <h2>Circuit Breaker (OpenDota)</h2>
+    <p>Implementado em <code>src/lib/opendota.ts</code>. Protege o sistema contra falhas em cascata da API externa.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Estado</th><th>Condição de entrada</th><th>Comportamento</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-green">CLOSED</span></td><td>Normal (padrão)</td><td>Todas as requisições passam</td></tr>
+          <tr><td><span class="badge badge-red">OPEN</span></td><td>5 falhas consecutivas</td><td>Rejeita requisições imediatamente; tenta probe após 30 s</td></tr>
+          <tr><td><span class="badge badge-yellow">HALF_OPEN</span></td><td>30 s após OPEN</td><td>Deixa 1 requisição passar; sucesso → CLOSED, falha → OPEN</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-warn">
+      <div class="callout-title">Estado em memória</div>
+      O circuit breaker é por processo. Em múltiplas instâncias, cada uma tem seu próprio contador. Para estado compartilhado, seria necessário mover para Redis.
+    </div>
+  </section>
+
+  <!-- ─── REDIS ─────────────────────── -->
+  <section id="redis">
+    <h2>Redis / Cache</h2>
+    <p>Usado exclusivamente para rate limiting. O cliente é criado em <code>src/lib/redis.ts</code> com fallback automático para mapa em memória quando <code>REDIS_URL</code> não está definida. Em produção sem Redis, é logado um aviso no startup.</p>
+    <pre><span class="c"># Testar conexão com Redis</span>
+<span class="k">docker compose exec redis redis-cli ping</span>
+<span class="c"># → PONG</span>
+
+<span class="c"># Ver chaves de rate limit</span>
+<span class="k">docker compose exec redis redis-cli keys</span> <span class="s">"rl:*"</span></pre>
+  </section>
+
+  <!-- ─── CALIBRAÇÃO ─────────────────── -->
+  <section id="calibration">
+    <h2>Endpoint de Calibração</h2>
+    <p>Disponível em <code>GET /api/admin/calibration</code>. Compara a probabilidade prevista pelo modelo de odds com a taxa de vitória real dos últimos 90 dias. Requer role ADMIN.</p>
+    <h3>Resposta</h3>
+    <pre><span class="p">{</span>
+  <span class="s">"totalBets"</span><span class="p">:</span> <span class="v">234</span>,
+  <span class="s">"wonCount"</span><span class="p">:</span> <span class="v">118</span>,
+  <span class="s">"overallWinRate"</span><span class="p">:</span> <span class="v">0.504</span>,
+  <span class="s">"brierScore"</span><span class="p">:</span> <span class="v">0.1832</span>,           <span class="c">// &lt; 0.20 = bom</span>
+  <span class="s">"brierInterpretation"</span><span class="p">:</span> <span class="s">"bom"</span>,
+  <span class="s">"calibration"</span><span class="p">: [</span>
+    <span class="p">{ </span><span class="s">"predicted"</span><span class="p">:</span> <span class="v">0.45</span>, <span class="s">"actual"</span><span class="p">:</span> <span class="v">0.47</span>, <span class="s">"count"</span><span class="p">:</span> <span class="v">43</span> <span class="p">}</span>,
+    <span class="p">{ </span><span class="s">"predicted"</span><span class="p">:</span> <span class="v">0.55</span>, <span class="s">"actual"</span><span class="p">:</span> <span class="v">0.58</span>, <span class="s">"count"</span><span class="p">:</span> <span class="v">61</span> <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span></pre>
+    <p>Com menos de 10 apostas, retorna <code>{ "insufficient": true }</code>. O Brier Score ideal é próximo de 0.20.</p>
+  </section>
+
+  <!-- ─── RUNBOOK ─────────────────────── -->
+  <section id="runbook">
+    <h2>Runbook</h2>
+    <h3>Ativar modo manutenção</h3>
+    <pre><span class="c"># Via API (requer token de admin)</span>
+<span class="k">curl</span> <span class="s">-X PATCH https://playmoney.wizardtech.com.br/api/admin/platform</span> \
+  <span class="k">-H</span> <span class="s">"Cookie: &lt;auth-cookie&gt;"</span> \
+  <span class="k">-d</span> <span class="s">'{"maintenanceMode": true, "maintenanceBanner": "Manutenção programada. Voltamos às 22h."}'</span></pre>
+
+    <h3>Expirar apostas pendentes (cron)</h3>
+    <pre><span class="k">curl</span> <span class="s">-X POST https://playmoney.wizardtech.com.br/api/maintenance/expire-bets</span> \
+  <span class="k">-H</span> <span class="s">"Authorization: Bearer $MAINTENANCE_SECRET"</span></pre>
+
+    <h3>Acesso direto ao banco</h3>
+    <pre><span class="k">docker compose exec postgres psql</span> <span class="s">-U playmoney playmoney</span>
+
+<span class="c">-- Ver apostas ativas</span>
+<span class="k">SELECT</span> id, status, amount, "createdAt" <span class="k">FROM</span> <span class="s">"Bet"</span> <span class="k">WHERE</span> status = <span class="s">'ACTIVE'</span> <span class="k">ORDER BY</span> <span class="s">"createdAt"</span> <span class="k">DESC</span>;
+
+<span class="c">-- Ver saldo total na plataforma</span>
+<span class="k">SELECT SUM</span>(balance) <span class="k">as total_em_carteiras FROM</span> <span class="s">"Wallet"</span>;</pre>
+
+    <h3>Problemas comuns</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sintoma</th><th>Causa provável</th><th>Ação</th></tr></thead>
+        <tbody>
+          <tr><td>"A server error occurred" em qualquer página admin</td><td>Erro de servidor Node (exception não tratada)</td><td>Verificar <code>docker compose logs app</code></td></tr>
+          <tr><td>Odds não carregam na página Dota 2</td><td>OpenDota API indisponível (circuit breaker OPEN)</td><td>Aguardar 30 s para probe automático. Verificar status.opendota.com</td></tr>
+          <tr><td>Rate limit ativo mas Redis não configurado</td><td>Warning no startup, limitação por processo</td><td>Configurar <code>REDIS_URL</code></td></tr>
+          <tr><td>Depósito falha com 503</td><td>Admin ativou bloqueio global de depósitos</td><td>Verificar PlatformSettings via <code>GET /api/admin/platform</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── ADMIN API ─────────────────── -->
+  <section id="admin-api">
+    <h2>Admin API — Ações disponíveis</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Ação</th><th>Endpoint</th><th>Payload</th></tr></thead>
+        <tbody>
+          <tr><td>Suspender usuário</td><td><code>PATCH /api/admin/users/[id]</code></td><td><code>{"action":"suspend"}</code></td></tr>
+          <tr><td>Remover suspensão</td><td><code>PATCH /api/admin/users/[id]</code></td><td><code>{"action":"unsuspend"}</code></td></tr>
+          <tr><td>Bloquear depósitos</td><td><code>PATCH /api/admin/users/[id]</code></td><td><code>{"action":"blockDeposits"}</code></td></tr>
+          <tr><td>Definir limite de depósito</td><td><code>PATCH /api/admin/users/[id]</code></td><td><code>{"action":"setDepositLimit","limit":500}</code></td></tr>
+          <tr><td>Ajustar saldo</td><td><code>PATCH /api/admin/users/[id]/balance</code></td><td><code>{"delta": 100, "reason": "correção manual"}</code></td></tr>
+          <tr><td>Cancelar aposta</td><td><code>POST /api/admin/bets/[id]/cancel</code></td><td><code>{"reason": "partida inválida"}</code></td></tr>
+          <tr><td>Override de resultado</td><td><code>POST /api/admin/bets/[id]/override</code></td><td><code>{"outcome":"WON","reason":"manual"}</code></td></tr>
+          <tr><td>Trocar Steam account</td><td><code>PUT /api/admin/users/[id]/steam</code></td><td><code>{"steamId":"12345678"}</code></td></tr>
+          <tr><td>Habilitar convites</td><td><code>PATCH /api/admin/users/[id]</code></td><td><code>{"action":"enableInvite"}</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info">
+      <div class="callout-title">Audit Trail</div>
+      Todas as ações admin são registradas automaticamente em <code>AdminLog</code>. Consulte em <code>GET /api/admin/logs</code> ou direto no banco via <code>SELECT * FROM "AdminLog" ORDER BY "createdAt" DESC</code>.
+    </div>
+  </section>
+</main>

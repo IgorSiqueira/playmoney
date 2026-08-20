@@ -10,8 +10,8 @@ import { formatCurrency, getRankName } from "@/lib/utils";
 import { calculateComboOdds } from "@/lib/bet-events";
 import {
   Gamepad2, RefreshCw, Shield, Sword, Trophy,
-  Target, BarChart3, ChevronRight, X,
-  TrendingUp, TrendingDown, Crosshair, Plus,
+  Target, BarChart3, X,
+  TrendingUp, TrendingDown, Crosshair, Plus, Zap,
 } from "lucide-react";
 import { AlertBox } from "@/components/ui/alert-box";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
@@ -23,6 +23,7 @@ interface OddsFactors {
   kdaAdjustment: number;
   rankAdjustment: number;
   gpmAdjustment: number;
+  xpmAdjustment?: number;
   finalProbability: number;
   last5WR: number;
   older15WR: number;
@@ -34,7 +35,7 @@ interface GameProfile {
   id: string; externalId: string; displayName: string | null; avatarUrl: string | null;
   stats: {
     winRate: number; totalMatches: number; recentWinRate: number; averageKDA: number;
-    averageKills: number; averageDeaths: number; averageAssists: number; averageGPM: number;
+    averageKills: number; averageDeaths: number; averageAssists: number; averageGPM: number; averageXPM: number;
     rankTier?: number;
     odds: {
       winOdds: number; loseOdds: number; winProbability: number; riskLevel: string;
@@ -44,7 +45,7 @@ interface GameProfile {
   lastSyncAt: string | null;
 }
 
-type ConditionType = "KILLS" | "ASSISTS" | "GPM";
+type ConditionType = "KILLS" | "ASSISTS" | "GPM" | "XPM";
 interface Condition { type: ConditionType; threshold: number }
 
 const CONDITION_META: Record<ConditionType, {
@@ -55,6 +56,7 @@ const CONDITION_META: Record<ConditionType, {
   KILLS:   { label: "Abates",       unit: "kills",  avg: s => s.averageKills },
   ASSISTS: { label: "Assistências", unit: "assists", avg: s => s.averageAssists },
   GPM:     { label: "GPM",          unit: "GPM",    avg: s => s.averageGPM },
+  XPM:     { label: "XPM",          unit: "XPM",    avg: s => s.averageXPM },
 };
 
 const FORM_CONFIG = {
@@ -182,6 +184,12 @@ function WinLossOddsPanel({
                   note: "Gold/min nas últimas 5 vs anteriores",
                   color: f.gpmAdjustment >= 0 ? "var(--neon)" : "var(--danger)",
                 },
+                {
+                  label: "Tendência XPM",
+                  value: pct(f.xpmAdjustment ?? 0),
+                  note: "Exp/min nas últimas 5 vs anteriores",
+                  color: (f.xpmAdjustment ?? 0) >= 0 ? "var(--neon)" : "var(--danger)",
+                },
               ].map(({ label, value, note, color }) => (
                 <tr key={label} className="border-t border-[rgba(0,128,255,0.08)] hover:bg-[rgba(0,128,255,0.04)]">
                   <td className="px-4 py-2">
@@ -269,7 +277,7 @@ export default function Dota2Page() {
     return calculateComboOdds(
       s.odds.winProbability,
       conditions,
-      { averageKills: s.averageKills, averageAssists: s.averageAssists, averageGPM: s.averageGPM },
+      { averageKills: s.averageKills, averageAssists: s.averageAssists, averageGPM: s.averageGPM, averageXPM: s.averageXPM },
     );
   }, [conditions, profile?.stats]);
 
@@ -402,14 +410,15 @@ export default function Dota2Page() {
             </div>
             <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest mb-4">STEAM ID · {profile.externalId}</div>
             {profile.stats && (
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+              <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
                 {[
                   { icon: Shield,       label: "Win Rate",  value: `${((profile.stats.recentWinRate ?? 0) * 100).toFixed(1)}%`, color: "var(--neon)" },
                   { icon: BarChart3,    label: "Partidas",  value: String(profile.stats.totalMatches ?? 0),                      color: "var(--blue)" },
                   { icon: Sword,        label: "KDA",       value: (profile.stats.averageKDA    ?? 0).toFixed(2),                color: "var(--gold)" },
                   { icon: Crosshair,    label: "K Médio",   value: (profile.stats.averageKills  ?? 0).toFixed(1),                color: "var(--text)" },
                   { icon: TrendingDown, label: "D Médio",   value: (profile.stats.averageDeaths ?? 0).toFixed(1),                color: "var(--danger)" },
-                  { icon: TrendingUp,   label: "GPM Médio", value: String(Math.round(profile.stats.averageGPM ?? 0)),            color: "var(--gold)" },
+                  { icon: TrendingUp,   label: "GPM",       value: String(Math.round(profile.stats.averageGPM ?? 0)),            color: "var(--gold)" },
+                  { icon: Zap,          label: "XPM",       value: String(Math.round(profile.stats.averageXPM ?? 0)),            color: "var(--neon)" },
                 ].map(({ icon: Icon, label, value, color }) => (
                   <div key={label} className="border border-[var(--border)] bg-[var(--surface-1)] p-2.5">
                     <div className="flex items-center gap-1 mb-1.5">

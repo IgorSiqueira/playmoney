@@ -18,6 +18,7 @@ export interface DynamicOddsFactors {
   kdaAdjustment: number;
   rankAdjustment: number;
   gpmAdjustment: number;
+  xpmAdjustment: number;
   finalProbability: number;
   last5WR: number;
   older15WR: number;
@@ -73,6 +74,7 @@ export function calculateDynamicOdds(
         kdaAdjustment: (stats.averageKDA - 2.0) * 0.02,
         rankAdjustment: rankTierToMmrBonus(stats.rankTier),
         gpmAdjustment: 0,
+        xpmAdjustment: 0,
         finalProbability: base.winProbability,
         last5WR: stats.recentWinRate,
         older15WR: stats.recentWinRate,
@@ -121,12 +123,20 @@ export function calculateDynamicOdds(
   const gpmDelta      = prevGPM > 0 ? (lastGPM - prevGPM) / prevGPM : 0;
   const gpmAdjustment = Math.max(-0.02, Math.min(0.02, gpmDelta * 0.1));
 
+  // ── XPM trend: last-5 vs previous-5 ──────────────────────────────────────
+  const lastXPM = last5.reduce((s, m) => s + (m.xp_per_min ?? 0), 0) / last5.length;
+  const prevXPM = prev5.length > 0
+    ? prev5.reduce((s, m) => s + (m.xp_per_min ?? 0), 0) / prev5.length
+    : lastXPM;
+  const xpmDelta      = prevXPM > 0 ? (lastXPM - prevXPM) / prevXPM : 0;
+  const xpmAdjustment = Math.max(-0.02, Math.min(0.02, xpmDelta * 0.1));
+
   // ── Final probability ─────────────────────────────────────────────────────
   const finalProbability = Math.max(
     0.25,
     Math.min(
       0.75,
-      baseWinRate + formAdjustment + streakAdjustment + kdaAdjustment + rankAdjustment + gpmAdjustment,
+      baseWinRate + formAdjustment + streakAdjustment + kdaAdjustment + rankAdjustment + gpmAdjustment + xpmAdjustment,
     ),
   );
 
@@ -152,6 +162,7 @@ export function calculateDynamicOdds(
       kdaAdjustment,
       rankAdjustment,
       gpmAdjustment,
+      xpmAdjustment,
       finalProbability,
       last5WR,
       older15WR,

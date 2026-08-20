@@ -15,7 +15,7 @@ import {
 const MAX_ACTIVE_BETS_PER_PROFILE = 5;
 
 const conditionSchema = z.object({
-  type:      z.enum(["KILLS", "ASSISTS", "GPM"]),
+  type:      z.enum(["KILLS", "ASSISTS", "GPM", "XPM"]),
   threshold: z.number().min(0).max(10000),
 });
 

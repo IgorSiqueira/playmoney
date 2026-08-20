@@ -90,7 +90,7 @@ export interface EventOddsResult {
 }
 
 export interface ComboCondition {
-  type: "KILLS" | "ASSISTS" | "GPM";
+  type: "KILLS" | "ASSISTS" | "GPM" | "XPM";
   threshold: number;
 }
 
@@ -107,14 +107,15 @@ export interface ComboOddsResult {
 export function calculateComboOdds(
   winProbability: number,
   conditions: ComboCondition[],
-  stats: { averageKills: number; averageAssists: number; averageGPM: number },
+  stats: { averageKills: number; averageAssists: number; averageGPM: number; averageXPM: number },
 ): ComboOddsResult {
   let combinedProb = winProbability;
   for (const cond of conditions) {
     const avg =
       cond.type === "KILLS"   ? stats.averageKills
       : cond.type === "ASSISTS" ? stats.averageAssists
-      : stats.averageGPM;
+      : cond.type === "GPM"     ? stats.averageGPM
+      : stats.averageXPM;
     combinedProb *= calcOverProbability(avg, cond.threshold);
   }
   const isCombo = conditions.length > 0;
@@ -165,9 +166,10 @@ export function verifyEventOutcome(
   let actual: number;
 
   switch (eventType) {
-    case "KILLS":   actual = player.kills;         break;
-    case "ASSISTS": actual = player.assists;       break;
-    case "GPM":     actual = player.gold_per_min;  break;
+    case "KILLS":   actual = player.kills;               break;
+    case "ASSISTS": actual = player.assists;             break;
+    case "GPM":     actual = player.gold_per_min;        break;
+    case "XPM":     actual = player.xp_per_min ?? 0;    break;
     default:
       throw new Error(`Tipo de evento desconhecido: ${eventType}`);
   }

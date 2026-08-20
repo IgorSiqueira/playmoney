@@ -65,6 +65,7 @@ export interface OpenDotaMatchPlayer {
   deaths: number;
   assists: number;
   gold_per_min: number;
+  xp_per_min?: number;
   party_id?: number | null;
 }
 
@@ -79,6 +80,7 @@ export interface PlayerRecentMatch {
   deaths: number;
   assists: number;
   gold_per_min: number;
+  xp_per_min?: number;
 }
 
 export interface PlayerStats {
@@ -90,6 +92,7 @@ export interface PlayerStats {
   averageDeaths: number;
   averageAssists: number;
   averageGPM: number;
+  averageXPM: number;
   rankTier?: number;
   mmrEstimate?: number;
   profilePrivate?: boolean;
@@ -148,7 +151,7 @@ export async function calculatePlayerStats(accountId: number): Promise<PlayerSta
   if (!recentMatches.length) {
     return {
       winRate: 0.5, totalMatches: 0, recentWinRate: 0.5, averageKDA: 1,
-      averageKills: 5, averageDeaths: 5, averageAssists: 8, averageGPM: 400,
+      averageKills: 5, averageDeaths: 5, averageAssists: 8, averageGPM: 400, averageXPM: 500,
       rankTier: profile?.rank_tier,
       mmrEstimate: profile?.mmr_estimate?.estimate,
       profilePrivate: profile?.profile?.fh_unavailable === true,
@@ -163,20 +166,22 @@ export async function calculatePlayerStats(accountId: number): Promise<PlayerSta
   const recentWinRate = wins.length / recentMatches.length;
 
   const avgKDA    = recentMatches.reduce((a, m) => a + (m.kills + m.assists) / Math.max(m.deaths, 1), 0) / recentMatches.length;
-  const avgKills  = recentMatches.reduce((a, m) => a + m.kills,        0) / recentMatches.length;
-  const avgDeaths = recentMatches.reduce((a, m) => a + m.deaths,       0) / recentMatches.length;
-  const avgAssts  = recentMatches.reduce((a, m) => a + m.assists,      0) / recentMatches.length;
+  const avgKills  = recentMatches.reduce((a, m) => a + m.kills,          0) / recentMatches.length;
+  const avgDeaths = recentMatches.reduce((a, m) => a + m.deaths,         0) / recentMatches.length;
+  const avgAssts  = recentMatches.reduce((a, m) => a + m.assists,        0) / recentMatches.length;
   const avgGPM    = recentMatches.reduce((a, m) => a + (m.gold_per_min ?? 0), 0) / recentMatches.length;
+  const avgXPM    = recentMatches.reduce((a, m) => a + (m.xp_per_min    ?? 0), 0) / recentMatches.length;
 
   return {
     winRate: recentWinRate,
     totalMatches: recentMatches.length,
     recentWinRate,
     averageKDA: avgKDA,
-    averageKills: parseFloat(avgKills.toFixed(1)),
-    averageDeaths: parseFloat(avgDeaths.toFixed(1)),
+    averageKills:   parseFloat(avgKills.toFixed(1)),
+    averageDeaths:  parseFloat(avgDeaths.toFixed(1)),
     averageAssists: parseFloat(avgAssts.toFixed(1)),
-    averageGPM: parseFloat(avgGPM.toFixed(0)),
+    averageGPM:     parseFloat(avgGPM.toFixed(0)),
+    averageXPM:     parseFloat(avgXPM.toFixed(0)),
     rankTier: profile?.rank_tier,
     mmrEstimate: profile?.mmr_estimate?.estimate,
   };

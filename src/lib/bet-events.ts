@@ -28,12 +28,13 @@ function normalCDF(z: number): number {
 }
 
 // Calibração do modelo de probabilidade por condição:
-//   threshold = avg      → P ≈ 82%  → odds combinada ≈ 4× (5-leg combo)
-//   threshold = 2 × avg  → P ≈ 67%  → odds combinada ≈ 9× (5-leg combo)
-// Derivação: 0.51 × P^4 = 0.92/4.0 → P=0.818 → K=0.915
-//            0.51 × P^4 = 0.92/9.0 → P=0.669 → SLOPE=(0.915−0.440)/1.0=0.475
-const COND_K     = 0.915;
-const COND_SLOPE = 0.475;
+//   threshold < avg      → P = 0.999  → odds combinada ≈ 1.92× (aumento mínimo)
+//   threshold = avg      → P ≈ 90%   → odds combinada ≈ 2.75× (aumento pequeno)
+//   threshold = 2 × avg  → P ≈ 67%   → odds combinada ≈ 9×  (aposta difícil)
+// Derivação: 0.51 × 0.90^4 = 0.335 → odds 2.75× → K = normalCDF⁻¹(0.90) = 1.28
+//            0.51 × 0.67^4 = 0.103 → odds 9.0×  → SLOPE = 1.28 − 0.44 = 0.84
+const COND_K     = 1.28;
+const COND_SLOPE = 0.84;
 
 // ── Definições de eventos ──────────────────────────────────────────────────────
 
@@ -88,6 +89,10 @@ export type EventType = keyof typeof EVENT_TYPES;
 export function calcOverProbability(average: number, target: number): number {
   if (average <= 0) return 0.5;
   const pctAbove = (target - average) / average;
+  // Abaixo da média: P fixo em 0.999 → contribuição mínima para a odd combinada.
+  // 4 condições abaixo do avg com WIN 48%: 0.48 × 0.999^4 = 0.478 → odds ≈ 1.92×
+  if (pctAbove < 0) return 0.999;
+  // Na média ou acima: queda proporcional (2.75× na média, 9× no dobro)
   return Math.max(0.05, Math.min(0.95, normalCDF(COND_K - pctAbove * COND_SLOPE)));
 }
 

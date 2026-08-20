@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatCurrency, getRankName } from "@/lib/utils";
 import { calculateComboOdds } from "@/lib/bet-events";
 import {
-  Gamepad2, RefreshCw, Shield, Sword, Trophy,
+  Gamepad2, Shield, Sword, Trophy,
   Target, BarChart3, X,
   TrendingUp, TrendingDown, Crosshair, Plus, Zap,
 } from "lucide-react";
@@ -380,14 +380,9 @@ export default function Dota2Page() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--neon)] uppercase mb-1">▸ Dota 2</div>
-          <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Perfil & Apostas</h1>
-        </div>
-        <Button variant="secondary" size="sm" onClick={() => setProfile(null)} className="flex items-center gap-1">
-          <RefreshCw size={10} /> Trocar conta
-        </Button>
+      <div>
+        <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--neon)] uppercase mb-1">▸ Dota 2</div>
+        <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Perfil & Apostas</h1>
       </div>
 
       {/* Player card */}

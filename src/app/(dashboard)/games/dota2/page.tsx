@@ -267,7 +267,7 @@ export default function Dota2Page() {
       .finally(() => setFetching(false));
   }, []);
 
-  const availableConditionTypes = (["KILLS", "ASSISTS", "GPM"] as ConditionType[])
+  const availableConditionTypes = (["KILLS", "ASSISTS", "GPM", "XPM"] as ConditionType[])
     .filter((t) => !conditions.some((c) => c.type === t));
 
   // Combo odds: WIN probability multiplied by each condition probability

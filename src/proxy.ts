@@ -12,13 +12,14 @@ export async function proxy(req: NextRequest) {
   const publicPaths = ["/", "/login", "/register"];
   const isPublic = publicPaths.includes(pathname);
   const isApiAuth = pathname.startsWith("/api/auth");
+  const isMaintenance = pathname.startsWith("/api/maintenance");
   const isLoggedIn = !!session?.user;
 
   if (isLoggedIn && (pathname === "/login" || pathname === "/register")) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  if (!isLoggedIn && !isPublic && !isApiAuth) {
+  if (!isLoggedIn && !isPublic && !isApiAuth && !isMaintenance) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 

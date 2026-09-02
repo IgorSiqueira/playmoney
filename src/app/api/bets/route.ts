@@ -12,7 +12,7 @@ import {
   guardDailyLossLimit, guardWeeklyLossLimit,
 } from "@/lib/bet-guards";
 
-const MAX_ACTIVE_BETS_PER_PROFILE = 5;
+const MAX_ACTIVE_BETS_PER_PROFILE = 1;
 
 const conditionSchema = z.object({
   type:      z.enum(["KILLS", "ASSISTS", "GPM", "XPM"]),
@@ -82,7 +82,7 @@ export async function POST(req: Request) {
 
   const activeBetsCount = await prisma.bet.count({ where: { gameProfileId, userId, status: "ACTIVE" } });
   if (activeBetsCount >= MAX_ACTIVE_BETS_PER_PROFILE) {
-    return NextResponse.json({ error: `Limite de ${MAX_ACTIVE_BETS_PER_PROFILE} apostas ativas atingido.` }, { status: 422 });
+    return NextResponse.json({ error: "Você já tem uma aposta ativa. Aguarde o resultado antes de apostar novamente.", code: "ACTIVE_BET_EXISTS" }, { status: 422 });
   }
 
   const [dailyLossGuard, weeklyLossGuard] = await Promise.all([

@@ -34,6 +34,8 @@ export const LIMITS = {
   SUSPICIOUS_MIN_SETTLED: 3,
   /** [E10] Dias máximos para liquidar uma aposta após sua criação */
   BET_EXPIRY_DAYS: 1,
+  /** [Security 1] Minutos mínimos de antecedência ao início da partida para a aposta ser válida */
+  MIN_BET_BEFORE_MATCH_START_MINUTES: 5,
   /** [E12] Minutos mínimos de antecedência ao fim da partida para a aposta ser válida */
   BET_BEFORE_MATCH_END_MINUTES: 15,
   /**
@@ -228,6 +230,33 @@ export async function guardSuspiciousThrowPattern(
 function toLocalDateString(timestampMs: number): string {
   const offsetMs = LIMITS.TIMEZONE_OFFSET_HOURS * 60 * 60 * 1000;
   return new Date(timestampMs + offsetMs).toISOString().slice(0, 10);
+}
+
+/**
+ * [Security 1] A aposta deve ter sido criada pelo menos MIN_BET_BEFORE_MATCH_START_MINUTES
+ * antes do início da partida.
+ *
+ * Impede que o jogador já dentro de uma partida em andamento crie a aposta sabendo
+ * como a partida está evoluindo (pick/ban favorável, vantagem acumulada etc.).
+ */
+export function guardBetBeforeMatchStart(
+  betCreatedAt: Date,
+  matchStartTime: number
+): GuardResult {
+  const matchStartMs = matchStartTime * 1000;
+  const bufferMs = LIMITS.MIN_BET_BEFORE_MATCH_START_MINUTES * 60_000;
+  const betCreatedMs = betCreatedAt.getTime();
+
+  if (matchStartMs < betCreatedMs + bufferMs) {
+    const diffMs = betCreatedMs + bufferMs - matchStartMs;
+    const diffMin = Math.ceil(diffMs / 60_000);
+    return {
+      ok: false,
+      error: `Partida inválida: a aposta deve ser criada pelo menos ${LIMITS.MIN_BET_BEFORE_MATCH_START_MINUTES} minutos antes do início da partida. Sua aposta foi criada ${diffMin} min tarde demais.`,
+      code: "BET_AFTER_MATCH_START",
+    };
+  }
+  return { ok: true };
 }
 
 /**

@@ -120,6 +120,8 @@ export interface PlayerRecentMatch {
   radiant_win: boolean;
   duration: number;
   start_time: number;
+  lobby_type: number;
+  game_mode: number;
   hero_id: number;
   kills: number;
   deaths: number;

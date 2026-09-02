@@ -12,6 +12,7 @@ import {
   guardDailyWinningsCap,
   guardMatchSameDay,
   guardBetBeforeMatchEnd,
+  guardBetBeforeMatchStart,
   guardMatchDataIntegrity,
   guardMatchLobbyType,
   guardMatchMinDuration,
@@ -20,7 +21,6 @@ import {
 } from "@/lib/bet-guards";
 
 const MATCH_MAX_AGE_DAYS = 30;
-const CLOCK_SKEW_BUFFER_MS = 60_000; // 1 minuto de tolerância
 
 const settleSchema = z.object({
   matchId: z.string().regex(/^\d{5,13}$/, "Match ID inválido"),
@@ -123,13 +123,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     );
   }
 
-  // [Security 1] Partida deve ter começado APÓS a criação da aposta
-  const betCreatedMs = bet.createdAt.getTime();
-  if (matchStartMs < betCreatedMs - CLOCK_SKEW_BUFFER_MS) {
-    return NextResponse.json(
-      { error: "Partida inválida: esta partida foi jogada antes da sua aposta ser criada." },
-      { status: 422 }
-    );
+  // [Security 1] Aposta deve ter sido criada pelo menos 5 min antes do início da partida
+  const startGuard = guardBetBeforeMatchStart(bet.createdAt, match.start_time);
+  if (!startGuard.ok) {
+    return NextResponse.json({ error: startGuard.error, code: startGuard.code }, { status: 422 });
   }
 
   // [E11] Partida deve ser do mesmo dia da aposta (horário BRT)

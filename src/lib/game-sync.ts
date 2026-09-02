@@ -19,7 +19,7 @@ export async function syncDota2Profile(userId: string) {
 
     const [playerProfile, recentMatches, stats] = await Promise.all([
       fetchPlayerProfile(accountId),
-      fetchRecentMatches(accountId, 20),
+      fetchRecentMatches(accountId, 50),
       calculatePlayerStats(accountId),
     ]);
 
@@ -33,7 +33,7 @@ export async function syncDota2Profile(userId: string) {
 
     const odds = calculateDynamicOdds(recentMatches, stats);
     const statsJson = JSON.parse(
-      JSON.stringify({ ...stats, odds, recentMatches: recentMatches.slice(0, 10) })
+      JSON.stringify({ ...stats, odds, recentMatches: recentMatches.slice(0, 50) })
     );
 
     return await prisma.gameProfile.update({

@@ -13,12 +13,13 @@ export const authConfig: NextAuthConfig = {
       const publicPaths = ["/", "/login", "/register"];
       const isPublic = publicPaths.includes(pathname);
       const isApiAuth = pathname.startsWith("/api/auth");
+      const isMaintenance = pathname.startsWith("/api/maintenance");
 
       if (isLoggedIn && (pathname === "/login" || pathname === "/register")) {
         return Response.redirect(new URL("/dashboard", nextUrl));
       }
 
-      if (!isLoggedIn && !isPublic && !isApiAuth) {
+      if (!isLoggedIn && !isPublic && !isApiAuth && !isMaintenance) {
         return Response.redirect(new URL("/login", nextUrl));
       }
 

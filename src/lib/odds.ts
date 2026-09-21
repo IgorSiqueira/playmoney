@@ -53,7 +53,7 @@ function riskOf(prob: number): "LOW" | "MEDIUM" | "HIGH" {
 }
 
 /**
- * Dynamic odds using per-match data from the last 20 matches.
+ * Dynamic odds using per-match data from the last 50 matches.
  * Considers: recent form (last-5 trend), current streak, KDA, rank, GPM trend.
  */
 export function calculateDynamicOdds(

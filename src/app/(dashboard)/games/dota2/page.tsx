@@ -147,7 +147,7 @@ function WinLossOddsPanel({
             <tbody>
               {[
                 {
-                  label: "Win rate base (últimas 20)",
+                  label: "Win rate base (últimas 50)",
                   value: pct(f.baseWinRate, false),
                   note: `Ú5: ${pct(f.last5WR, false)} · A15: ${pct(f.older15WR, false)}`,
                   color: "var(--text)",

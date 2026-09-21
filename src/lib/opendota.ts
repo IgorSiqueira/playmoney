@@ -202,7 +202,7 @@ export async function calculatePlayerStats(accountId: number): Promise<PlayerSta
 export async function calculatePlayerStatsWithMatches(accountId: number): Promise<PlayerStatsWithMatches> {
   const [profile, recentMatches] = await Promise.all([
     fetchPlayerProfile(accountId),
-    fetchRecentMatches(accountId, 20),
+    fetchRecentMatches(accountId, 50),
   ]);
 
   if (!recentMatches.length) {

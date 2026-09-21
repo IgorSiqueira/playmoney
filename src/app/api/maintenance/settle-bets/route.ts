@@ -62,7 +62,7 @@ async function runAutoSettle() {
   for (const bet of activeBets) {
     try {
       const accountId = Number(bet.gameProfile.externalId);
-      const recentMatches = await fetchRecentMatches(accountId, 10);
+      const recentMatches = await fetchRecentMatches(accountId, 20);
 
       // Filtra candidatos já usando os campos da recentMatches (evita fetchMatchDetails desnecessário)
       const betCreatedMs = bet.createdAt.getTime();

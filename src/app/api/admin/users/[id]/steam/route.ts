@@ -71,7 +71,7 @@ export async function PUT(
   // Buscar dados da nova conta no OpenDota
   const [playerProfile, recentMatches, stats] = await Promise.all([
     fetchPlayerProfile(accountId),
-    fetchRecentMatches(accountId, 20),
+    fetchRecentMatches(accountId, 50),
     calculatePlayerStats(accountId),
   ]);
 
@@ -83,7 +83,7 @@ export async function PUT(
   }
 
   const odds = calculateDynamicOdds(recentMatches, stats);
-  const statsJson = JSON.parse(JSON.stringify({ ...stats, odds, recentMatches: recentMatches.slice(0, 10) }));
+  const statsJson = JSON.parse(JSON.stringify({ ...stats, odds, recentMatches: recentMatches.slice(0, 50) }));
 
   const currentProfile = await prisma.gameProfile.findUnique({
     where: { userId_game: { userId: targetUserId, game: "DOTA2" } },

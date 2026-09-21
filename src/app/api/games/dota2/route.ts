@@ -89,7 +89,7 @@ export async function POST(req: Request) {
 
   const [playerProfile, recentMatches, stats] = await Promise.all([
     fetchPlayerProfile(accountId),
-    fetchRecentMatches(accountId, 20),
+    fetchRecentMatches(accountId, 50),
     calculatePlayerStats(accountId),
   ]);
 
@@ -101,7 +101,7 @@ export async function POST(req: Request) {
   }
 
   const odds = calculateDynamicOdds(recentMatches, stats);
-  const statsJson = JSON.parse(JSON.stringify({ ...stats, odds, recentMatches: recentMatches.slice(0, 10) }));
+  const statsJson = JSON.parse(JSON.stringify({ ...stats, odds, recentMatches: recentMatches.slice(0, 50) }));
 
   // [E1] Bloquear hedge: Steam ID já vinculado a outro usuário
   const takenByOther = await prisma.gameProfile.findFirst({

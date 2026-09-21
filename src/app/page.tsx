@@ -57,7 +57,7 @@ const steps = [
   {
     n: "01",
     title: "Conecte o Steam",
-    desc: "Cole seu Steam ID. Buscamos seu histórico real das últimas 20 partidas via OpenDota.",
+    desc: "Cole seu Steam ID. Buscamos seu histórico real das últimas 50 partidas via OpenDota.",
     color: "var(--neon)",
   },
   {
@@ -91,7 +91,7 @@ const stats = [
 const faqs = [
   {
     q: "Como as odds são calculadas?",
-    a: "Usamos seu win rate e KDA médio das últimas 20 partidas via OpenDota API. As odds são atualizadas a cada sincronização do perfil e têm cap máximo de 1.80x para todos os jogadores.",
+    a: "Usamos seu win rate e KDA médio das últimas 50 partidas via OpenDota API. As odds são atualizadas a cada sincronização do perfil e têm cap máximo de 1.80x para todos os jogadores.",
   },
   {
     q: "Posso apostar jogando em group (party)?",

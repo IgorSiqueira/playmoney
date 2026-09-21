@@ -82,7 +82,7 @@ export default function InvitePage() {
             <span className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">Total convidados</span>
             <Users size={12} className="text-[var(--neon)]" />
           </div>
-          <div className="font-mono text-3xl font-bold text-[var(--neon)]" style={{ textShadow: "0 0 20px rgba(0,128,255,0.5)" }}>
+          <div className="font-mono text-3xl font-bold text-[var(--neon)]" style={{ textShadow: "0 0 20px rgba(79,246,128,0.5)" }}>
             {data.total}
           </div>
         </div>
@@ -142,7 +142,7 @@ export default function InvitePage() {
               <div key={use.id} className="flex items-center gap-4 border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 hover:bg-[var(--surface-hover)] transition-all duration-150">
                 <div
                   className="w-7 h-7 border flex items-center justify-center shrink-0 font-display text-[11px] font-black"
-                  style={{ borderColor: "rgba(0,128,255,0.3)", color: "var(--neon)" }}
+                  style={{ borderColor: "rgba(79,246,128,0.3)", color: "var(--neon)" }}
                 >
                   {i + 1}
                 </div>

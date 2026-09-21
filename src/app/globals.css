@@ -6,10 +6,10 @@
   --surface-2:  #0b0f1a;
   --surface-3:  #111827;
 
-  --neon:       #0080ff;
-  --neon-dim:   rgba(0, 128, 255, 0.12);
-  --neon-mid:   rgba(0, 128, 255, 0.25);
-  --neon-glow:  0 0 12px rgba(0,128,255,0.5), 0 0 30px rgba(0,128,255,0.2);
+  --neon:       #4ff680;
+  --neon-dim:   rgba(79, 246, 128, 0.12);
+  --neon-mid:   rgba(79, 246, 128, 0.25);
+  --neon-glow:  0 0 12px rgba(79,246,128,0.5), 0 0 30px rgba(79,246,128,0.2);
 
   --danger:     #ff3a6e;
   --danger-dim: rgba(255, 58, 110, 0.12);
@@ -22,16 +22,16 @@
   --blue:       #00cfff;
   --purple:     #9d4edd;
 
-  --border:        rgba(0, 128, 255, 0.1);
-  --border-mid:    rgba(0, 128, 255, 0.2);
-  --border-bright: rgba(0, 128, 255, 0.45);
+  --border:        rgba(79, 246, 128, 0.1);
+  --border-mid:    rgba(79, 246, 128, 0.2);
+  --border-bright: rgba(79, 246, 128, 0.45);
 
-  --surface-hover: rgba(0, 128, 255, 0.06);
+  --surface-hover: rgba(79, 246, 128, 0.06);
 
-  --text:          #b8cce0;
-  --text-secondary:#8aaac0;
-  --text-muted:    #5c7a96;
-  --text-bright:   #e8f4ff;
+  --text:          #c2e0c9;
+  --text-secondary:#8fb89a;
+  --text-muted:    #628a6c;
+  --text-bright:   #eafff0;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -53,8 +53,8 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0,128,255,0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,128,255,0.018) 1px, transparent 1px);
+    linear-gradient(rgba(79,246,128,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,246,128,0.018) 1px, transparent 1px);
   background-size: 48px 48px;
   pointer-events: none;
   z-index: 0;
@@ -79,7 +79,7 @@ body::before {
 
 .neon-text {
   color: var(--neon);
-  text-shadow: 0 0 8px rgba(0,128,255,0.9), 0 0 20px rgba(0,128,255,0.5);
+  text-shadow: 0 0 8px rgba(79,246,128,0.9), 0 0 20px rgba(79,246,128,0.5);
 }
 .gold-text {
   color: var(--gold);
@@ -143,8 +143,8 @@ body::before {
 
 /* ── Animations ──────────────────────────────── */
 @keyframes neon-pulse {
-  0%, 100% { box-shadow: 0 0 6px rgba(0,128,255,0.25); }
-  50%       { box-shadow: 0 0 20px rgba(0,128,255,0.55), 0 0 40px rgba(0,128,255,0.2); }
+  0%, 100% { box-shadow: 0 0 6px rgba(79,246,128,0.25); }
+  50%       { box-shadow: 0 0 20px rgba(79,246,128,0.55), 0 0 40px rgba(79,246,128,0.2); }
 }
 @keyframes glow-in {
   from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
@@ -256,3 +256,4 @@ details[open] .faq-chevron { transform: rotate(180deg); }
 
 /* ── Selection ───────────────────────────────── */
 ::selection { background: var(--neon-mid); color: var(--bg); }
+

@@ -17,7 +17,7 @@ interface BreadcrumbProps {
 export function Breadcrumb({ crumbs, pageTitle }: BreadcrumbProps) {
   useEffect(() => {
     if (pageTitle) {
-      document.title = `${pageTitle} | PlayMoney`;
+      document.title = `${pageTitle} | SkillMoney`;
     }
   }, [pageTitle]);
 

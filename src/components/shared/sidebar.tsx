@@ -39,13 +39,12 @@ export function Sidebar({ user }: SidebarProps) {
       {/* Logo */}
       <div className="p-5 border-b border-[var(--border)]">
         <Link href="/dashboard" className="flex items-center gap-3 group">
-          <div className="relative w-8 h-8 flex items-center justify-center border border-[var(--neon)] bg-[var(--neon-dim)]">
-            <span className="font-display text-sm font-black text-[var(--neon)]">P</span>
-            <div className="absolute inset-0 bg-[var(--neon)] opacity-0 group-hover:opacity-10 transition-opacity" />
+          <div className="relative w-8 h-8 flex items-center justify-center overflow-hidden">
+            <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
           </div>
           <div>
             <div className="font-display text-xs font-black tracking-[0.2em] text-[var(--text-bright)] uppercase">
-              Play<span className="text-[var(--neon)]">Money</span>
+              Skill<span className="text-[var(--neon)]">Money</span>
             </div>
             <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">v1.0 · BETA</div>
           </div>
@@ -67,7 +66,7 @@ export function Sidebar({ user }: SidebarProps) {
               className={cn(
                 "group flex items-center gap-3 px-3 py-3 transition-all duration-150 relative",
                 active
-                  ? "bg-[rgba(0,128,255,0.12)] text-[var(--neon)] border-l-0"
+                  ? "bg-[var(--neon-dim)] text-[var(--neon)] border-l-0"
                   : "text-[var(--text-muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)]"
               )}
             >

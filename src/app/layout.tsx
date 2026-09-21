@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PLAYMONEY — Aposte em Você Mesmo",
+  title: "SKILLMONEY — Aposte em Você Mesmo",
   description: "Plataforma de apostas na sua própria performance em jogos competitivos",
 };
 

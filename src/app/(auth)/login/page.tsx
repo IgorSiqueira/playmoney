@@ -43,11 +43,11 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="flex items-center gap-3 mb-8">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 border border-[var(--neon)] bg-[var(--neon-dim)] flex items-center justify-center">
-              <span className="font-display text-sm font-black text-[var(--neon)]">P</span>
+            <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
+              <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
             </div>
             <span className="font-display text-sm font-black tracking-[0.2em] text-[var(--text-bright)] uppercase">
-              Play<span className="neon-text">Money</span>
+              Skill<span className="neon-text">Money</span>
             </span>
           </Link>
         </div>

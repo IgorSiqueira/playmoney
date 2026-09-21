@@ -55,7 +55,7 @@ export default async function DashboardPage() {
         ? `+${formatCurrency(Number(wallet.bonusBalance))} bônus`
         : undefined,
       color: "var(--neon)",
-      glow: "rgba(0,128,255,0.5)",
+      glow: "rgba(79,246,128,0.5)",
     },
     {
       icon: pnlPositive ? TrendingUp : TrendingDown,
@@ -63,7 +63,7 @@ export default async function DashboardPage() {
       value: (pnlPositive ? "+" : "") + formatCurrency(pnl),
       sub: settled > 0 ? `ROI ${roi >= 0 ? "+" : ""}${roi.toFixed(1)}%` : "Sem apostas liquidadas",
       color: pnlPositive ? "var(--neon)" : "var(--danger)",
-      glow: pnlPositive ? "rgba(0,128,255,0.5)" : "rgba(255,58,110,0.5)",
+      glow: pnlPositive ? "rgba(79,246,128,0.5)" : "rgba(255,58,110,0.5)",
     },
     {
       icon: Swords,
@@ -71,7 +71,7 @@ export default async function DashboardPage() {
       value: settled > 0 ? `${winRate}%` : "—",
       sub: `${won.length}W / ${lost.length}L`,
       color: winRate >= 50 ? "var(--neon)" : "var(--danger)",
-      glow: winRate >= 50 ? "rgba(0,128,255,0.5)" : "rgba(255,58,110,0.5)",
+      glow: winRate >= 50 ? "rgba(79,246,128,0.5)" : "rgba(255,58,110,0.5)",
     },
     {
       icon: Activity,

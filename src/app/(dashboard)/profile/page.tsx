@@ -80,7 +80,7 @@ export default async function ProfilePage() {
       {/* Header */}
       <div className="flex items-start gap-5">
         <div className="w-16 h-16 border-2 border-[var(--neon)] bg-[var(--neon-dim)] flex items-center justify-center shrink-0"
-          style={{ boxShadow: "0 0 20px rgba(0,128,255,0.15)" }}>
+          style={{ boxShadow: "0 0 20px rgba(79,246,128,0.15)" }}>
           <span className="font-display text-2xl font-black text-[var(--neon)]">
             {user?.name?.[0]?.toUpperCase() ?? "?"}
           </span>
@@ -110,7 +110,7 @@ export default async function ProfilePage() {
             value: (pnlPositive ? "+" : "") + formatCurrency(pnl),
             sub: `ROI ${roi >= 0 ? "+" : ""}${roi.toFixed(1)}%`,
             color: pnlPositive ? "var(--neon)" : "var(--danger)",
-            glow: pnlPositive ? "rgba(0,128,255,0.5)" : "rgba(255,58,110,0.5)",
+            glow: pnlPositive ? "rgba(79,246,128,0.5)" : "rgba(255,58,110,0.5)",
           },
           {
             icon: Swords,
@@ -118,7 +118,7 @@ export default async function ProfilePage() {
             value: settled > 0 ? `${winRate.toFixed(1)}%` : "—",
             sub: `${won.length}V / ${lost.length}D`,
             color: winRate >= 50 ? "var(--neon)" : "var(--danger)",
-            glow: winRate >= 50 ? "rgba(0,128,255,0.5)" : "rgba(255,58,110,0.5)",
+            glow: winRate >= 50 ? "rgba(79,246,128,0.5)" : "rgba(255,58,110,0.5)",
           },
           {
             icon: BarChart3,
@@ -155,7 +155,7 @@ export default async function ProfilePage() {
           {streakType ? (
             <>
               <div className="font-mono text-3xl font-bold"
-                style={{ color: streakType === "W" ? "var(--neon)" : "var(--danger)", textShadow: streakType === "W" ? "0 0 15px rgba(0,128,255,0.5)" : "0 0 15px rgba(255,58,110,0.5)" }}>
+                style={{ color: streakType === "W" ? "var(--neon)" : "var(--danger)", textShadow: streakType === "W" ? "0 0 15px rgba(79,246,128,0.5)" : "0 0 15px rgba(255,58,110,0.5)" }}>
                 {streak}×
               </div>
               <div className="font-display text-[11px] tracking-widest mt-1 uppercase"
@@ -169,7 +169,7 @@ export default async function ProfilePage() {
         </div>
         <div className="bracket border border-[var(--border)] bg-[var(--surface-2)] p-4 text-center">
           <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase mb-3">Saldo Disponível</div>
-          <div className="font-mono text-2xl font-bold text-[var(--neon)]" style={{ textShadow: "0 0 12px rgba(0,128,255,0.4)" }}>
+          <div className="font-mono text-2xl font-bold text-[var(--neon)]" style={{ textShadow: "0 0 12px rgba(79,246,128,0.4)" }}>
             {formatCurrency(Number(wallet?.balance ?? 0))}
           </div>
           {wallet && Number(wallet.bonusBalance) > 0 && (
@@ -222,7 +222,7 @@ export default async function ProfilePage() {
                       style={{
                         width: `${wr}%`,
                         background: wr >= 50 ? "var(--neon)" : "var(--danger)",
-                        boxShadow: wr >= 50 ? "0 0 6px rgba(0,128,255,0.5)" : "0 0 6px rgba(255,58,110,0.5)",
+                        boxShadow: wr >= 50 ? "0 0 6px rgba(79,246,128,0.5)" : "0 0 6px rgba(255,58,110,0.5)",
                       }}
                     />
                   </div>

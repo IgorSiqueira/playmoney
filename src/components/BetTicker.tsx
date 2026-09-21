@@ -53,7 +53,7 @@ export function BetTicker() {
             </span>
             <span className={`font-display text-[11px] tracking-widest px-1.5 py-0.5 border ${
               e.won
-                ? "text-[var(--neon)] border-[rgba(0,128,255,0.3)] bg-[rgba(0,128,255,0.07)]"
+                ? "text-[var(--neon)] border-[rgba(79,246,128,0.3)] bg-[rgba(79,246,128,0.07)]"
                 : "text-[var(--danger)] border-[rgba(255,58,110,0.3)] bg-[rgba(255,58,110,0.07)]"
             }`}>
               {e.won ? "GANHOU" : "PERDEU"}

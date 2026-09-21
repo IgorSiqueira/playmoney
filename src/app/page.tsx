@@ -18,8 +18,8 @@ const betCards = [
     odds: "2.10x",
     kda: "4.8",
     wr: "52%",
-    color: "#0080ff",
-    shadow: "rgba(0,128,255,0.4)",
+    color: "#4ff680",
+    shadow: "rgba(79,246,128,0.4)",
     status: "ATIVA",
     floatClass: "animate-float-1",
   },
@@ -126,11 +126,11 @@ export default function LandingPage() {
       {/* ── Nav ────────────────────────────────────────────────────────── */}
       <nav className="relative z-20 flex items-center justify-between px-6 md:px-10 py-4 border-b border-[var(--border)]">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 border border-[var(--neon)] bg-[var(--neon-dim)] flex items-center justify-center">
-            <span className="font-display text-sm font-black text-[var(--neon)]">P</span>
+          <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
+            <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
           </div>
           <span className="font-display text-sm font-black tracking-[0.2em] text-[var(--text-bright)] uppercase">
-            Play<span className="text-[var(--neon)]">Money</span>
+            Skill<span className="text-[var(--neon)]">Money</span>
           </span>
           <div className="hidden md:flex items-center gap-1 ml-2 px-2 py-0.5 border border-[var(--border)] bg-[var(--neon-dim)]">
             <div className="w-1.5 h-1.5 rounded-full bg-[var(--neon)] pulse-neon" />
@@ -177,7 +177,7 @@ export default function LandingPage() {
               <div
                 className="text-5xl md:text-7xl tracking-tighter neon-text glitch-text"
                 data-text="Você Mesmo"
-                style={{ textShadow: "0 0 40px rgba(0,128,255,0.6), 0 0 80px rgba(0,128,255,0.25)" }}
+                style={{ textShadow: "0 0 40px rgba(79,246,128,0.6), 0 0 80px rgba(79,246,128,0.25)" }}
               >
                 Você Mesmo
               </div>
@@ -254,8 +254,8 @@ export default function LandingPage() {
                     <div
                       className="absolute top-2 right-2 px-2 py-0.5"
                       style={{
-                        background: card.status === "PAGA" ? "rgba(0,128,255,0.15)" : `${card.color}22`,
-                        border: `1px solid ${card.status === "PAGA" ? "rgba(0,128,255,0.4)" : card.color}`,
+                        background: card.status === "PAGA" ? "rgba(79,246,128,0.15)" : `${card.color}22`,
+                        border: `1px solid ${card.status === "PAGA" ? "rgba(79,246,128,0.4)" : card.color}`,
                       }}
                     >
                       <span
@@ -316,7 +316,7 @@ export default function LandingPage() {
             >
               <div
                 className="font-mono text-2xl font-bold text-[var(--neon)]"
-                style={{ textShadow: "0 0 12px rgba(0,128,255,0.5)" }}
+                style={{ textShadow: "0 0 12px rgba(79,246,128,0.5)" }}
               >
                 {"static" in s ? (
                   s.static
@@ -491,7 +491,7 @@ export default function LandingPage() {
           <div
             className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[300px] pointer-events-none"
             style={{
-              background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,128,255,0.08) 0%, transparent 70%)",
+              background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(79,246,128,0.08) 0%, transparent 70%)",
             }}
           />
           <div className="relative z-10">
@@ -523,11 +523,11 @@ export default function LandingPage() {
       <footer className="relative z-10 border-t border-[var(--border)] px-6 md:px-10 py-8">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-6 h-6 border border-[var(--neon)] bg-[var(--neon-dim)] flex items-center justify-center">
-              <span className="font-display text-[11px] font-black text-[var(--neon)]">P</span>
+            <div className="w-6 h-6 flex items-center justify-center overflow-hidden">
+              <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
             </div>
             <span className="font-display text-xs font-black tracking-[0.2em] text-[var(--text-muted)] uppercase">
-              Play<span className="text-[var(--neon)]">Money</span>
+              Skill<span className="text-[var(--neon)]">Money</span>
             </span>
             <span className="font-mono text-[11px] text-[var(--text-muted)]">© 2026</span>
           </div>

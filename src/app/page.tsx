@@ -10,33 +10,6 @@ import {
 
 const DOTA = "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes";
 
-const steps = [
-  {
-    n: "01",
-    icon: Target,
-    title: "Conecte o Steam",
-    desc: "Cole seu Steam ID. Buscamos seu histórico real das últimas 50 partidas via OpenDota.",
-  },
-  {
-    n: "02",
-    icon: BarChart3,
-    title: "Veja suas Odds",
-    desc: "Calculadas do seu win rate + KDA reais. Cada jogador tem odds únicas. Cap de 1.80x.",
-  },
-  {
-    n: "03",
-    icon: Zap,
-    title: "Aposte na Partida",
-    desc: "Escolha vitória, KDA, GPM ou last hits. Jogue normalmente, sem interferir na sua partida.",
-  },
-  {
-    n: "04",
-    icon: ShieldCheck,
-    title: "Liquidação Automática",
-    desc: "O sistema busca o resultado sozinho. Sem enrolação — pagamento em segundos via PIX.",
-  },
-];
-
 const betTypes = [
   { icon: "⚔", label: "Vitória", desc: "Você vence a próxima partida?", color: "var(--neon)" },
   { icon: "◎", label: "KDA", desc: "Mata + assists / mortes — acima ou abaixo da sua média", color: "var(--gold)" },
@@ -218,42 +191,14 @@ export default function LandingPage() {
       </section>
 
       {/* ── Como Funciona ──────────────────────────────────────────────── */}
-      <section id="como-funciona" className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)]">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Como funciona</div>
-            <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight">
-              Apostar nunca foi tão direto
-            </h2>
-            <p className="font-ui text-base text-[var(--text-muted)] mt-4 max-w-lg mx-auto">
-              Conecte, veja suas odds, aposte e receba. Sem intermediário, sem enrolação.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {steps.map((s) => (
-              <div
-                key={s.n}
-                className="bracket relative border border-[var(--border)] bg-[var(--surface-2)] p-6 hover:border-[var(--border-mid)] transition-all duration-200 group"
-                style={{ "--bracket-color": "var(--neon)" } as React.CSSProperties}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div
-                    className="w-10 h-10 flex items-center justify-center border border-[var(--neon)] bg-[var(--neon-dim)]"
-                  >
-                    <s.icon size={16} className="text-[var(--neon)]" />
-                  </div>
-                  <span className="font-display text-xs font-black text-[var(--text-muted)]">{s.n}</span>
-                </div>
-                <h3 className="font-display font-bold text-sm uppercase tracking-widest mb-2 text-[var(--text-bright)]">
-                  {s.title}
-                </h3>
-                <p className="font-ui text-sm text-[var(--text-muted)] leading-relaxed">{s.desc}</p>
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[var(--neon)]" />
-              </div>
-            ))}
-          </div>
-        </div>
+      <section id="como-funciona" className="relative z-10 border-b border-[var(--border)]">
+        <Image
+          src="/como-funciona.jpg"
+          alt="Como funciona: conecte o Steam, veja suas odds, jogue sua partida e receba a liquidação automática"
+          width={1774}
+          height={887}
+          className="w-full h-auto"
+        />
       </section>
 
       {/* ── Modalidades de aposta ───────────────────────────────────────── */}

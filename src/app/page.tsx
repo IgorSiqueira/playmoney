@@ -18,8 +18,8 @@ const betCards = [
     odds: "2.10x",
     kda: "4.8",
     wr: "52%",
-    color: "#4ff680",
-    shadow: "rgba(79,246,128,0.4)",
+    color: "#00ff66",
+    shadow: "rgba(0,255,102,0.4)",
     status: "ATIVA",
     floatClass: "animate-float-1",
   },
@@ -177,7 +177,7 @@ export default function LandingPage() {
               <div
                 className="text-5xl md:text-7xl tracking-tighter neon-text glitch-text"
                 data-text="Você Mesmo"
-                style={{ textShadow: "0 0 40px rgba(79,246,128,0.6), 0 0 80px rgba(79,246,128,0.25)" }}
+                style={{ textShadow: "0 0 40px rgba(0,255,102,0.6), 0 0 80px rgba(0,255,102,0.25)" }}
               >
                 Você Mesmo
               </div>
@@ -254,8 +254,8 @@ export default function LandingPage() {
                     <div
                       className="absolute top-2 right-2 px-2 py-0.5"
                       style={{
-                        background: card.status === "PAGA" ? "rgba(79,246,128,0.15)" : `${card.color}22`,
-                        border: `1px solid ${card.status === "PAGA" ? "rgba(79,246,128,0.4)" : card.color}`,
+                        background: card.status === "PAGA" ? "rgba(0,255,102,0.15)" : `${card.color}22`,
+                        border: `1px solid ${card.status === "PAGA" ? "rgba(0,255,102,0.4)" : card.color}`,
                       }}
                     >
                       <span
@@ -316,7 +316,7 @@ export default function LandingPage() {
             >
               <div
                 className="font-mono text-2xl font-bold text-[var(--neon)]"
-                style={{ textShadow: "0 0 12px rgba(79,246,128,0.5)" }}
+                style={{ textShadow: "0 0 12px rgba(0,255,102,0.5)" }}
               >
                 {"static" in s ? (
                   s.static
@@ -335,6 +335,19 @@ export default function LandingPage() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ── Campaign banner ────────────────────────────────────────────── */}
+      <div className="relative z-10 px-6 md:px-10 py-12 border-b border-[var(--border)]">
+        <div className="max-w-6xl mx-auto overflow-hidden border border-[var(--border-mid)]">
+          <Image
+            src="/hero-banner.jpg"
+            alt="SkillMoney — Confie em você, invista em seu potencial e vá à luta"
+            width={1600}
+            height={639}
+            className="w-full h-auto"
+          />
         </div>
       </div>
 
@@ -491,7 +504,7 @@ export default function LandingPage() {
           <div
             className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[300px] pointer-events-none"
             style={{
-              background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(79,246,128,0.08) 0%, transparent 70%)",
+              background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,255,102,0.08) 0%, transparent 70%)",
             }}
           />
           <div className="relative z-10">

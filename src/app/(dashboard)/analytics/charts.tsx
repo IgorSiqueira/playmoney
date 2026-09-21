@@ -46,7 +46,7 @@ export interface AnalyticsData {
 const DAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
 function cellBg(wins: number, total: number): string {
-  if (total === 0) return "rgba(79,246,128,0.04)";
+  if (total === 0) return "rgba(0,255,102,0.04)";
   const wr = wins / total;
   const r = Math.round(255 * (1 - wr));
   const g = Math.round(58 + 70 * wr);
@@ -90,7 +90,7 @@ function PnlChart({ points }: { points: PnlPoint[] }) {
     ` L${sx(points.length - 1)},${yZero} Z`;
 
   const finalPnl = points[points.length - 1]!.cumPnl;
-  const fillCol = finalPnl >= 0 ? "rgba(79,246,128,0.12)" : "rgba(255,58,110,0.12)";
+  const fillCol = finalPnl >= 0 ? "rgba(0,255,102,0.12)" : "rgba(255,58,110,0.12)";
   const lineCol = finalPnl >= 0 ? "var(--neon)" : "var(--danger)";
 
   const hovP = hov !== null ? points[hov] : null;
@@ -201,7 +201,7 @@ function PnlChart({ points }: { points: PnlPoint[] }) {
             x={tooltipX} y={tooltipY}
             width={120} height={38} rx={2}
             fill="var(--surface-3)"
-            stroke="rgba(79,246,128,0.3)" strokeWidth={0.5}
+            stroke="rgba(0,255,102,0.3)" strokeWidth={0.5}
           />
           <text
             x={tooltipX + 60} y={tooltipY + 15}
@@ -293,7 +293,7 @@ function HeatMap({ cells, betCount }: { cells: HeatCell[]; betCount: number }) {
         </div>
       )}
       {best && (
-        <div className="mb-3 px-3 py-2 border border-[rgba(79,246,128,0.25)] bg-[var(--neon-dim)]">
+        <div className="mb-3 px-3 py-2 border border-[rgba(0,255,102,0.25)] bg-[var(--neon-dim)]">
           <span className="font-mono text-[11px] text-[var(--neon)]">
             ▸ Melhor horário: {DAYS[best.day]} {String(best.hour).padStart(2, "0")}h UTC
             {" "}· {((best.wins / best.total) * 100).toFixed(0)}% vitórias ({best.wins}/{best.total})
@@ -344,7 +344,7 @@ function HeatMap({ cells, betCount }: { cells: HeatCell[]; betCount: number }) {
                       height: 16,
                       background: bg,
                       flexShrink: 0,
-                      border: "1px solid rgba(79,246,128,0.06)",
+                      border: "1px solid rgba(0,255,102,0.06)",
                     }}
                   />
                 );
@@ -395,7 +395,7 @@ export function AnalyticsCharts({ data }: { data: AnalyticsData }) {
   const pnlColor = totalPnl >= 0 ? "var(--neon)" : "var(--danger)";
   const pnlGlow =
     totalPnl >= 0
-      ? "0 0 20px rgba(79,246,128,0.4)"
+      ? "0 0 20px rgba(0,255,102,0.4)"
       : "0 0 20px rgba(255,58,110,0.4)";
 
   return (
@@ -552,9 +552,9 @@ export function AnalyticsCharts({ data }: { data: AnalyticsData }) {
 
       {/* Prediction insight card */}
       {winProbability !== null && (
-        <div className="bracket border border-[rgba(79,246,128,0.4)] bg-[var(--neon-dim)] p-4">
+        <div className="bracket border border-[rgba(0,255,102,0.4)] bg-[var(--neon-dim)] p-4">
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 border border-[var(--neon)] flex items-center justify-center shrink-0 bg-[rgba(79,246,128,0.08)]">
+            <div className="w-8 h-8 border border-[var(--neon)] flex items-center justify-center shrink-0 bg-[rgba(0,255,102,0.08)]">
               <span className="font-display text-xs font-black text-[var(--neon)]">AI</span>
             </div>
             <div>

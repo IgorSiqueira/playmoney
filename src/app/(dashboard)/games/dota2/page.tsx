@@ -102,7 +102,7 @@ function WinLossOddsPanel({
           </div>
           <div
             className="font-mono text-4xl font-black text-[var(--neon)]"
-            style={{ textShadow: "0 0 20px rgba(79,246,128,0.6)" }}
+            style={{ textShadow: "0 0 20px rgba(0,255,102,0.6)" }}
           >
             {odds.winOdds}x
           </div>
@@ -139,7 +139,7 @@ function WinLossOddsPanel({
 
       {/* Breakdown table */}
       {f && showBreakdown && (
-        <div className="border-t border-[rgba(79,246,128,0.2)] bg-[rgba(79,246,128,0.04)]">
+        <div className="border-t border-[rgba(0,255,102,0.2)] bg-[rgba(0,255,102,0.04)]">
           <div className="px-4 py-1 font-display text-[10px] tracking-[0.2em] text-[var(--neon)] uppercase opacity-60">
             Composição das odds
           </div>
@@ -191,7 +191,7 @@ function WinLossOddsPanel({
                   color: (f.xpmAdjustment ?? 0) >= 0 ? "var(--neon)" : "var(--danger)",
                 },
               ].map(({ label, value, note, color }) => (
-                <tr key={label} className="border-t border-[rgba(79,246,128,0.08)] hover:bg-[rgba(79,246,128,0.04)]">
+                <tr key={label} className="border-t border-[rgba(0,255,102,0.08)] hover:bg-[rgba(0,255,102,0.04)]">
                   <td className="px-4 py-2">
                     <div className="font-display text-[11px] tracking-wide text-[var(--text)] uppercase">{label}</div>
                     <div className="font-mono text-[10px] text-[var(--text-muted)]">{note}</div>
@@ -201,7 +201,7 @@ function WinLossOddsPanel({
                   </td>
                 </tr>
               ))}
-              <tr className="border-t border-[rgba(79,246,128,0.3)]">
+              <tr className="border-t border-[rgba(0,255,102,0.3)]">
                 <td className="px-4 py-2">
                   <span className="font-display text-[11px] tracking-widest text-[var(--neon)] uppercase font-bold">
                     Probabilidade final
@@ -209,7 +209,7 @@ function WinLossOddsPanel({
                 </td>
                 <td className="px-4 py-2 text-right">
                   <span className="font-mono text-base font-black text-[var(--neon)]"
-                    style={{ textShadow: "0 0 8px rgba(79,246,128,0.5)" }}>
+                    style={{ textShadow: "0 0 8px rgba(0,255,102,0.5)" }}>
                     {pct(f.finalProbability, false)}
                   </span>
                 </td>

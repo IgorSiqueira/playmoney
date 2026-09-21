@@ -2,75 +2,38 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ParticlesBackground } from "@/components/ParticlesBackground";
-import { TiltCard } from "@/components/TiltCard";
-import { StatCounter } from "@/components/StatCounter";
 import { BetTicker } from "@/components/BetTicker";
+import {
+  Target, BarChart3, ShieldCheck, Zap,
+  TrendingUp, Trophy, Users, Clock,
+} from "lucide-react";
 
 const DOTA = "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes";
-
-const betCards = [
-  {
-    hero: "invoker",
-    name: "Invoker",
-    type: "Vitória",
-    stake: "R$ 150",
-    payout: "R$ 315",
-    odds: "2.10x",
-    kda: "4.8",
-    wr: "52%",
-    color: "#00ff66",
-    shadow: "rgba(0,255,102,0.4)",
-    status: "ATIVA",
-    floatClass: "animate-float-1",
-  },
-  {
-    hero: "phantom_assassin",
-    name: "Phantom Assassin",
-    type: "KDA Over 5.0",
-    stake: "R$ 200",
-    payout: "R$ 360",
-    odds: "1.80x",
-    kda: "6.2",
-    wr: "48%",
-    color: "#9d4edd",
-    shadow: "rgba(157,78,221,0.4)",
-    status: "ATIVA",
-    floatClass: "animate-float-2",
-  },
-  {
-    hero: "axe",
-    name: "Axe",
-    type: "Vitória",
-    stake: "R$ 100",
-    payout: "R$ 155",
-    odds: "1.55x",
-    kda: "3.4",
-    wr: "58%",
-    color: "#ff3a6e",
-    shadow: "rgba(255,58,110,0.4)",
-    status: "PAGA",
-    floatClass: "animate-float-3",
-  },
-];
 
 const steps = [
   {
     n: "01",
+    icon: Target,
     title: "Conecte o Steam",
     desc: "Cole seu Steam ID. Buscamos seu histórico real das últimas 50 partidas via OpenDota.",
-    color: "var(--neon)",
   },
   {
     n: "02",
+    icon: BarChart3,
     title: "Veja suas Odds",
     desc: "Calculadas do seu win rate + KDA reais. Cada jogador tem odds únicas. Cap de 1.80x.",
-    color: "var(--gold)",
   },
   {
     n: "03",
-    title: "Aposte & Liquide",
-    desc: "Jogue sua partida. Informe o Match ID. PIX disponível em segundos.",
-    color: "var(--blue)",
+    icon: Zap,
+    title: "Aposte na Partida",
+    desc: "Escolha vitória, KDA, GPM ou last hits. Jogue normalmente, sem interferir na sua partida.",
+  },
+  {
+    n: "04",
+    icon: ShieldCheck,
+    title: "Liquidação Automática",
+    desc: "O sistema busca o resultado sozinho. Sem enrolação — pagamento em segundos via PIX.",
   },
 ];
 
@@ -81,12 +44,37 @@ const betTypes = [
   { icon: "◇", label: "Last Hits", desc: "Creeps abatidos no final da partida", color: "var(--purple)" },
 ];
 
+const benefits = [
+  { icon: TrendingUp, title: "Odds sob medida", desc: "Nada de tabela fixa. Suas odds nascem do seu próprio desempenho." },
+  { icon: Users, title: "Comunidade de jogadores reais", desc: "Sem bots, sem manipulação. Só gente que joga de verdade." },
+  { icon: Clock, title: "Liquidação em segundos", desc: "Resultado sai, seu saldo já reflete. PIX instantâneo, sem fila." },
+  { icon: Trophy, title: "Foco em performance real", desc: "Quanto melhor você joga, mais suas odds trabalham a seu favor." },
+];
+
 const stats = [
-  { to: 2.4,  decimals: 1, prefix: "",    suffix: "K+", label: "Jogadores" },
-  { to: 1.2,  decimals: 1, prefix: "R$",  suffix: "M",  label: "Apostado" },
-  { to: 1.80, decimals: 2, prefix: "",    suffix: "x",  label: "Odds máximas" },
-  { to: null, static: "< 1s",             label: "Liquidação" },
-] as const;
+  { value: "2.4K+", label: "Jogadores ativos" },
+  { value: "R$1.2M", label: "Apostado na plataforma" },
+  { value: "1.80x", label: "Odds máximas" },
+  { value: "<1s", label: "Tempo de liquidação" },
+];
+
+const testimonials = [
+  {
+    quote: "Finalmente uma plataforma que calcula odds a partir do meu histórico de verdade. Nada de número genérico.",
+    name: "Lucas “Night”",
+    rank: "Dota 2 — Immortal",
+  },
+  {
+    quote: "Apostei na minha própria vitória, ganhei, e o PIX caiu antes de eu sair do pós-jogo. Simples assim.",
+    name: "Mariana “Mika”",
+    rank: "Dota 2 — Ancient",
+  },
+  {
+    quote: "Já testei várias casas de aposta. Essa é a única que recompensa quem realmente joga bem.",
+    name: "Rafael “Rafão”",
+    rank: "Dota 2 — Legend",
+  },
+];
 
 const faqs = [
   {
@@ -132,15 +120,13 @@ export default function LandingPage() {
           <span className="font-display text-sm font-black tracking-[0.2em] text-[var(--text-bright)] uppercase">
             Skill<span className="text-[var(--neon)]">Money</span>
           </span>
-          <div className="hidden md:flex items-center gap-1 ml-2 px-2 py-0.5 border border-[var(--border)] bg-[var(--neon-dim)]">
-            <div className="w-1.5 h-1.5 rounded-full bg-[var(--neon)] pulse-neon" />
-            <span className="font-display text-[11px] tracking-[0.2em] text-[var(--neon)] uppercase">Dota 2</span>
-          </div>
         </div>
 
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden xl:flex items-center gap-6">
           <a href="#como-funciona" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Como funciona</a>
           <a href="#modalidades" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Modalidades</a>
+          <a href="#beneficios" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Benefícios</a>
+          <a href="#depoimentos" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Depoimentos</a>
           <a href="#faq" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">FAQ</a>
         </div>
 
@@ -149,7 +135,7 @@ export default function LandingPage() {
             <Link href="/login">Entrar</Link>
           </Button>
           <Button asChild size="sm">
-            <Link href="/register">Criar Conta</Link>
+            <Link href="/register">Comece agora →</Link>
           </Button>
         </div>
       </nav>
@@ -158,16 +144,24 @@ export default function LandingPage() {
       <BetTicker />
 
       {/* ── Hero ───────────────────────────────────────────────────────── */}
-      <section className="relative z-10 flex-1 flex items-center min-h-[calc(100vh-65px)]">
-        <div className="w-full max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="relative z-10 border-b border-[var(--border)] overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/hero-bg.jpg"
+            alt="Jogador de Dota 2 competindo na SkillMoney"
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-[var(--bg)]/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-transparent to-transparent" />
+        </div>
 
-          {/* Left — text */}
-          <div className="flex flex-col items-start">
-            <div className="inline-flex items-center gap-2 border border-[var(--border-mid)] bg-[var(--neon-dim)] px-4 py-1.5 mb-8 animate-glow-in">
-              <div className="w-1.5 h-1.5 rounded-full bg-[var(--neon)] pulse-neon" />
-              <span className="font-display text-[11px] tracking-[0.25em] text-[var(--neon)] uppercase">
-                Plataforma Ativa · Beta Aberto
-              </span>
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 py-20 md:py-32">
+          <div className="flex flex-col items-start max-w-xl">
+            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-4 animate-glow-in">
+              Dados reais · Odds justas · Resultados
             </div>
 
             <h1 className="font-display font-black uppercase leading-none mb-6 animate-glow-in anim-delay-1">
@@ -186,14 +180,17 @@ export default function LandingPage() {
               </div>
             </h1>
 
-            <p className="font-ui text-lg text-[var(--text)] max-w-md mb-8 leading-relaxed animate-glow-in anim-delay-2">
+            <p className="font-ui text-lg text-[var(--text)] max-w-md mb-3 leading-relaxed animate-glow-in anim-delay-2">
               Conecte seu Steam ID. Suas odds são calculadas do seu <span className="text-[var(--text-bright)]">histórico real</span> de partidas.
               Aposte contra a casa e prove que você é bom.
+            </p>
+            <p className="font-ui text-xs text-[var(--text-muted)] mb-8 animate-glow-in anim-delay-2">
+              Mais que apostas. Um sistema justo para quem joga de verdade.
             </p>
 
             <div className="flex items-center gap-3 mb-10 animate-glow-in anim-delay-3">
               <Button asChild size="lg">
-                <Link href="/register">Começar Agora</Link>
+                <Link href="/register">Comece agora →</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
                 <Link href="/login">Já tenho conta</Link>
@@ -201,199 +198,58 @@ export default function LandingPage() {
             </div>
 
             {/* Trust badges */}
-            <div className="flex items-center gap-4 animate-glow-in anim-delay-4">
+            <div className="flex items-center gap-4 flex-wrap animate-glow-in anim-delay-4">
               {[
                 { icon: "◈", text: "PIX instantâneo" },
                 { icon: "◎", text: "Odds algorítmicas" },
                 { icon: "◇", text: "Anti-fraude ativo" },
-              ].map((b) => (
-                <div key={b.text} className="flex items-center gap-1.5">
-                  <span className="text-[var(--neon)] text-xs">{b.icon}</span>
-                  <span className="font-ui text-xs text-[var(--text-muted)]">{b.text}</span>
+              ].map((b, i) => (
+                <div key={b.text} className="flex items-center gap-4">
+                  {i > 0 && <div className="hidden sm:block w-px h-8 bg-[var(--border)]" />}
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[var(--neon)] text-xs">{b.icon}</span>
+                    <span className="font-ui text-xs text-[var(--text-muted)]">{b.text}</span>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Right — floating bet cards */}
-          <div className="hidden lg:block relative h-[460px]">
-            {betCards.map((card, i) => (
-              <TiltCard
-                key={card.hero}
-                className={`absolute w-[272px] ${card.floatClass}`}
-                style={{
-                  top: `${i * 90}px`,
-                  left: `${i * 36}px`,
-                  zIndex: 3 - i,
-                  animationDelay: `${i * 0.8}s`,
-                }}
-              >
-                <div
-                  className="border bg-[var(--surface-2)] overflow-hidden"
-                  style={{
-                    borderColor: card.color,
-                    boxShadow: `0 0 20px ${card.shadow}, 0 0 60px ${card.shadow.replace("0.4", "0.1")}`,
-                  }}
-                >
-                  {/* Hero image */}
-                  <div className="relative h-[110px] overflow-hidden">
-                    <Image
-                      src={`${DOTA}/${card.hero}.png`}
-                      alt={card.name}
-                      fill
-                      className="object-cover object-top"
-                      sizes="272px"
-                    />
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background: `linear-gradient(to bottom, transparent 40%, ${card.color}22 100%)`,
-                      }}
-                    />
-                    {/* Status badge */}
-                    <div
-                      className="absolute top-2 right-2 px-2 py-0.5"
-                      style={{
-                        background: card.status === "PAGA" ? "rgba(0,255,102,0.15)" : `${card.color}22`,
-                        border: `1px solid ${card.status === "PAGA" ? "rgba(0,255,102,0.4)" : card.color}`,
-                      }}
-                    >
-                      <span
-                        className="font-display text-[11px] tracking-widest font-bold"
-                        style={{ color: card.status === "PAGA" ? "var(--neon)" : card.color }}
-                      >
-                        {card.status}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Card body */}
-                  <div className="p-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <div>
-                        <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">{card.name}</div>
-                        <div className="font-display text-xs font-bold text-[var(--text-bright)] uppercase tracking-wide">{card.type}</div>
-                      </div>
-                      <div
-                        className="font-mono text-lg font-bold"
-                        style={{ color: card.color, textShadow: `0 0 12px ${card.shadow}` }}
-                      >
-                        {card.odds}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between border-t border-[var(--border)] pt-2">
-                      <div className="text-center">
-                        <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">Aposta</div>
-                        <div className="font-mono text-sm text-[var(--text)]">{card.stake}</div>
-                      </div>
-                      <div style={{ color: card.color }} className="text-sm font-mono">→</div>
-                      <div className="text-center">
-                        <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">Retorno</div>
-                        <div className="font-mono text-sm font-bold" style={{ color: card.color }}>{card.payout}</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="font-display text-[11px] tracking-widest text-[var(--text-muted)] uppercase">Win Rate</div>
-                        <div className="font-mono text-sm text-[var(--text)]">{card.wr}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </TiltCard>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* ── Stats bar ──────────────────────────────────────────────────── */}
-      <div className="relative z-10 border-y border-[var(--border)] bg-[var(--surface-2)]">
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 divide-x divide-[var(--border)]">
-          {stats.map((s, i) => (
-            <div
-              key={s.label}
-              className="py-5 text-center animate-glow-in"
-              style={{ animationDelay: `${i * 0.1}s` }}
-            >
-              <div
-                className="font-mono text-2xl font-bold text-[var(--neon)]"
-                style={{ textShadow: "0 0 12px rgba(0,255,102,0.5)" }}
-              >
-                {"static" in s ? (
-                  s.static
-                ) : (
-                  <StatCounter
-                    to={s.to}
-                    decimals={s.decimals}
-                    prefix={s.prefix}
-                    suffix={s.suffix}
-                    duration={1600}
-                  />
-                )}
-              </div>
-              <div className="font-display text-[11px] tracking-[0.25em] text-[var(--text-muted)] uppercase mt-1">
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Campaign banner ────────────────────────────────────────────── */}
-      <div className="relative z-10 px-6 md:px-10 py-12 border-b border-[var(--border)]">
-        <div className="max-w-6xl mx-auto overflow-hidden border border-[var(--border-mid)]">
-          <Image
-            src="/hero-banner.jpg"
-            alt="SkillMoney — Confie em você, invista em seu potencial e vá à luta"
-            width={1600}
-            height={639}
-            className="w-full h-auto"
-          />
-        </div>
-      </div>
-
       {/* ── Como Funciona ──────────────────────────────────────────────── */}
       <section id="como-funciona" className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)]">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Como funciona</div>
             <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight">
-              Três passos para apostar
+              Apostar nunca foi tão direto
             </h2>
+            <p className="font-ui text-base text-[var(--text-muted)] mt-4 max-w-lg mx-auto">
+              Conecte, veja suas odds, aposte e receba. Sem intermediário, sem enrolação.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 relative">
-            {/* Connecting line */}
-            <div className="hidden md:block absolute top-[52px] left-[calc(16.66%+1px)] right-[calc(16.66%+1px)] h-px bg-[var(--border-mid)]" />
-
-            {steps.map((s, i) => (
-              <div key={s.n} className="bracket relative p-8 text-center group" style={{ "--bracket-color": s.color } as React.CSSProperties}>
-                {/* Number circle */}
-                <div
-                  className="relative z-10 w-[52px] h-[52px] mx-auto mb-6 flex items-center justify-center border-2"
-                  style={{
-                    borderColor: s.color,
-                    background: `${s.color}18`,
-                    boxShadow: `0 0 16px ${s.color}40`,
-                  }}
-                >
-                  <span
-                    className="font-display font-black text-sm"
-                    style={{ color: s.color }}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {steps.map((s) => (
+              <div
+                key={s.n}
+                className="bracket relative border border-[var(--border)] bg-[var(--surface-2)] p-6 hover:border-[var(--border-mid)] transition-all duration-200 group"
+                style={{ "--bracket-color": "var(--neon)" } as React.CSSProperties}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    className="w-10 h-10 flex items-center justify-center border border-[var(--neon)] bg-[var(--neon-dim)]"
                   >
-                    {s.n}
-                  </span>
+                    <s.icon size={16} className="text-[var(--neon)]" />
+                  </div>
+                  <span className="font-display text-xs font-black text-[var(--text-muted)]">{s.n}</span>
                 </div>
-                <h3
-                  className="font-display font-bold text-sm uppercase tracking-widest mb-3"
-                  style={{ color: s.color }}
-                >
+                <h3 className="font-display font-bold text-sm uppercase tracking-widest mb-2 text-[var(--text-bright)]">
                   {s.title}
                 </h3>
                 <p className="font-ui text-sm text-[var(--text-muted)] leading-relaxed">{s.desc}</p>
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ background: `linear-gradient(90deg, transparent, ${s.color}, transparent)` }}
-                />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[var(--neon)]" />
               </div>
             ))}
           </div>
@@ -434,6 +290,168 @@ export default function LandingPage() {
                   className="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   style={{ background: `linear-gradient(90deg, transparent, ${b.color}, transparent)` }}
                 />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Dashboard showcase ────────────────────────────────────────── */}
+      <section className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)] overflow-hidden">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+
+          {/* Left — mock dashboard card */}
+          <div className="relative mx-auto w-full max-w-[380px]">
+            <div className="border border-[var(--border-mid)] bg-[var(--surface-2)] shadow-[0_0_40px_rgba(0,255,102,0.08)]">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border)]">
+                <div className="w-5 h-5 flex items-center justify-center overflow-hidden">
+                  <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
+                </div>
+                <span className="font-display text-[11px] font-bold tracking-widest text-[var(--text-bright)] uppercase">
+                  Olá, Apostador!
+                </span>
+              </div>
+
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-ui text-xs text-[var(--text-muted)]">Retorno esta semana</span>
+                  <span className="font-mono text-sm font-bold text-[var(--neon)]">+18%</span>
+                </div>
+                <div className="flex items-end gap-1 h-12 mb-5">
+                  {[40, 55, 35, 60, 50, 75, 90].map((h, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 bg-[var(--neon)] opacity-70"
+                      style={{ height: `${h}%` }}
+                    />
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 mb-5">
+                  {[
+                    { label: "Apostas", value: "24" },
+                    { label: "Acertos", value: "16" },
+                    { label: "Win Rate", value: "66%" },
+                  ].map((s) => (
+                    <div key={s.label} className="border border-[var(--border)] p-2.5 text-center">
+                      <div className="font-mono text-lg font-bold text-[var(--text-bright)]">{s.value}</div>
+                      <div className="font-display text-[10px] tracking-widest text-[var(--text-muted)] uppercase mt-0.5">{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="border border-[var(--border)] p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-ui text-xs text-[var(--text-muted)]">Sequência de vitórias</span>
+                    <span className="font-mono text-xs text-[var(--neon)]">4/6</span>
+                  </div>
+                  <div className="h-1.5 bg-[var(--surface-3)] overflow-hidden">
+                    <div className="h-full bg-[var(--neon)]" style={{ width: "66%" }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right — text */}
+          <div>
+            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Mais controle, mais performance</div>
+            <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight mb-4">
+              Seus dados em suas mãos
+            </h2>
+            <p className="font-ui text-base text-[var(--text-muted)] mb-8 leading-relaxed max-w-md">
+              Acompanhe suas odds, seu histórico de apostas e sua evolução de win rate em tempo real.
+              Tudo o que você precisa para decidir a próxima aposta.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+              {[
+                { icon: BarChart3, title: "Estatísticas detalhadas", desc: "Acompanhe seu desempenho partida a partida." },
+                { icon: Target, title: "Odds personalizadas", desc: "Calculadas do seu histórico, não de tabela genérica." },
+                { icon: ShieldCheck, title: "Anti-fraude ativo", desc: "Detecção automática de manipulação de resultado." },
+                { icon: Zap, title: "Liquidação automática", desc: "Resultado sai, seu saldo atualiza na hora." },
+              ].map((f) => (
+                <div key={f.title} className="flex items-start gap-3">
+                  <f.icon size={16} className="text-[var(--neon)] mt-0.5 shrink-0" />
+                  <div>
+                    <div className="font-ui text-sm font-semibold text-[var(--text-bright)]">{f.title}</div>
+                    <div className="font-ui text-xs text-[var(--text-muted)] mt-0.5">{f.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Benefícios ────────────────────────────────────────────────── */}
+      <section id="beneficios" className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)]">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+          <div>
+            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Mais que apostas</div>
+            <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight mb-4">
+              Um sistema justo
+            </h2>
+            <p className="font-ui text-base text-[var(--text-muted)] mb-8 leading-relaxed max-w-md">
+              A SkillMoney nasceu para quem acredita que a verdadeira vantagem vem do próprio jogo.
+              Aqui, sua performance vira odds — e suas odds viram resultado.
+            </p>
+            <Button asChild size="lg">
+              <Link href="/register">Comece agora →</Link>
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {benefits.map((b) => (
+              <div key={b.title} className="border border-[var(--border)] bg-[var(--surface-2)] p-5">
+                <b.icon size={18} className="text-[var(--neon)] mb-3" />
+                <div className="font-ui text-sm font-semibold text-[var(--text-bright)] mb-1">{b.title}</div>
+                <p className="font-ui text-xs text-[var(--text-muted)] leading-relaxed">{b.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Stats bar ─────────────────────────────────────────────────── */}
+      <div className="relative z-10 border-b border-[var(--border)] bg-[var(--surface-2)]">
+        <div className="max-w-5xl mx-auto px-6 md:px-10 py-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+          {stats.map((s) => (
+            <div key={s.label} className="text-center">
+              <div className="font-mono text-2xl font-bold text-[var(--neon)]" style={{ textShadow: "0 0 12px rgba(0,255,102,0.5)" }}>
+                {s.value}
+              </div>
+              <div className="font-display text-[11px] tracking-[0.2em] text-[var(--text-muted)] uppercase mt-1">
+                {s.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Depoimentos ───────────────────────────────────────────────── */}
+      <section id="depoimentos" className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)]">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ O que nossos jogadores dizem</div>
+            <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight">
+              Histórias reais. Resultados reais.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {testimonials.map((t) => (
+              <div key={t.name} className="border border-[var(--border)] bg-[var(--surface-2)] p-6">
+                <p className="font-ui text-sm text-[var(--text)] leading-relaxed mb-5">&ldquo;{t.quote}&rdquo;</p>
+                <div className="flex items-center gap-3 pt-4 border-t border-[var(--border)]">
+                  <div className="w-8 h-8 rounded-full bg-[var(--neon-dim)] border border-[var(--neon)] flex items-center justify-center">
+                    <span className="font-display text-xs font-bold text-[var(--neon)]">{t.name[0]}</span>
+                  </div>
+                  <div>
+                    <div className="font-ui text-xs font-semibold text-[var(--text-bright)]">{t.name}</div>
+                    <div className="font-ui text-[11px] text-[var(--text-muted)]">{t.rank}</div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -546,8 +564,9 @@ export default function LandingPage() {
           </div>
 
           <div className="flex items-center gap-6">
-            <Link href="/login" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Entrar</Link>
-            <Link href="/register" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Cadastrar</Link>
+            <a href="#como-funciona" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Como funciona</a>
+            <a href="#beneficios" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Benefícios</a>
+            <a href="#depoimentos" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Depoimentos</a>
             <a href="#faq" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">FAQ</a>
           </div>
 

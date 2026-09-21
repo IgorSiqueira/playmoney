@@ -165,7 +165,10 @@ export async function fetchPlayerProfile(accountId: number): Promise<OpenDotaPla
 }
 
 export async function fetchRecentMatches(accountId: number, limit = 20): Promise<PlayerRecentMatch[]> {
-  const res = await fetchWithRetry(`${BASE_URL}/players/${accountId}/recentMatches?limit=${limit}`, { next: { revalidate: 300 } });
+  const res = await fetchWithRetry(
+    `${BASE_URL}/players/${accountId}/matches?limit=${limit}&significant=0`,
+    { next: { revalidate: 300 } }
+  );
   if (!res?.ok) return [];
   return res.json();
 }

@@ -4,11 +4,38 @@ import { Button } from "@/components/ui/button";
 import { ParticlesBackground } from "@/components/ParticlesBackground";
 import { BetTicker } from "@/components/BetTicker";
 import {
-  Target, BarChart3, ShieldCheck, Zap,
+  Target, BarChart3, ShieldCheck, Gamepad2, Zap,
   TrendingUp, Trophy, Users, Clock,
 } from "lucide-react";
 
 const DOTA = "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes";
+
+const steps = [
+  {
+    n: "01",
+    icon: Target,
+    title: "Conecte o Steam",
+    desc: "Cole seu Steam ID e buscamos seu histórico real de partidas.",
+  },
+  {
+    n: "02",
+    icon: BarChart3,
+    title: "Veja suas Odds",
+    desc: "Calculadas do seu win rate e KDA reais, não de tabela genérica.",
+  },
+  {
+    n: "03",
+    icon: Gamepad2,
+    title: "Jogue sua Partida",
+    desc: "Escolha vitória, KDA, GPM ou last hits antes de começar.",
+  },
+  {
+    n: "04",
+    icon: ShieldCheck,
+    title: "Liquidação Automática",
+    desc: "O sistema busca o resultado sozinho e paga via PIX em segundos.",
+  },
+];
 
 const betTypes = [
   { icon: "⚔", label: "Vitória", desc: "Você vence a próxima partida?", color: "var(--neon)" },
@@ -193,14 +220,50 @@ export default function LandingPage() {
       </section>
 
       {/* ── Como Funciona ──────────────────────────────────────────────── */}
-      <section id="como-funciona" className="relative z-10 border-b border-[var(--border)]">
-        <Image
-          src="/como-funciona.jpg"
-          alt="Como funciona: conecte o Steam, veja suas odds, jogue sua partida e receba a liquidação automática"
-          width={1774}
-          height={887}
-          className="w-full h-auto"
-        />
+      <section id="como-funciona" className="relative z-10 border-b border-[var(--border)] overflow-hidden">
+        <div className="relative w-full min-h-[720px] md:min-h-0 md:aspect-[1774/887]">
+          <Image
+            src="/como-funciona-bg.jpg"
+            alt="Aplicativo SkillMoney com painel de desempenho, ao lado de cenário de batalha do Dota 2"
+            fill
+            className="object-cover object-top"
+            sizes="100vw"
+          />
+
+          <div className="absolute inset-0 flex items-center py-10 md:py-0">
+            <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
+              <div className="md:ml-auto w-full md:w-[62%] lg:w-[56%]">
+                <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Como funciona</div>
+                <h2 className="font-display font-black text-2xl sm:text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight mb-3 leading-tight">
+                  Ganhar nunca foi <span className="neon-text">tão direto</span>
+                </h2>
+                <p className="font-ui text-sm md:text-base text-[var(--text-muted)] mb-6 md:mb-8 max-w-lg">
+                  Conecte seu Steam, veja suas odds calculadas do seu histórico real e ganhe com base na sua própria performance.
+                </p>
+
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                  {steps.map((s) => (
+                    <div
+                      key={s.n}
+                      className="border border-[var(--border-mid)] bg-[var(--bg)]/60 backdrop-blur-sm p-3 md:p-4"
+                    >
+                      <div className="w-8 h-8 flex items-center justify-center border border-[var(--neon)] bg-[var(--neon-dim)] mb-2 md:mb-3">
+                        <s.icon size={14} className="text-[var(--neon)]" />
+                      </div>
+                      <div className="font-display text-[10px] font-black text-[var(--text-muted)] mb-1">{s.n}</div>
+                      <div className="font-display text-xs font-bold uppercase tracking-wide text-[var(--text-bright)] mb-1">
+                        {s.title}
+                      </div>
+                      <p className="font-ui text-[11px] text-[var(--text-muted)] leading-snug hidden sm:block">
+                        {s.desc}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ── Modalidades de aposta ───────────────────────────────────────── */}

@@ -11,8 +11,8 @@ const steps = [
   {
     n: "01",
     icon: Target,
-    title: "Conecte o Steam",
-    desc: "Cole seu Steam ID e buscamos seu histórico real de partidas.",
+    title: "Conecte o Dota 2",
+    desc: "Cole seu ID do Dota 2 e buscamos seu histórico real de partidas.",
   },
   {
     n: "02",

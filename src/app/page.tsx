@@ -395,30 +395,43 @@ export default function LandingPage() {
       </section>
 
       {/* ── Benefícios ────────────────────────────────────────────────── */}
-      <section id="beneficios" className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)]">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
-          <div>
-            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Mais que apostas</div>
-            <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight mb-4">
-              Um sistema justo
-            </h2>
-            <p className="font-ui text-base text-[var(--text-muted)] mb-8 leading-relaxed max-w-md">
-              A SkillMoney nasceu para quem acredita que a verdadeira vantagem vem do próprio jogo.
-              Aqui, sua performance vira odds — e suas odds viram resultado.
-            </p>
-            <Button asChild size="lg">
-              <Link href="/register">Comece agora →</Link>
-            </Button>
-          </div>
+      <section id="beneficios" className="relative z-10 border-b border-[var(--border)] overflow-hidden">
+        <div className="relative w-full min-h-[720px] md:min-h-0 md:aspect-[1774/887]">
+          <Image
+            src="/beneficios-bg.jpg"
+            alt="Guerreiro do Dota 2 em cenário de batalha"
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-[var(--bg)]/60 to-transparent" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {benefits.map((b) => (
-              <div key={b.title} className="border border-[var(--border)] bg-[var(--surface-2)] p-5">
-                <b.icon size={18} className="text-[var(--neon)] mb-3" />
-                <div className="font-ui text-sm font-semibold text-[var(--text-bright)] mb-1">{b.title}</div>
-                <p className="font-ui text-xs text-[var(--text-muted)] leading-relaxed">{b.desc}</p>
+          <div className="absolute inset-0 flex items-center py-10 md:py-0">
+            <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
+              <div className="w-full md:w-[58%] lg:w-[50%]">
+                <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Mais que apostas</div>
+                <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight mb-4">
+                  Um sistema justo
+                </h2>
+                <p className="font-ui text-base text-[var(--text-muted)] mb-8 leading-relaxed max-w-md">
+                  A SkillMoney nasceu para quem acredita que a verdadeira vantagem vem do próprio jogo.
+                  Aqui, sua performance vira odds — e suas odds viram resultado.
+                </p>
+                <Button asChild size="lg" className="mb-10">
+                  <Link href="/register">Comece agora →</Link>
+                </Button>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {benefits.map((b) => (
+                    <div key={b.title} className="border border-[var(--border-mid)] bg-[var(--bg)]/60 backdrop-blur-sm p-4">
+                      <b.icon size={16} className="text-[var(--neon)] mb-2" />
+                      <div className="font-ui text-sm font-semibold text-[var(--text-bright)] mb-1">{b.title}</div>
+                      <p className="font-ui text-xs text-[var(--text-muted)] leading-relaxed">{b.desc}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>

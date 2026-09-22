@@ -106,7 +106,7 @@ export default function AdminUserPage() {
   }
 
   async function changeSteam() {
-    if (!steamInput.trim()) { flash("Informe o Steam ID", false); return; }
+    if (!steamInput.trim()) { flash("Informe o ID do Dota 2", false); return; }
     setSteamLoading(true);
     const res = await fetch(`/api/admin/users/${id}/steam`, {
       method: "PUT",
@@ -114,10 +114,10 @@ export default function AdminUserPage() {
       body: JSON.stringify({ steamId: steamInput.trim() }),
     });
     if (res.ok) {
-      flash("Conta Steam atualizada com sucesso", true);
+      flash("ID do Dota 2 atualizado com sucesso", true);
       setSteamInput(""); void load();
     } else {
-      const e = await res.json(); flash(e.error ?? "Erro ao trocar conta Steam", false);
+      const e = await res.json(); flash(e.error ?? "Erro ao trocar o ID do Dota 2", false);
     }
     setSteamLoading(false);
   }
@@ -356,12 +356,12 @@ export default function AdminUserPage() {
           </div>
         </div>
 
-        {/* Steam account */}
+        {/* ID Dota 2 */}
         <div className="border border-[var(--border)] bg-[var(--surface-2)] p-4 space-y-3">
           <div>
-            <div className="font-display text-xs tracking-widest text-[var(--text-bright)] uppercase mb-0.5">Conta Steam (Dota 2)</div>
+            <div className="font-display text-xs tracking-widest text-[var(--text-bright)] uppercase mb-0.5">ID Dota 2</div>
             <p className="font-ui text-xs text-[var(--text-muted)]">
-              Troca o perfil Steam vinculado. Exige que o usuário não tenha apostas ativas.
+              Troca o ID do Dota 2 vinculado. Exige que o usuário não tenha apostas ativas.
             </p>
           </div>
           {user.gameProfiles[0] && (
@@ -377,7 +377,7 @@ export default function AdminUserPage() {
               type="text"
               value={steamInput}
               onChange={(e) => setSteamInput(e.target.value)}
-              placeholder="Account ID ou Steam64 ID"
+              placeholder="Account ID ou ID 64-bit"
               className="font-mono text-sm bg-[var(--surface-1)] border border-[var(--border)] px-3 py-2 text-[var(--text)] flex-1 min-w-48 focus:outline-none focus:border-[var(--neon)]"
             />
             <ActionButton disabled={steamLoading || isPending} onClick={() => startTransition(changeSteam)}>

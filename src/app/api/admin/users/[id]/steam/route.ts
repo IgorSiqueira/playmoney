@@ -38,12 +38,12 @@ export async function PUT(
   const body = await req.json();
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Steam ID inválido" }, { status: 400 });
+    return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "ID do Dota 2 inválido" }, { status: 400 });
   }
 
   const accountId = normalizePlayerId(parsed.data.steamId);
   if (accountId <= 0 || accountId > 4_294_967_295) {
-    return NextResponse.json({ error: "Steam ID fora do intervalo válido." }, { status: 400 });
+    return NextResponse.json({ error: "ID do Dota 2 fora do intervalo válido." }, { status: 400 });
   }
 
   // Bloquear se o usuário tem apostas ativas — não podemos trocar a conta durante uma aposta em andamento
@@ -52,18 +52,18 @@ export async function PUT(
   });
   if (activeBets > 0) {
     return NextResponse.json(
-      { error: `Usuário tem ${activeBets} aposta(s) ativa(s). Cancele-as antes de trocar a conta Steam.`, code: "HAS_ACTIVE_BETS" },
+      { error: `Usuário tem ${activeBets} aposta(s) ativa(s). Cancele-as antes de trocar o ID do Dota 2.`, code: "HAS_ACTIVE_BETS" },
       { status: 409 }
     );
   }
 
-  // Verificar se o Steam ID já está vinculado a outro usuário
+  // Verificar se o ID do Dota 2 já está vinculado a outro usuário
   const takenByOther = await prisma.gameProfile.findFirst({
     where: { externalId: String(accountId), game: "DOTA2", NOT: { userId: targetUserId } },
   });
   if (takenByOther) {
     return NextResponse.json(
-      { error: "Este perfil Steam já está vinculado a outra conta na plataforma." },
+      { error: "Este ID do Dota 2 já está vinculado a outra conta na plataforma." },
       { status: 409 }
     );
   }
@@ -77,7 +77,7 @@ export async function PUT(
 
   if (!playerProfile?.profile) {
     return NextResponse.json(
-      { error: "Perfil Steam não encontrado. Verifique se o perfil é público." },
+      { error: "Perfil do Dota 2 não encontrado. Verifique se o perfil é público." },
       { status: 404 }
     );
   }

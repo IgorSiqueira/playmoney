@@ -272,7 +272,7 @@ export default function BetsPage() {
         <EmptyState
           icon={<Target size={36} />}
           title="Sem Apostas"
-          description="Você ainda não fez nenhuma aposta. Conecte seu perfil Steam no Dota 2 para começar."
+          description="Você ainda não fez nenhuma aposta. Registre seu ID público do Dota 2 para começar."
           action={
             <a href="/games/dota2" className="inline-flex items-center gap-2 font-ui text-sm font-semibold text-[var(--neon)] underline underline-offset-2 decoration-[var(--neon-mid)] hover:decoration-[var(--neon)]">
               Ir para Dota 2 →

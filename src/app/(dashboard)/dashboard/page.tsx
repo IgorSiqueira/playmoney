@@ -155,7 +155,7 @@ export default async function DashboardPage() {
                   step: 1,
                   done: gameProfiles.length > 0,
                   title: "Conecte o Dota 2",
-                  desc: "Vincule seu perfil Steam para calcularmos suas odds com base no seu histórico.",
+                  desc: "Registre seu ID público do Dota 2 para calcularmos suas odds com base no seu histórico.",
                   href: "/games/dota2",
                   cta: "Conectar",
                 },

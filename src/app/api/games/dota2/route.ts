@@ -75,7 +75,7 @@ export async function POST(req: Request) {
 
   if (!parsed.success) {
     return NextResponse.json(
-      { error: parsed.error.issues[0]?.message ?? "Steam ID inválido" },
+      { error: parsed.error.issues[0]?.message ?? "ID do Dota 2 inválido" },
       { status: 400 }
     );
   }
@@ -84,7 +84,7 @@ export async function POST(req: Request) {
 
   // Sanity check: account IDs above this range are invalid 32-bit IDs
   if (accountId <= 0 || accountId > 4_294_967_295) {
-    return NextResponse.json({ error: "Steam ID fora do intervalo válido." }, { status: 400 });
+    return NextResponse.json({ error: "ID do Dota 2 fora do intervalo válido." }, { status: 400 });
   }
 
   const [playerProfile, recentMatches, stats] = await Promise.all([
@@ -95,7 +95,7 @@ export async function POST(req: Request) {
 
   if (!playerProfile?.profile) {
     return NextResponse.json(
-      { error: "Perfil Steam não encontrado. Verifique se o perfil é público." },
+      { error: "Perfil do Dota 2 não encontrado. Verifique se o perfil é público." },
       { status: 404 }
     );
   }
@@ -103,18 +103,18 @@ export async function POST(req: Request) {
   const odds = calculateDynamicOdds(recentMatches, stats);
   const statsJson = JSON.parse(JSON.stringify({ ...stats, odds, recentMatches: recentMatches.slice(0, 50) }));
 
-  // [E1] Bloquear hedge: Steam ID já vinculado a outro usuário
+  // [E1] Bloquear hedge: ID do Dota 2 já vinculado a outro usuário
   const takenByOther = await prisma.gameProfile.findFirst({
     where: { externalId: String(accountId), game: "DOTA2", NOT: { userId } },
   });
   if (takenByOther) {
     return NextResponse.json(
-      { error: "Este perfil Steam já está vinculado a outra conta na plataforma." },
+      { error: "Este ID do Dota 2 já está vinculado a outra conta na plataforma." },
       { status: 409 }
     );
   }
 
-  // [E2] Bloquear troca de conta: se o usuário já tem um perfil com Steam ID diferente
+  // [E2] Bloquear troca de conta: se o usuário já tem um perfil com ID do Dota 2 diferente
   const ownProfile = await prisma.gameProfile.findUnique({
     where: { userId_game: { userId, game: "DOTA2" } },
     select: { externalId: true, profilePublicSince: true },

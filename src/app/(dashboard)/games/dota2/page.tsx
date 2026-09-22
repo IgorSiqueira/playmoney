@@ -362,7 +362,7 @@ export default function Dota2Page() {
       <div>
         <div className="font-ui text-[11px] font-semibold tracking-[0.2em] text-[var(--neon)] uppercase mb-1">▸ Jogos</div>
         <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[var(--text-bright)]">Dota 2</h1>
-        <p className="font-ui text-sm text-[var(--text-muted)] mt-1">Conecte sua conta Steam para calcularmos suas odds</p>
+        <p className="font-ui text-sm text-[var(--text-muted)] mt-1">Registre seu ID público do Dota 2 para calcularmos suas odds</p>
       </div>
       <div className="max-w-md">
         <div className="bracket relative border border-[var(--border)] bg-[var(--surface-2)]">
@@ -370,18 +370,18 @@ export default function Dota2Page() {
           <div className="p-6">
             <div className="flex items-center gap-2 mb-1">
               <Gamepad2 size={14} className="text-[var(--neon)]" />
-              <span className="font-display text-sm font-bold uppercase tracking-widest text-[var(--text-bright)]">Conectar Steam</span>
+              <span className="font-display text-sm font-bold uppercase tracking-widest text-[var(--text-bright)]">Registrar ID público Dota 2</span>
             </div>
-            <p className="font-display text-[11px] tracking-[0.2em] text-[var(--text-muted)] uppercase mb-5">Perfil público necessário · API gratuita</p>
+            <p className="font-display text-[11px] tracking-[0.2em] text-[var(--text-muted)] uppercase mb-5">Perfil público necessário · Nenhum vínculo com a Steam</p>
             <form onSubmit={handleConnect} className="space-y-4">
               <div className="space-y-2">
-                <Label>Steam ID (32-bit ou 64-bit)</Label>
+                <Label>ID público do Dota 2 (32-bit ou 64-bit)</Label>
                 <Input placeholder="Ex: 86745912 ou 76561198..." value={steamId} onChange={(e) => setSteamId(e.target.value)} required />
                 <p className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest">Encontre em: steamidfinder.com</p>
               </div>
               {error && <AlertBox variant="error">{error}</AlertBox>}
               <Button type="submit" disabled={loading} className="w-full">
-                {loading ? "Buscando perfil..." : "Conectar"}
+                {loading ? "Buscando perfil..." : "Registrar"}
               </Button>
             </form>
           </div>
@@ -417,7 +417,7 @@ export default function Dota2Page() {
               <h2 className="font-display text-xl font-black uppercase tracking-wide text-[var(--text-bright)]">{profile.displayName}</h2>
               {profile.stats?.rankTier && <Badge variant="warning">{getRankName(profile.stats.rankTier)}</Badge>}
             </div>
-            <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest mb-4">STEAM ID · {profile.externalId}</div>
+            <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest mb-4">ID DOTA 2 · {profile.externalId}</div>
             {profile.stats?.estimatedFromRank && (
               <AlertBox variant="warning">
                 Ainda não encontramos partidas suas para consulta. As métricas abaixo são uma <strong>estimativa baseada na sua medalha</strong>,

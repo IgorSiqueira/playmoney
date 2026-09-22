@@ -106,18 +106,8 @@ export default function LandingPage() {
 
       {/* ── Nav ────────────────────────────────────────────────────────── */}
       <nav className="relative z-20 flex items-center justify-between gap-2 px-4 sm:px-6 md:px-10 py-3 border-b border-[var(--border)]">
-        <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center overflow-hidden shrink-0">
-            <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
-          </div>
-          <div className="leading-none">
-            <div className="font-display text-xs sm:text-sm font-black tracking-[0.15em] sm:tracking-[0.2em] text-[var(--text-bright)] uppercase whitespace-nowrap">
-              Skill<span className="text-[var(--neon)]">Money</span>
-            </div>
-            <div className="hidden sm:block font-ui text-[9px] tracking-[0.2em] text-[var(--text-muted)] uppercase mt-0.5">
-              Você contra você.
-            </div>
-          </div>
+        <Link href="/" className="flex items-center shrink-0">
+          <img src="/logo-full.webp" alt="SkillMoney — Você contra você." className="h-14 sm:h-16 w-auto object-contain" />
         </Link>
 
         <div className="hidden xl:flex items-center gap-6">

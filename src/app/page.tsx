@@ -17,8 +17,8 @@ const steps = [
   {
     n: "02",
     icon: BarChart3,
-    title: "Veja suas Odds",
-    desc: "Calculadas do seu win rate e KDA reais, não de tabela genérica.",
+    title: "Veja seu Índice de Performance",
+    desc: "Seu Índice é construído a partir dos seus dados reais de performance.",
   },
   {
     n: "03",

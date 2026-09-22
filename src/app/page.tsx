@@ -24,7 +24,7 @@ const steps = [
     n: "03",
     icon: Gamepad2,
     title: "Jogue sua Partida",
-    desc: "Escolha vitória, KDA, GPM ou last hits antes de começar.",
+    desc: "Escolha vitória, abates, assistência, GPM e XPM antes de começar.",
   },
   {
     n: "04",

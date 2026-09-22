@@ -416,18 +416,8 @@ export default function LandingPage() {
       <footer className="relative z-10 border-t border-[var(--border)] px-6 md:px-10 py-8">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
-                <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
-              </div>
-              <div className="leading-none">
-                <div className="font-display text-sm font-black tracking-[0.2em] text-[var(--text-bright)] uppercase">
-                  Skill<span className="text-[var(--neon)]">Money</span>
-                </div>
-                <div className="font-ui text-[9px] tracking-[0.2em] text-[var(--text-muted)] uppercase mt-0.5">
-                  Você contra você.
-                </div>
-              </div>
+            <Link href="/" className="flex items-center">
+              <img src="/logo-full.webp" alt="SkillMoney — Você contra você." className="h-10 w-auto object-contain" />
             </Link>
 
             <div className="flex items-center gap-5 flex-wrap justify-center">

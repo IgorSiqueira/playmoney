@@ -226,7 +226,7 @@ export default function LandingPage() {
 
       {/* ── Campeonato ────────────────────────────────────────────────── */}
       <section id="campeonato" className="relative z-10 border-b border-[var(--border)] overflow-hidden">
-        <div className="relative w-full min-h-[560px] md:min-h-0 md:aspect-[1774/887]">
+        <div className="relative w-full min-h-screen">
           <Image
             src="/campeonato-hero-bg.webp"
             alt="Campeonato SkillMoney — cenário de batalha do Dota 2"
@@ -235,12 +235,13 @@ export default function LandingPage() {
             sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-[var(--bg)]/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-transparent to-transparent" />
 
-          <div className="absolute inset-0 flex items-center py-14 md:py-0">
+          <div className="absolute inset-0 flex items-center py-20">
             <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
               <div className="max-w-xl">
                 <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Evento especial</div>
-                <h2 className="font-display font-black text-3xl md:text-5xl text-[var(--text-bright)] uppercase tracking-tight mb-4 leading-tight">
+                <h2 className="font-display font-black text-4xl md:text-6xl text-[var(--text-bright)] uppercase tracking-tight mb-4 leading-tight">
                   Campeonato <span className="neon-text">SkillMoney</span>
                 </h2>
                 <p className="font-ui text-base md:text-lg text-[var(--text)] mb-6 leading-relaxed">

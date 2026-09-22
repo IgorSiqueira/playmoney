@@ -29,6 +29,7 @@ interface Bet {
   createdAt: string;
   settledAt: string | null;
   gameProfile: { game: string; displayName: string | null };
+  hero: { name: string; imageUrl: string } | null;
 }
 
 const statusCfg: Record<string, { label: string; variant: "default" | "destructive" | "warning" | "secondary"; icon: typeof Trophy; color: string }> = {
@@ -203,17 +204,32 @@ export default function BetsPage() {
                   className="flex items-center justify-between border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 hover:border-[var(--border-mid)] hover:bg-[var(--surface-hover)] transition-all duration-150 group"
                 >
                   <div className="flex items-center gap-3">
-                    <div
-                      className="w-9 h-9 border flex items-center justify-center shrink-0"
-                      style={{ borderColor: `${s.color}40` }}
-                    >
-                      <Icon size={12} style={{ color: s.color }} />
-                    </div>
+                    {bet.hero ? (
+                      <img
+                        src={bet.hero.imageUrl}
+                        alt={bet.hero.name}
+                        title={bet.hero.name}
+                        className="w-9 h-9 object-cover border shrink-0"
+                        style={{ borderColor: `${s.color}40` }}
+                      />
+                    ) : (
+                      <div
+                        className="w-9 h-9 border flex items-center justify-center shrink-0"
+                        style={{ borderColor: `${s.color}40` }}
+                      >
+                        <Icon size={12} style={{ color: s.color }} />
+                      </div>
+                    )}
                     <div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-ui text-sm font-semibold text-[var(--text-bright)]">
                           {describeEventBet(bet.eventType ?? "WIN_LOSS", bet.prediction, bet.targetValue ?? undefined)}
                         </span>
+                        {bet.hero && (
+                          <span className="font-mono text-[11px] text-[var(--text-muted)]">
+                            {bet.hero.name}
+                          </span>
+                        )}
                         <Badge variant={s.variant}>{s.label}</Badge>
                       </div>
                       <div className="flex items-center gap-3 mt-0.5">

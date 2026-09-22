@@ -199,6 +199,7 @@ async function runAutoSettle() {
                   playerWon, matchId: matchIdStr,
                   matchStartTime: match.start_time, duration: match.duration,
                   lobbyType: match.lobby_type, gameMode: match.game_mode,
+                  heroId: player.hero_id,
                   autoSettled: true,
                 },
               })),

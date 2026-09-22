@@ -280,6 +280,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
               duration: match.duration,
               lobbyType: match.lobby_type,
               gameMode: match.game_mode,
+              heroId: player.hero_id,
             },
           })
         ),

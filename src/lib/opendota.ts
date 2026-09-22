@@ -186,6 +186,36 @@ export async function fetchHeroNames(): Promise<Record<number, string>> {
   }
 }
 
+const HERO_IMAGE_BASE = "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes";
+
+export interface HeroMeta {
+  name: string;
+  imageUrl: string;
+}
+
+/**
+ * Mapa hero_id -> { name, imageUrl } usado para exibir o herói jogado em
+ * cada aposta liquidada (histórico de apostas). O slug da imagem vem do
+ * campo `name` da OpenDota (ex.: "npc_dota_hero_antimage" -> "antimage").
+ */
+export async function fetchHeroMeta(): Promise<Record<number, HeroMeta>> {
+  try {
+    const res = await fetch("https://api.opendota.com/api/heroes", {
+      next: { revalidate: 86400 },
+    });
+    if (!res.ok) return {};
+    const heroes: { id: number; name: string; localized_name: string }[] = await res.json();
+    return Object.fromEntries(
+      heroes.map((h) => {
+        const slug = h.name.replace("npc_dota_hero_", "");
+        return [h.id, { name: h.localized_name, imageUrl: `${HERO_IMAGE_BASE}/${slug}.png` }];
+      })
+    );
+  } catch {
+    return {};
+  }
+}
+
 export async function fetchMatchDetails(matchId: string): Promise<OpenDotaMatch | null> {
   const res = await fetchWithRetry(`${BASE_URL}/matches/${matchId}`, { next: { revalidate: 60 } }, 3);
   if (!res?.ok) return null;

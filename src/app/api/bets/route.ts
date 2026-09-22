@@ -3,7 +3,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { calculateDynamicOdds, calculatePayout } from "@/lib/odds";
-import { calculatePlayerStatsWithMatches } from "@/lib/opendota";
+import { calculatePlayerStatsWithMatches, fetchHeroMeta } from "@/lib/opendota";
 import { calculateComboOdds } from "@/lib/bet-events";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import {
@@ -37,7 +37,21 @@ export async function GET() {
     take: 50,
   });
 
-  return NextResponse.json(bets);
+  const heroIds = new Set<number>();
+  for (const bet of bets) {
+    const heroId = (bet.matchData as { matchResult?: { heroId?: number } } | null)?.matchResult?.heroId;
+    if (typeof heroId === "number") heroIds.add(heroId);
+  }
+
+  const heroMeta = heroIds.size > 0 ? await fetchHeroMeta() : {};
+
+  const enrichedBets = bets.map((bet) => {
+    const heroId = (bet.matchData as { matchResult?: { heroId?: number } } | null)?.matchResult?.heroId;
+    const hero = typeof heroId === "number" ? heroMeta[heroId] : undefined;
+    return { ...bet, hero: hero ?? null };
+  });
+
+  return NextResponse.json(enrichedBets);
 }
 
 export async function POST(req: Request) {

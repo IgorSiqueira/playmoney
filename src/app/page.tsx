@@ -210,7 +210,7 @@ export default function LandingPage() {
             <div className="flex items-center gap-4 flex-wrap animate-glow-in anim-delay-4">
               {[
                 { icon: "◈", text: "PIX instantâneo" },
-                { icon: "◎", text: "Odds algorítmicas" },
+                { icon: "◎", text: "Índice de Performance individual" },
                 { icon: "◇", text: "Anti-fraude ativo" },
               ].map((b, i) => (
                 <div key={b.text} className="flex items-center gap-4">

@@ -2,13 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ParticlesBackground } from "@/components/ParticlesBackground";
-import { BetTicker } from "@/components/BetTicker";
 import {
-  Target, BarChart3, ShieldCheck, Gamepad2, Zap,
+  Target, BarChart3, ShieldCheck, Gamepad2,
   TrendingUp, Trophy, Users, Clock,
 } from "lucide-react";
-
-const DOTA = "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes";
 
 const steps = [
   {
@@ -35,13 +32,6 @@ const steps = [
     title: "Liquidação Automática",
     desc: "O sistema busca o resultado sozinho e paga via PIX em segundos.",
   },
-];
-
-const betTypes = [
-  { icon: "⚔", label: "Vitória", desc: "Você vence a próxima partida?", color: "var(--neon)" },
-  { icon: "◎", label: "KDA", desc: "Mata + assists / mortes — acima ou abaixo da sua média", color: "var(--gold)" },
-  { icon: "◈", label: "GPM", desc: "Ouro por minuto — meça sua eficiência econômica", color: "var(--blue)" },
-  { icon: "◇", label: "Last Hits", desc: "Creeps abatidos no final da partida", color: "var(--purple)" },
 ];
 
 const benefits = [
@@ -127,7 +117,6 @@ export default function LandingPage() {
 
         <div className="hidden xl:flex items-center gap-6">
           <a href="#como-funciona" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Como funciona</a>
-          <a href="#modalidades" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Modalidades</a>
           <a href="#beneficios" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Benefícios</a>
           <a href="#depoimentos" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Depoimentos</a>
           <a href="#faq" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">FAQ</a>
@@ -142,9 +131,6 @@ export default function LandingPage() {
           </Button>
         </div>
       </nav>
-
-      {/* ── Live bet ticker ────────────────────────────────────────────── */}
-      <BetTicker />
 
       {/* ── Hero ───────────────────────────────────────────────────────── */}
       <section className="relative z-10 border-b border-[var(--border)] overflow-hidden">
@@ -269,134 +255,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Modalidades de aposta ───────────────────────────────────────── */}
-      <section id="modalidades" className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)]">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-14">
-            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Modalidades</div>
-            <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight">
-              O que você pode apostar
-            </h2>
-            <p className="font-ui text-base text-[var(--text-muted)] mt-4 max-w-lg mx-auto">
-              Todas as apostas são baseadas no seu histórico real. Odds únicas para cada jogador.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {betTypes.map((b) => (
-              <div
-                key={b.label}
-                className="bracket relative border border-[var(--border)] bg-[var(--surface-2)] p-6 hover:border-[var(--border-mid)] transition-all duration-200 group cursor-default"
-                style={{ "--bracket-color": b.color } as React.CSSProperties}
-              >
-                <div
-                  className="text-3xl mb-4 font-display font-black"
-                  style={{ color: b.color, textShadow: `0 0 16px ${b.color}` }}
-                >
-                  {b.icon}
-                </div>
-                <div className="font-display text-sm font-bold uppercase tracking-widest text-[var(--text-bright)] mb-2">
-                  {b.label}
-                </div>
-                <p className="font-ui text-sm text-[var(--text-muted)] leading-relaxed">{b.desc}</p>
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ background: `linear-gradient(90deg, transparent, ${b.color}, transparent)` }}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Dashboard showcase ────────────────────────────────────────── */}
-      <section className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)] overflow-hidden">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
-
-          {/* Left — mock dashboard card */}
-          <div className="relative mx-auto w-full max-w-[380px]">
-            <div className="border border-[var(--border-mid)] bg-[var(--surface-2)] shadow-[0_0_40px_rgba(0,255,102,0.08)]">
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border)]">
-                <div className="w-5 h-5 flex items-center justify-center overflow-hidden">
-                  <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
-                </div>
-                <span className="font-display text-[11px] font-bold tracking-widest text-[var(--text-bright)] uppercase">
-                  Olá, Apostador!
-                </span>
-              </div>
-
-              <div className="p-4">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="font-ui text-xs text-[var(--text-muted)]">Retorno esta semana</span>
-                  <span className="font-mono text-sm font-bold text-[var(--neon)]">+18%</span>
-                </div>
-                <div className="flex items-end gap-1 h-12 mb-5">
-                  {[40, 55, 35, 60, 50, 75, 90].map((h, i) => (
-                    <div
-                      key={i}
-                      className="flex-1 bg-[var(--neon)] opacity-70"
-                      style={{ height: `${h}%` }}
-                    />
-                  ))}
-                </div>
-
-                <div className="grid grid-cols-3 gap-2 mb-5">
-                  {[
-                    { label: "Apostas", value: "24" },
-                    { label: "Acertos", value: "16" },
-                    { label: "Win Rate", value: "66%" },
-                  ].map((s) => (
-                    <div key={s.label} className="border border-[var(--border)] p-2.5 text-center">
-                      <div className="font-mono text-lg font-bold text-[var(--text-bright)]">{s.value}</div>
-                      <div className="font-display text-[10px] tracking-widest text-[var(--text-muted)] uppercase mt-0.5">{s.label}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="border border-[var(--border)] p-3">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-ui text-xs text-[var(--text-muted)]">Sequência de vitórias</span>
-                    <span className="font-mono text-xs text-[var(--neon)]">4/6</span>
-                  </div>
-                  <div className="h-1.5 bg-[var(--surface-3)] overflow-hidden">
-                    <div className="h-full bg-[var(--neon)]" style={{ width: "66%" }} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right — text */}
-          <div>
-            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Mais controle, mais performance</div>
-            <h2 className="font-display font-black text-3xl md:text-4xl text-[var(--text-bright)] uppercase tracking-tight mb-4">
-              Seus dados em suas mãos
-            </h2>
-            <p className="font-ui text-base text-[var(--text-muted)] mb-8 leading-relaxed max-w-md">
-              Acompanhe suas odds, seu histórico de apostas e sua evolução de win rate em tempo real.
-              Tudo o que você precisa para decidir a próxima aposta.
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-              {[
-                { icon: BarChart3, title: "Estatísticas detalhadas", desc: "Acompanhe seu desempenho partida a partida." },
-                { icon: Target, title: "Odds personalizadas", desc: "Calculadas do seu histórico, não de tabela genérica." },
-                { icon: ShieldCheck, title: "Anti-fraude ativo", desc: "Detecção automática de manipulação de resultado." },
-                { icon: Zap, title: "Liquidação automática", desc: "Resultado sai, seu saldo atualiza na hora." },
-              ].map((f) => (
-                <div key={f.title} className="flex items-start gap-3">
-                  <f.icon size={16} className="text-[var(--neon)] mt-0.5 shrink-0" />
-                  <div>
-                    <div className="font-ui text-sm font-semibold text-[var(--text-bright)]">{f.title}</div>
-                    <div className="font-ui text-xs text-[var(--text-muted)] mt-0.5">{f.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── Benefícios ────────────────────────────────────────────────── */}
       <section id="beneficios" className="relative z-10 border-b border-[var(--border)] overflow-hidden">
         <div className="relative w-full min-h-[720px] md:min-h-0 md:aspect-[1774/887]">
@@ -482,33 +340,6 @@ export default function LandingPage() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Dota 2 hero showcase strip ─────────────────────────────────── */}
-      <section className="relative z-10 py-16 border-b border-[var(--border)] overflow-hidden">
-        <div className="font-display text-[11px] tracking-[0.3em] text-[var(--text-muted)] uppercase text-center mb-8">
-          ▸ Conecte seu herói favorito
-        </div>
-        <div className="flex items-center justify-center gap-4 px-6 flex-wrap">
-          {["invoker", "pudge", "crystal_maiden", "phantom_assassin", "axe", "juggernaut", "lion", "antimage"].map((hero) => (
-            <div
-              key={hero}
-              className="relative w-[72px] h-[72px] border border-[var(--border)] overflow-hidden hover:border-[var(--neon)] transition-colors duration-200 group"
-            >
-              <Image
-                src={`${DOTA}/${hero}.png`}
-                alt={hero}
-                fill
-                className="object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-300"
-                sizes="72px"
-              />
-              <div className="absolute inset-0 bg-[var(--neon)] opacity-0 group-hover:opacity-[0.06] transition-opacity duration-200" />
-            </div>
-          ))}
-          <div className="w-[72px] h-[72px] border border-dashed border-[var(--border)] flex items-center justify-center">
-            <span className="font-display text-xs text-[var(--text-muted)]">+100</span>
           </div>
         </div>
       </section>

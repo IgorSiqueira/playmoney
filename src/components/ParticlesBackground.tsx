@@ -52,9 +52,13 @@ export function ParticlesBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d")!;
     let raf: number;
+    let running = true;
     let frame = 0;
     const particles: Particle[] = [];
     const meteors: Meteor[] = [];
@@ -64,8 +68,19 @@ export function ParticlesBackground() {
       canvas.height = window.innerHeight;
     }
 
+    function handleVisibility() {
+      if (document.hidden) {
+        running = false;
+        cancelAnimationFrame(raf);
+      } else if (!running) {
+        running = true;
+        raf = requestAnimationFrame(draw);
+      }
+    }
+
     resize();
     window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", handleVisibility);
 
     // seed particles spread across the canvas
     for (let i = 0; i < 55; i++) {
@@ -149,6 +164,7 @@ export function ParticlesBackground() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, []);
 

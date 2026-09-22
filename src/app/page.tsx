@@ -108,7 +108,7 @@ export default function LandingPage() {
       <nav className="relative z-20 flex items-center justify-between gap-2 px-4 sm:px-6 md:px-10 py-3 border-b border-[var(--border)]">
         <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0">
           <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center overflow-hidden shrink-0">
-            <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
+            <img src="/logo.png" alt="SkillMoney" width={192} height={192} className="w-full h-full object-contain" />
           </div>
           <div className="leading-none">
             <div className="font-display text-xs sm:text-sm font-black tracking-[0.15em] sm:tracking-[0.2em] text-[var(--text-bright)] uppercase whitespace-nowrap">
@@ -147,6 +147,7 @@ export default function LandingPage() {
             fill
             className="object-cover"
             sizes="100vw"
+            quality={85}
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-[var(--bg)]/70 to-transparent" />
@@ -223,6 +224,7 @@ export default function LandingPage() {
             fill
             className="object-cover object-top"
             sizes="100vw"
+            quality={85}
           />
 
           <div className="absolute inset-0 flex items-center py-10 md:py-0">
@@ -270,6 +272,7 @@ export default function LandingPage() {
             fill
             className="object-cover object-right md:object-center"
             sizes="100vw"
+            quality={85}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-[var(--bg)]/60 to-transparent" />
 
@@ -337,6 +340,10 @@ export default function LandingPage() {
                   <img
                     src={t.avatar}
                     alt={t.name}
+                    width={36}
+                    height={36}
+                    loading="lazy"
+                    decoding="async"
                     className="w-9 h-9 rounded-full object-cover"
                   />
                   <div>
@@ -390,6 +397,7 @@ export default function LandingPage() {
             fill
             className="object-cover"
             sizes="100vw"
+            quality={85}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/40 to-[var(--bg)]/40" />
 
@@ -417,7 +425,15 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6">
             <Link href="/" className="flex items-center">
-              <img src="/logo-full.webp" alt="SkillMoney — Você contra você." className="h-32 w-auto object-contain" />
+              <img
+                src="/logo-full.webp"
+                alt="SkillMoney — Você contra você."
+                width={459}
+                height={320}
+                loading="lazy"
+                decoding="async"
+                className="h-32 w-auto object-contain"
+              />
             </Link>
 
             <div className="flex items-center gap-5 flex-wrap justify-center">

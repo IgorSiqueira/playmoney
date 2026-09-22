@@ -103,6 +103,10 @@ const faqs = [
     q: "De onde vêm os dados das partidas?",
     a: "O SkillMoney utiliza dados públicos e/ou fontes especializadas em estatísticas de Dota 2 para realizar a análise de performance.",
   },
+  {
+    q: "Quais partidas contam para concluir minhas apostas?",
+    a: "Apenas partidas ranqueadas jogadas solo são consideradas para concluir apostas. Partidas em duo, em grupo ou não ranqueadas não são elegíveis.",
+  },
 ];
 
 export default function LandingPage() {

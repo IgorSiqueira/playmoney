@@ -41,13 +41,6 @@ const benefits = [
   { icon: Trophy, title: "Foco em performance real", desc: "Dados reais. Performance individual. Um índice feito para você." },
 ];
 
-const stats = [
-  { value: "2.4K+", label: "Jogadores ativos" },
-  { value: "R$1.2M", label: "Apostado na plataforma" },
-  { value: "1.80x", label: "Odds máximas" },
-  { value: "<1s", label: "Tempo de liquidação" },
-];
-
 const testimonials = [
   {
     quote: "Finalmente uma plataforma que calcula odds a partir do meu histórico de verdade. Nada de número genérico.",
@@ -305,22 +298,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* ── Stats bar ─────────────────────────────────────────────────── */}
-      <div className="relative z-10 border-b border-[var(--border)] bg-[var(--surface-2)]">
-        <div className="max-w-5xl mx-auto px-6 md:px-10 py-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="font-mono text-2xl font-bold text-[var(--neon)]" style={{ textShadow: "0 0 12px rgba(0,255,102,0.5)" }}>
-                {s.value}
-              </div>
-              <div className="font-display text-[11px] tracking-[0.2em] text-[var(--text-muted)] uppercase mt-1">
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* ── Depoimentos ───────────────────────────────────────────────── */}
       <section id="depoimentos" className="relative z-10 px-6 md:px-10 py-20 border-b border-[var(--border)]">

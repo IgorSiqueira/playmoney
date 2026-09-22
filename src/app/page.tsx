@@ -162,17 +162,17 @@ export default function LandingPage() {
 
             <h1 className="font-display font-black uppercase leading-none mb-6 animate-glow-in anim-delay-1">
               <div className="text-4xl md:text-6xl text-[var(--text-bright)] tracking-tighter">
-                Aposte em
+                Seu jogo.
               </div>
               <div
                 className="text-5xl md:text-7xl tracking-tighter neon-text glitch-text"
-                data-text="Você Mesmo"
+                data-text="Seus dados."
                 style={{ textShadow: "0 0 40px rgba(0,255,102,0.6), 0 0 80px rgba(0,255,102,0.25)" }}
               >
-                Você Mesmo
+                Seus dados.
               </div>
               <div className="text-2xl md:text-3xl text-[var(--text-muted)] tracking-tight mt-1">
-                no Dota 2
+                Sua performance.
               </div>
             </h1>
 

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { describeEventBet } from "@/lib/bet-events";
 import { ChampionshipBanner } from "@/components/shared/championship-banner";
+import { ChampionshipModal } from "@/components/shared/championship-modal";
 import Link from "next/link";
 import {
   TrendingUp, TrendingDown, Swords, CircleDollarSign, Activity,
@@ -86,6 +87,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8 pb-8">
+      <ChampionshipModal />
       <ChampionshipBanner />
 
       {/* Header */}

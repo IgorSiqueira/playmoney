@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ParticlesBackground } from "@/components/ParticlesBackground";
+import { ChampionshipModal } from "@/components/shared/championship-modal";
 import {
   Target, BarChart3, ShieldCheck, Gamepad2,
   TrendingUp, Trophy, Users, Clock,
@@ -108,6 +109,7 @@ const faqs = [
 export default function LandingPage() {
   return (
     <div className="relative min-h-screen flex flex-col overflow-x-hidden bg-[var(--bg)]">
+      <ChampionshipModal />
 
       {/* ── Particles + ambient glows ─────────────────────────────────── */}
       <ParticlesBackground />
@@ -218,60 +220,6 @@ export default function LandingPage() {
                 </div>
               ))}
               </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Campeonato ────────────────────────────────────────────────── */}
-      <section id="campeonato" className="relative z-10 border-b border-[var(--border)] overflow-hidden">
-        <div className="relative w-full min-h-screen">
-          <Image
-            src="/campeonato-hero-bg.webp"
-            alt="Campeonato SkillMoney — cenário de batalha do Dota 2"
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-[var(--bg)]/80 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-transparent to-transparent" />
-
-          <div className="absolute inset-0 flex items-center py-20">
-            <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
-              <div className="max-w-xl">
-                <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Evento especial</div>
-                <h2 className="font-display font-black text-4xl md:text-6xl text-[var(--text-bright)] uppercase tracking-tight mb-4 leading-tight">
-                  Campeonato <span className="neon-text">SkillMoney</span>
-                </h2>
-                <p className="font-ui text-base md:text-lg text-[var(--text)] mb-6 leading-relaxed">
-                  Todo jogador começa com <strong className="text-[var(--text-bright)]">R$ 2.100</strong>. São <strong className="text-[var(--text-bright)]">30 dias</strong> pra jogar.
-                  Quem acumular mais patrimônio no final é o grande campeão — e leva um <strong className="text-[var(--text-bright)]">prêmio em dinheiro real</strong>.
-                </p>
-
-                <div className="flex items-center gap-6 mb-8 flex-wrap">
-                  {[
-                    { label: "Saldo inicial", value: "R$ 2.100" },
-                    { label: "Duração", value: "30 dias" },
-                    { label: "Premiação", value: "Em breve" },
-                  ].map((s, i) => (
-                    <div key={s.label} className="flex items-center gap-6">
-                      {i > 0 && <div className="hidden sm:block w-px h-10 bg-[var(--border)]" />}
-                      <div>
-                        <div className="font-mono text-xl font-bold text-[var(--neon)]" style={{ textShadow: "0 0 12px rgba(0,255,102,0.5)" }}>
-                          {s.value}
-                        </div>
-                        <div className="font-display text-[10px] tracking-[0.2em] text-[var(--text-muted)] uppercase mt-0.5">
-                          {s.label}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <Button asChild size="lg">
-                  <Link href="/register">Quero participar →</Link>
-                </Button>
               </div>
             </div>
           </div>

@@ -148,34 +148,45 @@ export interface PlayerStats {
 }
 
 /**
- * [Fallback por medalha] Médias aproximadas de kills/mortes/assists/GPM/XPM por
+ * [Fallback por medalha] Médias reais de kills/mortes/assists/GPM/XPM por
  * faixa de rank, usadas apenas quando o perfil está público mas ainda não há
  * nenhuma partida disponível para consulta (ex.: acabou de tornar público).
  *
+ * Fonte: dotabuff.com/heroes/meta?metric=rating_bracket (views "kills",
+ * "assists", "deaths" e "farm"), média simples dos ~127 heróis em cada uma
+ * das 5 faixas que o próprio Dotabuff usa, extraída em 22/09/2026. Esses
+ * números mudam com patches/meta do jogo — vale reconferir periodicamente
+ * e atualizar só esta tabela.
+ *
+ * Achado contra-intuitivo confirmado pelos dados: kills e mortes CAEM um
+ * pouco em ranks mais altos (jogo mais disciplinado, menos teamfight caótico),
+ * enquanto GPM/XPM sobem (melhor farm/execução). Não é uma progressão linear
+ * "quanto mais alto o rank, mais kills" como se poderia supor.
+ *
  * Win rate fica fixo em 50% em todas as faixas — o matchmaking do Dota 2 é
- * desenhado para manter isso próximo de 50% independente do nível do jogador;
- * o que varia por medalha é execução (GPM/XPM/kills), não win rate.
+ * desenhado para manter isso próximo de 50% independente do nível do jogador.
  *
  * rank_tier da OpenDota: dezena = medalha (1=Arauto...8=Imortal), unidade = estrela.
+ * Faixas do Dotabuff (mantidas aqui do mesmo jeito): Cruzado ou menos (<2K MMR),
+ * Arconte (~2-3K), Lenda (~3-4K), Ancião (~4-5K), Divino+Imortal (>5K).
  * Ajuste os números aqui — nada mais precisa mudar.
  */
 const RANK_TIER_AVERAGES: Record<string, { kills: number; deaths: number; assists: number; gpm: number; xpm: number }> = {
-  herald_guardian: { kills: 4, deaths: 7,   assists: 6,  gpm: 350, xpm: 430 },
-  crusader_archon:  { kills: 5, deaths: 6,   assists: 8,  gpm: 420, xpm: 500 },
-  legend_ancient:   { kills: 6, deaths: 5.5, assists: 10, gpm: 480, xpm: 560 },
-  divine:           { kills: 7, deaths: 5,   assists: 11, gpm: 540, xpm: 620 },
-  immortal:         { kills: 8, deaths: 4.5, assists: 12, gpm: 600, xpm: 680 },
+  crusader_and_below: { kills: 8.16, deaths: 8.62, assists: 14.76, gpm: 474, xpm: 718 },
+  archon:             { kills: 8.04, deaths: 8.31, assists: 14.91, gpm: 493, xpm: 729 },
+  legend:             { kills: 7.93, deaths: 8.08, assists: 14.93, gpm: 506, xpm: 734 },
+  ancient:            { kills: 7.79, deaths: 7.87, assists: 14.78, gpm: 517, xpm: 735 },
+  divine_immortal:    { kills: 7.49, deaths: 7.47, assists: 14.18, gpm: 527, xpm: 727 },
 };
 
 function getRankTierAverages(rankTier?: number) {
   const medal = rankTier ? Math.floor(rankTier / 10) : 0;
   const bracket =
-    medal >= 8 ? "immortal" :
-    medal === 7 ? "divine" :
-    medal >= 5 ? "legend_ancient" :
-    medal >= 3 ? "crusader_archon" :
-    medal >= 1 ? "herald_guardian" :
-    "crusader_archon"; // sem rank/calibrando: usa a faixa do meio como neutro
+    medal >= 7 ? "divine_immortal" :
+    medal === 6 ? "ancient" :
+    medal === 5 ? "legend" :
+    medal === 4 ? "archon" :
+    "crusader_and_below"; // Arauto/Guardião/Cruzado e sem rank/calibrando
   return RANK_TIER_AVERAGES[bracket];
 }
 

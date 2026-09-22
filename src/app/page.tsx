@@ -105,28 +105,34 @@ export default function LandingPage() {
       </div>
 
       {/* ── Nav ────────────────────────────────────────────────────────── */}
-      <nav className="relative z-20 flex items-center justify-between px-6 md:px-10 py-4 border-b border-[var(--border)]">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
+      <nav className="relative z-20 flex items-center justify-between gap-2 px-4 sm:px-6 md:px-10 py-3 border-b border-[var(--border)]">
+        <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center overflow-hidden shrink-0">
             <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
           </div>
-          <span className="font-display text-sm font-black tracking-[0.2em] text-[var(--text-bright)] uppercase">
-            Skill<span className="text-[var(--neon)]">Money</span>
-          </span>
-        </div>
+          <div className="leading-none">
+            <div className="font-display text-xs sm:text-sm font-black tracking-[0.15em] sm:tracking-[0.2em] text-[var(--text-bright)] uppercase whitespace-nowrap">
+              Skill<span className="text-[var(--neon)]">Money</span>
+            </div>
+            <div className="hidden sm:block font-ui text-[9px] tracking-[0.2em] text-[var(--text-muted)] uppercase mt-0.5">
+              Você contra você.
+            </div>
+          </div>
+        </Link>
 
         <div className="hidden xl:flex items-center gap-6">
+          <Link href="/" className="font-ui text-sm text-[var(--text-bright)] border-b-2 border-[var(--neon)] pb-1 transition-colors">Início</Link>
           <a href="#como-funciona" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Como funciona</a>
           <a href="#beneficios" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Benefícios</a>
           <a href="#depoimentos" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Depoimentos</a>
           <a href="#faq" className="font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">FAQ</a>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button asChild variant="ghost" size="sm">
-            <Link href="/login">Entrar</Link>
-          </Button>
-          <Button asChild size="sm">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <Link href="/login" className="hidden sm:inline-block font-ui text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors mr-1">
+            Entrar
+          </Link>
+          <Button asChild size="sm" className="text-xs sm:text-sm px-3 sm:px-4">
             <Link href="/register">Comece agora →</Link>
           </Button>
         </div>
@@ -177,11 +183,11 @@ export default function LandingPage() {
               Mais que apostas. Um sistema justo para quem joga de verdade.
             </p>
 
-            <div className="flex items-center gap-3 mb-10 animate-glow-in anim-delay-3">
-              <Button asChild size="lg">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-10 w-full sm:w-auto animate-glow-in anim-delay-3">
+              <Button asChild size="lg" className="w-full sm:w-auto">
                 <Link href="/register">Comece agora →</Link>
               </Button>
-              <Button asChild size="lg" variant="outline">
+              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
                 <Link href="/login">Já tenho conta</Link>
               </Button>
             </div>
@@ -243,7 +249,7 @@ export default function LandingPage() {
                       <div className="font-display text-xs font-bold uppercase tracking-wide text-[var(--text-bright)] mb-1">
                         {s.title}
                       </div>
-                      <p className="font-ui text-[11px] text-[var(--text-muted)] leading-snug hidden sm:block">
+                      <p className="font-ui text-[11px] text-[var(--text-muted)] leading-snug">
                         {s.desc}
                       </p>
                     </div>
@@ -262,7 +268,7 @@ export default function LandingPage() {
             src="/beneficios-bg.webp"
             alt="Guerreiro do Dota 2 em cenário de batalha"
             fill
-            className="object-cover"
+            className="object-cover object-right md:object-center"
             sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-[var(--bg)]/60 to-transparent" />
@@ -405,27 +411,57 @@ export default function LandingPage() {
 
       {/* ── Footer ─────────────────────────────────────────────────────── */}
       <footer className="relative z-10 border-t border-[var(--border)] px-6 md:px-10 py-8">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-6 h-6 flex items-center justify-center overflow-hidden">
-              <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6">
+            <Link href="/" className="flex items-center gap-3">
+              <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
+                <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
+              </div>
+              <div className="leading-none">
+                <div className="font-display text-sm font-black tracking-[0.2em] text-[var(--text-bright)] uppercase">
+                  Skill<span className="text-[var(--neon)]">Money</span>
+                </div>
+                <div className="font-ui text-[9px] tracking-[0.2em] text-[var(--text-muted)] uppercase mt-0.5">
+                  Você contra você.
+                </div>
+              </div>
+            </Link>
+
+            <div className="flex items-center gap-5 flex-wrap justify-center">
+              <Link href="/" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Início</Link>
+              <a href="#como-funciona" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Como funciona</a>
+              <a href="#beneficios" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Benefícios</a>
+              <a href="#depoimentos" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Depoimentos</a>
+              <a href="#faq" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">FAQ</a>
             </div>
-            <span className="font-display text-xs font-black tracking-[0.2em] text-[var(--text-muted)] uppercase">
-              Skill<span className="text-[var(--neon)]">Money</span>
+
+            <div className="flex items-center gap-4">
+              {[
+                { label: "Discord", path: "M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.07.07 0 0 0-.074.035c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.6 12.6 0 0 0-.617-1.25.077.077 0 0 0-.075-.035 19.74 19.74 0 0 0-4.884 1.515.07.07 0 0 0-.032.027C.533 9.09-.32 13.68.099 18.21a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128q.189-.14.36-.287a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.01q.171.146.36.288a.077.077 0 0 1-.006.127q-.9.53-1.873.892a.076.076 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03Zm-12.288 10.98c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.955 2.42-2.157 2.42Zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.946 2.42-2.157 2.42Z" },
+                { label: "Instagram", path: "M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153a4.9 4.9 0 0 1 1.153 1.772c.247.637.415 1.363.465 2.428.048 1.066.06 1.405.06 4.122s-.01 3.056-.06 4.122c-.05 1.065-.218 1.79-.465 2.428a4.9 4.9 0 0 1-1.153 1.772 4.9 4.9 0 0 1-1.772 1.153c-.637.247-1.363.415-2.428.465-1.066.048-1.405.06-4.122.06s-3.056-.01-4.122-.06c-1.065-.05-1.79-.218-2.428-.465a4.9 4.9 0 0 1-1.772-1.153 4.9 4.9 0 0 1-1.153-1.772c-.247-.637-.415-1.363-.465-2.428C2.01 15.056 2 14.717 2 12s.01-3.056.06-4.122c.05-1.065.217-1.79.465-2.428a4.9 4.9 0 0 1 1.153-1.772A4.9 4.9 0 0 1 5.45 2.525c.637-.248 1.363-.415 2.428-.465C8.944 2.01 9.283 2 12 2Zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8.25A3.25 3.25 0 1 1 12 8.75a3.25 3.25 0 0 1 0 6.5ZM17.4 6.1a1.17 1.17 0 1 0 0 2.34 1.17 1.17 0 0 0 0-2.34Z" },
+                { label: "YouTube", path: "M21.6 7.2s-.21-1.49-.86-2.14c-.82-.86-1.74-.86-2.16-.91C15.6 4 12 4 12 4h-.01s-3.6 0-6.58.15c-.42.05-1.34.05-2.16.91-.65.65-.86 2.14-.86 2.14S2.18 8.94 2.18 10.68v1.63c0 1.74.21 3.48.21 3.48s.21 1.49.86 2.14c.82.86 1.9.83 2.38.92 1.72.17 7.31.22 7.31.22s3.6-.01 6.58-.16c.42-.05 1.34-.05 2.16-.91.65-.65.86-2.14.86-2.14s.21-1.74.21-3.48v-1.63c0-1.74-.21-3.48-.21-3.48ZM9.98 14.6V8.9l5.4 2.86-5.4 2.85Z" },
+                { label: "X", path: "M13.68 10.62 20.86 2h-1.7l-6.23 7.48L8.06 2H2.5l7.53 10.9L2.5 22h1.7l6.6-7.9 5.16 7.9h5.55l-7.83-11.38Zm-2.34 2.8-.77-1.1L4.6 3.3h2.6l4.94 7.06.76 1.1 6.4 9.16h-2.6l-5.36-7.2Z" },
+              ].map((s) => (
+                <a
+                  key={s.label}
+                  href="#"
+                  aria-label={s.label}
+                  className="w-8 h-8 flex items-center justify-center border border-[var(--border)] hover:border-[var(--neon)] text-[var(--text-muted)] hover:text-[var(--neon)] transition-colors"
+                >
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d={s.path} /></svg>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-6 border-t border-[var(--border)]">
+            <span className="font-mono text-[11px] text-[var(--text-muted)]">
+              © 2026 SkillMoney. Todos os direitos reservados.
             </span>
-            <span className="font-mono text-[11px] text-[var(--text-muted)]">© 2026</span>
+            <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest uppercase">
+              Jogue com responsabilidade · +18
+            </span>
           </div>
-
-          <div className="flex items-center gap-6">
-            <a href="#como-funciona" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Como funciona</a>
-            <a href="#beneficios" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Benefícios</a>
-            <a href="#depoimentos" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Depoimentos</a>
-            <a href="#faq" className="font-ui text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">FAQ</a>
-          </div>
-
-          <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest uppercase">
-            Jogue com responsabilidade · +18
-          </span>
         </div>
       </footer>
     </div>

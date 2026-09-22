@@ -12,7 +12,7 @@ const steps = [
     n: "01",
     icon: Target,
     title: "Conecte o Dota 2",
-    desc: "Cole seu ID do Dota 2 e buscamos seu histórico real de partidas.",
+    desc: "Cole seu ID público do Dota 2 e buscamos seu histórico real de partidas. Nenhum vínculo com a Steam será feito.",
   },
   {
     n: "02",

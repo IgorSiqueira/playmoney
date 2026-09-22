@@ -177,8 +177,8 @@ export default function LandingPage() {
             </h1>
 
             <p className="font-ui text-lg text-[var(--text)] max-w-md mb-3 leading-relaxed animate-glow-in anim-delay-2">
-              Conecte seu Steam ID. Suas odds são calculadas do seu <span className="text-[var(--text-bright)]">histórico real</span> de partidas.
-              Aposte contra a casa e prove que você é bom.
+              Analisamos seu <span className="text-[var(--text-bright)]">histórico real</span> de partidas para calcular um Índice de Performance individual,
+              desenvolvido a partir dos seus próprios dados e do seu desempenho no Dota 2.
             </p>
             <p className="font-ui text-xs text-[var(--text-muted)] mb-8 animate-glow-in anim-delay-2">
               Mais que apostas. Um sistema justo para quem joga de verdade.

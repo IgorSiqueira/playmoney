@@ -30,7 +30,7 @@ const steps = [
     n: "04",
     icon: ShieldCheck,
     title: "Liquidação Automática",
-    desc: "O sistema busca o resultado sozinho e paga via PIX em segundos.",
+    desc: "O sistema busca o resultado sozinho e paga via PIX.",
   },
 ];
 

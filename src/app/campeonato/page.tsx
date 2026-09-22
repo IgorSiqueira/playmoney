@@ -1,17 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { CountdownReveal } from "@/components/shared/countdown-reveal";
 
 export const metadata = {
   title: "Campeonato SkillMoney",
-  description: "Cada jogador começa com R$ 2.100. 30 dias pra jogar. Quem acumular mais patrimônio leva o prêmio em dinheiro.",
+  description: "Cada jogador começa com 2.100 fichas virtuais. 30 dias pra jogar. Quem terminar com o maior saldo leva o prêmio em dinheiro.",
 };
 
 const rules = [
-  { title: "Saldo inicial", desc: "Todo participante começa o campeonato com R$ 2.100 na carteira." },
-  { title: "Duração", desc: "O campeonato dura 30 dias corridos a partir da sua inscrição." },
-  { title: "Critério de vitória", desc: "Vence quem terminar o período com o maior patrimônio total (saldo em carteira)." },
-  { title: "Premiação", desc: "O grande campeão recebe um prêmio em dinheiro real. Valor anunciado em breve." },
+  { title: "Saldo inicial", desc: "2.100 fichas virtuais por participante." },
+  { title: "Início", desc: "01/11 às 14h." },
+  { title: "Encerramento", desc: "30/11 às 14h." },
+  { title: "Duração", desc: "30 dias." },
+  { title: "Mínimo de partidas", desc: "30 partidas válidas." },
+  { title: "Máximo de partidas contabilizadas", desc: "50 partidas válidas." },
+  { title: "Partidas 1–15", desc: "Máximo de 40 fichas por aposta." },
+  { title: "Partidas 16–30", desc: "Máximo de 70 fichas por aposta." },
+  { title: "Partidas 31–50", desc: "Máximo de 100 fichas por aposta." },
+  { title: "Aposta mínima", desc: "1 ficha." },
+  { title: "Modalidade", desc: "Partidas ranqueadas individuais." },
+  { title: "Apostas", desc: "Simples ou combinadas, conforme disponibilidade da plataforma." },
+  { title: "Classificação", desc: "Maior saldo final de fichas." },
+  { title: "Critério de empate", desc: "Soma dos prêmios das posições empatadas e divisão igual entre os participantes empatados." },
 ];
 
 export default function CampeonatoPage() {
@@ -40,8 +51,8 @@ export default function CampeonatoPage() {
                   Campeonato <span className="neon-text">SkillMoney</span>
                 </h1>
                 <p className="font-ui text-base md:text-lg text-[var(--text)] mb-8 leading-relaxed">
-                  Todo jogador começa com <strong className="text-[var(--text-bright)]">R$ 2.100</strong>. São <strong className="text-[var(--text-bright)]">30 dias</strong> pra jogar.
-                  Quem acumular mais patrimônio no final é o grande campeão — e leva um <strong className="text-[var(--text-bright)]">prêmio em dinheiro real</strong>.
+                  Todo jogador começa com <strong className="text-[var(--text-bright)]">2.100 fichas virtuais</strong>. São <strong className="text-[var(--text-bright)]">30 dias</strong> pra jogar.
+                  Quem terminar com o maior saldo de fichas é o grande campeão — e leva um <strong className="text-[var(--text-bright)]">prêmio em dinheiro real</strong>.
                 </p>
                 <Button asChild size="lg">
                   <Link href="/register">Quero participar →</Link>
@@ -50,6 +61,10 @@ export default function CampeonatoPage() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="max-w-4xl mx-auto px-6 md:px-10 pt-14 md:pt-16">
+        <CountdownReveal />
       </section>
 
       <section className="max-w-3xl mx-auto px-6 md:px-10 py-16">

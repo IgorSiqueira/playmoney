@@ -107,7 +107,7 @@ export default function LandingPage() {
       {/* ── Nav ────────────────────────────────────────────────────────── */}
       <nav className="relative z-20 flex items-center justify-between gap-2 px-4 sm:px-6 md:px-10 py-3 border-b border-[var(--border)]">
         <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center overflow-hidden shrink-0">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center overflow-hidden shrink-0">
             <img src="/logo.png" alt="SkillMoney" className="w-full h-full object-contain" />
           </div>
           <div className="leading-none">

@@ -172,7 +172,7 @@ export default function LandingPage() {
             <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
               <div className="flex flex-col items-start max-w-xl">
             <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-4 animate-glow-in">
-              Dados reais · Odds justas · Resultados
+              Dados reais · Resultados
             </div>
 
             <h1 className="font-display font-black uppercase leading-none mb-6 animate-glow-in anim-delay-1">

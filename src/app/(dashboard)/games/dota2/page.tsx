@@ -244,7 +244,7 @@ export default function Dota2Page() {
   const [trustTier, setTrustTier] = useState<{
     settledBetsCount: number;
     maxAmount: number | null;
-    graduated: boolean;
+    locked: boolean;
     nextTier: { betsUntilNextTier: number; nextMaxAmount: number } | null;
   } | null>(null);
 
@@ -611,29 +611,36 @@ export default function Dota2Page() {
             </AlertBox>
           )}
 
+          {trustTier?.locked && (
+            <AlertBox variant="error">
+              Você atingiu o limite de {trustTier.settledBetsCount} apostas liquidadas do seu nível atual.
+              Novas apostas estão temporariamente indisponíveis enquanto liberamos o próximo nível.
+            </AlertBox>
+          )}
+
           <form onSubmit={handleBet} className="space-y-4">
             <div className="space-y-2">
               <Label>Valor da aposta (R$)</Label>
               <Input
                 type="number" placeholder="0.00" min={5} max={trustTier?.maxAmount ?? 5000} step={0.01}
                 value={betAmount} onChange={(e) => setBetAmount(e.target.value)} required
-                disabled={balance !== null && balance < 5}
+                disabled={(balance !== null && balance < 5) || trustTier?.locked}
               />
               {balance !== null && betAmount && parseFloat(betAmount) > balance && (
                 <p className="font-display text-[11px] tracking-widest text-[var(--danger)] uppercase">
                   Valor maior que seu saldo disponível ({formatCurrency(balance)})
                 </p>
               )}
-              {trustTier && betAmount && trustTier.maxAmount !== null && parseFloat(betAmount) > trustTier.maxAmount && (
+              {trustTier && !trustTier.locked && betAmount && trustTier.maxAmount !== null && parseFloat(betAmount) > trustTier.maxAmount && (
                 <p className="font-display text-[11px] tracking-widest text-[var(--danger)] uppercase">
                   Seu limite atual é R$ {trustTier.maxAmount.toFixed(2)}
                 </p>
               )}
-              {trustTier && (
+              {trustTier && !trustTier.locked && (
                 <p className="font-ui text-[11px] text-[var(--text-muted)]">
-                  {trustTier.graduated
-                    ? `Limite de confiança liberado — ${trustTier.settledBetsCount} apostas liquidadas.`
-                    : `Limite atual: R$ ${trustTier.maxAmount?.toFixed(2)} por aposta (${trustTier.settledBetsCount} liquidadas)`}
+                  {trustTier.maxAmount === null
+                    ? `Sem teto de confiança — ${trustTier.settledBetsCount} apostas liquidadas.`
+                    : `Limite atual: R$ ${trustTier.maxAmount.toFixed(2)} por aposta (${trustTier.settledBetsCount} liquidadas)`}
                   {trustTier.nextTier && (
                     <> · faltam {trustTier.nextTier.betsUntilNextTier} para R$ {trustTier.nextTier.nextMaxAmount.toFixed(2)}</>
                   )}
@@ -662,7 +669,7 @@ export default function Dota2Page() {
             <Button
               type="submit"
               disabled={
-                betLoading || !betAmount || !selectedOdds ||
+                betLoading || !betAmount || !selectedOdds || trustTier?.locked ||
                 (balance !== null && (balance < 5 || parseFloat(betAmount) > balance))
               }
               className="w-full"

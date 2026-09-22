@@ -81,12 +81,33 @@ export const LIMITS = {
  * Para ajustar as faixas, edite só este array — nada mais precisa mudar.
  * Exemplo para adicionar uma faixa nova entre a 2ª e a 3ª:
  *   { minSettledBets: 31, maxSettledBets: 40, maxBetAmount: 85 },
+ *
+ * Quando o usuário ultrapassa a última faixa configurada, o comportamento
+ * depende de TRUST_TIER_LOCK_AFTER_LAST logo abaixo.
  */
 export const TRUST_TIERS: readonly { minSettledBets: number; maxSettledBets: number; maxBetAmount: number }[] = [
   { minSettledBets: 0,  maxSettledBets: 15, maxBetAmount: 40 },
   { minSettledBets: 16, maxSettledBets: 30, maxBetAmount: 70 },
   { minSettledBets: 31, maxSettledBets: 50, maxBetAmount: 100 },
 ];
+
+/**
+ * [Trust Tier] Controla o que acontece depois que o usuário ultrapassa a
+ * última faixa de TRUST_TIERS (hoje, após 50 apostas liquidadas):
+ *
+ *   true  → apostas ficam travadas (bloqueadas) até uma nova faixa ser
+ *           adicionada acima, ou até liberação manual. É o comportamento
+ *           atual: travar por padrão assim que o usuário se forma na última
+ *           faixa, enquanto não existem faixas maiores configuradas.
+ *   false → nenhum teto de trust tier é aplicado; o valor máximo passa a
+ *           ser regido só pelos demais limites da plataforma (MAX_BET_PAYOUT
+ *           etc.). Use quando quiser "graduar" o usuário em vez de travá-lo.
+ *
+ * Para reabrir apostas de quem já bateu 50, basta adicionar uma faixa nova
+ * em TRUST_TIERS cobrindo o intervalo acima de 50 — a trava só vale para
+ * quem está acima da última faixa existente.
+ */
+export const TRUST_TIER_LOCK_AFTER_LAST = true;
 
 // ── Tipo de retorno padrão ─────────────────────────────────────────────────────
 export interface GuardResult {
@@ -433,7 +454,8 @@ export async function countSettledBets(userId: string): Promise<number> {
 /**
  * [Trust Tier] Retorna o valor máximo de aposta permitido para o número de
  * apostas já liquidadas informado, ou `null` se o usuário já superou a
- * última faixa configurada (nesse caso, nenhum teto de trust tier se aplica).
+ * última faixa configurada (nesse caso, nenhum teto de trust tier se aplica
+ * — mas veja `isTrustTierLocked`, que pode travar as apostas nesse cenário).
  */
 export function getTrustTierMaxAmount(settledBetsCount: number): number | null {
   const tier = TRUST_TIERS.find(
@@ -443,12 +465,33 @@ export function getTrustTierMaxAmount(settledBetsCount: number): number | null {
 }
 
 /**
- * [Trust Tier] Bloqueia apostas acima do teto da faixa de confiança atual do usuário.
- * Novatos apostam pouco; conforme liquidam apostas (ganhando ou perdendo — o que
- * importa é a experiência acumulada), o teto sobe. Após a última faixa configurada
- * em TRUST_TIERS, o teto de trust tier deixa de existir.
+ * [Trust Tier] Indica se o usuário já ultrapassou a última faixa configurada
+ * em TRUST_TIERS e, por isso, está travado (quando TRUST_TIER_LOCK_AFTER_LAST
+ * estiver ativo).
+ */
+export function isTrustTierLocked(settledBetsCount: number): boolean {
+  if (!TRUST_TIER_LOCK_AFTER_LAST) return false;
+  const lastTier = TRUST_TIERS[TRUST_TIERS.length - 1];
+  if (!lastTier) return false;
+  return settledBetsCount > lastTier.maxSettledBets;
+}
+
+/**
+ * [Trust Tier] Bloqueia apostas acima do teto da faixa de confiança atual do usuário,
+ * e trava novas apostas por completo assim que ele ultrapassa a última faixa
+ * configurada (ver TRUST_TIER_LOCK_AFTER_LAST). Novatos apostam pouco; conforme
+ * liquidam apostas (ganhando ou perdendo — o que importa é a experiência
+ * acumulada), o teto sobe.
  */
 export function guardTrustTierMaxAmount(settledBetsCount: number, amount: number): GuardResult {
+  if (isTrustTierLocked(settledBetsCount)) {
+    return {
+      ok: false,
+      error: `Você atingiu o limite de ${TRUST_TIERS[TRUST_TIERS.length - 1]!.maxSettledBets} apostas liquidadas do seu nível atual. Novas apostas estão temporariamente indisponíveis enquanto liberamos o próximo nível — fique de olho, em breve você poderá continuar apostando.`,
+      code: "TRUST_TIER_LOCKED",
+    };
+  }
+
   const maxAmount = getTrustTierMaxAmount(settledBetsCount);
   if (maxAmount !== null && amount > maxAmount) {
     return {

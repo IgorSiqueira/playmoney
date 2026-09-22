@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { describeEventBet } from "@/lib/bet-events";
+import { ChampionshipBanner } from "@/components/shared/championship-banner";
 import Link from "next/link";
 import {
   TrendingUp, TrendingDown, Swords, CircleDollarSign, Activity,
@@ -85,6 +86,8 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8 pb-8">
+      <ChampionshipBanner />
+
       {/* Header */}
       <div className="flex items-end justify-between">
         <div>

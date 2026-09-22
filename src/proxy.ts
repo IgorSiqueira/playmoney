@@ -9,7 +9,7 @@ export async function proxy(req: NextRequest) {
   const session = await auth();
   const pathname = req.nextUrl.pathname;
 
-  const publicPaths = ["/", "/login", "/register", "/termos", "/privacidade"];
+  const publicPaths = ["/", "/login", "/register", "/termos", "/privacidade", "/campeonato"];
   const isPublic = publicPaths.includes(pathname);
   const isApiAuth = pathname.startsWith("/api/auth");
   const isMaintenance = pathname.startsWith("/api/maintenance");

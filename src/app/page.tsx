@@ -23,7 +23,7 @@ const steps = [
   {
     n: "03",
     icon: Gamepad2,
-    title: "Jogue sua Partida",
+    title: "Jogue sua Partida Ranqueada Solo",
     desc: "Escolha vitória, abates, assistência, GPM e XPM antes de começar.",
   },
   {

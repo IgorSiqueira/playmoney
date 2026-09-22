@@ -285,7 +285,7 @@ export default function LandingPage() {
                 </h2>
                 <p className="font-ui text-base text-[var(--text-muted)] mb-8 leading-relaxed max-w-md">
                   A SkillMoney nasceu para quem acredita que a verdadeira vantagem vem do próprio jogo.
-                  Aqui, sua performance vira odds — e suas odds viram resultado.
+                  Aqui, sua performance se transforma em um Índice de Performance individual — e seu desempenho se transforma em resultado.
                 </p>
                 <Button asChild size="lg" className="mb-10">
                   <Link href="/register">Comece agora →</Link>

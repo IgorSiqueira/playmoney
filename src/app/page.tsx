@@ -35,7 +35,7 @@ const steps = [
 ];
 
 const benefits = [
-  { icon: TrendingUp, title: "Odds sob medida", desc: "Nada de tabela fixa. Suas odds nascem do seu próprio desempenho." },
+  { icon: TrendingUp, title: "Índice de Performance individual", desc: "Nada de tabela fixa. Seu índice é calculado a partir do seu próprio desempenho e dos seus dados reais." },
   { icon: Users, title: "Comunidade de jogadores reais", desc: "Sem bots, sem manipulação. Só gente que joga de verdade." },
   { icon: Clock, title: "Liquidação em segundos", desc: "Resultado sai, seu saldo já reflete. PIX instantâneo, sem fila." },
   { icon: Trophy, title: "Foco em performance real", desc: "Quanto melhor você joga, mais suas odds trabalham a seu favor." },

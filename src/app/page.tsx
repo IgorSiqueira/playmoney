@@ -376,35 +376,29 @@ export default function LandingPage() {
       </section>
 
       {/* ── Final CTA ──────────────────────────────────────────────────── */}
-      <section className="relative z-10 px-6 md:px-10 py-24">
-        <div className="max-w-2xl mx-auto text-center">
-          <div
-            className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[300px] pointer-events-none"
-            style={{
-              background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,255,102,0.08) 0%, transparent 70%)",
-            }}
+      <section className="relative z-10 overflow-hidden">
+        <div className="relative w-full min-h-[420px] md:min-h-0 md:aspect-[1774/887]">
+          <Image
+            src="/final-cta-bg.jpg"
+            alt="Guerreiro diante de um dragão colossal em cenário de batalha do Dota 2"
+            fill
+            className="object-cover"
+            sizes="100vw"
           />
-          <div className="relative z-10">
-            <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-4">▸ Comece agora</div>
-            <h2 className="font-display font-black text-4xl md:text-5xl text-[var(--text-bright)] uppercase tracking-tight mb-6 leading-tight">
-              Você está pronto<br />
-              <span className="neon-text">para apostar em si mesmo?</span>
-            </h2>
-            <p className="font-ui text-lg text-[var(--text-muted)] mb-10 max-w-lg mx-auto leading-relaxed">
-              Crie sua conta, conecte o Steam e veja suas odds em menos de 2 minutos.
-              Primeiro depósito com bônus de 50%.
-            </p>
-            <div className="flex items-center justify-center gap-4 flex-wrap">
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/40 to-[var(--bg)]/40" />
+
+          <div className="absolute inset-0 flex items-center justify-center py-14 md:py-0">
+            <div className="max-w-2xl mx-auto px-6 text-center">
+              <h2 className="font-display font-black text-3xl md:text-5xl text-[var(--text-bright)] uppercase tracking-tight mb-3 leading-tight">
+                Pronto para evoluir?
+              </h2>
+              <p className="font-ui text-sm md:text-base text-[var(--text-muted)] mb-8">
+                Seu desempenho, sua jornada, seu resultado.
+              </p>
               <Button asChild size="lg">
-                <Link href="/register">Criar Conta Grátis</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/login">Já tenho conta →</Link>
+                <Link href="/register">Comece agora →</Link>
               </Button>
             </div>
-            <p className="font-ui text-xs text-[var(--text-muted)] mt-6">
-              Bônus de 50% no primeiro depósito · Mínimo R$ 20 · Máximo R$ 50
-            </p>
           </div>
         </div>
       </section>

@@ -66,6 +66,28 @@ export const LIMITS = {
   MAX_BODY_BYTES: 65_536,
 } as const;
 
+/**
+ * [Trust Tier] Limites progressivos de valor máximo por aposta, com base no
+ * número de apostas já liquidadas (WON + LOST) do usuário — não importa o
+ * resultado, só a experiência acumulada na plataforma.
+ *
+ * Cada faixa é [minApostas, maxApostas, valorMáximo]. As faixas são avaliadas
+ * em ordem; a primeira cujo intervalo contenha o total de apostas liquidadas
+ * do usuário define o teto. Quando nenhuma faixa cobre o total (ou seja, o
+ * usuário já passou da última faixa), nenhum teto de trust tier é aplicado —
+ * o valor máximo passa a ser regido apenas pelos demais limites da plataforma
+ * (ex.: MAX_BET_PAYOUT, e o schema de validação em /api/bets).
+ *
+ * Para ajustar as faixas, edite só este array — nada mais precisa mudar.
+ * Exemplo para adicionar uma faixa nova entre a 2ª e a 3ª:
+ *   { minSettledBets: 31, maxSettledBets: 40, maxBetAmount: 85 },
+ */
+export const TRUST_TIERS: readonly { minSettledBets: number; maxSettledBets: number; maxBetAmount: number }[] = [
+  { minSettledBets: 0,  maxSettledBets: 15, maxBetAmount: 40 },
+  { minSettledBets: 16, maxSettledBets: 30, maxBetAmount: 70 },
+  { minSettledBets: 31, maxSettledBets: 50, maxBetAmount: 100 },
+];
+
 // ── Tipo de retorno padrão ─────────────────────────────────────────────────────
 export interface GuardResult {
   ok: boolean;
@@ -393,6 +415,46 @@ export async function guardWeeklyLossLimit(
       ok: false,
       error: `Limite semanal de perdas atingido (R$ ${limit.toFixed(2)}). Você ainda pode apostar R$ ${remaining.toFixed(2)} esta semana.`,
       code: "WEEKLY_LOSS_LIMIT",
+    };
+  }
+  return { ok: true };
+}
+
+/**
+ * [Trust Tier] Conta quantas apostas o usuário já liquidou (WON + LOST),
+ * em todos os perfis de jogo — é essa contagem que define a faixa de confiança.
+ */
+export async function countSettledBets(userId: string): Promise<number> {
+  return prisma.bet.count({
+    where: { userId, status: { in: ["WON", "LOST"] } },
+  });
+}
+
+/**
+ * [Trust Tier] Retorna o valor máximo de aposta permitido para o número de
+ * apostas já liquidadas informado, ou `null` se o usuário já superou a
+ * última faixa configurada (nesse caso, nenhum teto de trust tier se aplica).
+ */
+export function getTrustTierMaxAmount(settledBetsCount: number): number | null {
+  const tier = TRUST_TIERS.find(
+    (t) => settledBetsCount >= t.minSettledBets && settledBetsCount <= t.maxSettledBets
+  );
+  return tier?.maxBetAmount ?? null;
+}
+
+/**
+ * [Trust Tier] Bloqueia apostas acima do teto da faixa de confiança atual do usuário.
+ * Novatos apostam pouco; conforme liquidam apostas (ganhando ou perdendo — o que
+ * importa é a experiência acumulada), o teto sobe. Após a última faixa configurada
+ * em TRUST_TIERS, o teto de trust tier deixa de existir.
+ */
+export function guardTrustTierMaxAmount(settledBetsCount: number, amount: number): GuardResult {
+  const maxAmount = getTrustTierMaxAmount(settledBetsCount);
+  if (maxAmount !== null && amount > maxAmount) {
+    return {
+      ok: false,
+      error: `Seu limite atual é de R$ ${maxAmount.toFixed(2)} por aposta, com base nas suas ${settledBetsCount} apostas liquidadas até agora. Continue apostando para desbloquear limites maiores.`,
+      code: "TRUST_TIER_LIMIT_EXCEEDED",
     };
   }
   return { ok: true };

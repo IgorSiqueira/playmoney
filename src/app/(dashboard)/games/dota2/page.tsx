@@ -241,11 +241,24 @@ export default function Dota2Page() {
   const [betSuccess, setBetSuccess] = useState("");
   const [betError, setBetError] = useState("");
 
+  const [trustTier, setTrustTier] = useState<{
+    settledBetsCount: number;
+    maxAmount: number | null;
+    graduated: boolean;
+    nextTier: { betsUntilNextTier: number; nextMaxAmount: number } | null;
+  } | null>(null);
+
   useEffect(() => {
     fetch("/api/wallet")
       .then((r) => r.ok ? r.json() : null)
       .then((d) => { if (d?.balance !== undefined) setBalance(Number(d.balance)); });
   }, []);
+
+  useEffect(() => {
+    fetch("/api/bets/trust-tier")
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d) setTrustTier(d); });
+  }, [betSuccess]);
 
   useEffect(() => {
     fetch("/api/games/dota2")
@@ -602,13 +615,28 @@ export default function Dota2Page() {
             <div className="space-y-2">
               <Label>Valor da aposta (R$)</Label>
               <Input
-                type="number" placeholder="0.00" min={5} max={5000} step={0.01}
+                type="number" placeholder="0.00" min={5} max={trustTier?.maxAmount ?? 5000} step={0.01}
                 value={betAmount} onChange={(e) => setBetAmount(e.target.value)} required
                 disabled={balance !== null && balance < 5}
               />
               {balance !== null && betAmount && parseFloat(betAmount) > balance && (
                 <p className="font-display text-[11px] tracking-widest text-[var(--danger)] uppercase">
                   Valor maior que seu saldo disponível ({formatCurrency(balance)})
+                </p>
+              )}
+              {trustTier && betAmount && trustTier.maxAmount !== null && parseFloat(betAmount) > trustTier.maxAmount && (
+                <p className="font-display text-[11px] tracking-widest text-[var(--danger)] uppercase">
+                  Seu limite atual é R$ {trustTier.maxAmount.toFixed(2)}
+                </p>
+              )}
+              {trustTier && (
+                <p className="font-ui text-[11px] text-[var(--text-muted)]">
+                  {trustTier.graduated
+                    ? `Limite de confiança liberado — ${trustTier.settledBetsCount} apostas liquidadas.`
+                    : `Limite atual: R$ ${trustTier.maxAmount?.toFixed(2)} por aposta (${trustTier.settledBetsCount} liquidadas)`}
+                  {trustTier.nextTier && (
+                    <> · faltam {trustTier.nextTier.betsUntilNextTier} para R$ {trustTier.nextTier.nextMaxAmount.toFixed(2)}</>
+                  )}
                 </p>
               )}
             </div>

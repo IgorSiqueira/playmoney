@@ -10,6 +10,7 @@ import {
   guardMinMatchHistory, guardMaxPayout, guardProfileFreshness,
   guardDailyWinningsCap, readJsonBody, guardSelfExclusion,
   guardDailyLossLimit, guardWeeklyLossLimit,
+  countSettledBets, guardTrustTierMaxAmount,
 } from "@/lib/bet-guards";
 
 const MAX_ACTIVE_BETS_PER_PROFILE = 1;
@@ -85,12 +86,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Você já tem uma aposta ativa. Aguarde o resultado antes de apostar novamente.", code: "ACTIVE_BET_EXISTS" }, { status: 422 });
   }
 
-  const [dailyLossGuard, weeklyLossGuard] = await Promise.all([
+  const [dailyLossGuard, weeklyLossGuard, settledBetsCount] = await Promise.all([
     guardDailyLossLimit(userId, amount),
     guardWeeklyLossLimit(userId, amount),
+    countSettledBets(userId),
   ]);
   if (!dailyLossGuard.ok)  return NextResponse.json({ error: dailyLossGuard.error,  code: dailyLossGuard.code  }, { status: 422 });
   if (!weeklyLossGuard.ok) return NextResponse.json({ error: weeklyLossGuard.error, code: weeklyLossGuard.code }, { status: 422 });
+
+  const trustTierGuard = guardTrustTierMaxAmount(settledBetsCount, amount);
+  if (!trustTierGuard.ok) return NextResponse.json({ error: trustTierGuard.error, code: trustTierGuard.code }, { status: 422 });
 
   const { stats, recentMatches } = await calculatePlayerStatsWithMatches(Number(gameProfile.externalId));
 

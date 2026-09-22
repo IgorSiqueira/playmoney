@@ -7,7 +7,7 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const DISMISS_KEY = "campeonato-modal-dismissed";
-const YOUTUBE_VIDEO_ID = "sfcxifX8VZc";
+const YOUTUBE_VIDEO_ID = "yB6xtR1W_L8";
 
 export function ChampionshipModal() {
   const [open, setOpen] = useState(false);

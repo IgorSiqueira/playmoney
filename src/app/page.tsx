@@ -64,24 +64,44 @@ const testimonials = [
 
 const faqs = [
   {
-    q: "Como as odds são calculadas?",
-    a: "Usamos seu win rate e KDA médio das últimas 50 partidas via OpenDota API. As odds são atualizadas a cada sincronização do perfil e têm cap máximo de 1.80x para todos os jogadores.",
+    q: "O que é o SkillMoney?",
+    a: "O SkillMoney é uma plataforma de análise e operações baseada na performance individual de jogadores de Dota 2. O sistema utiliza dados estatísticos para calcular um Índice de Performance personalizado para cada jogador.",
   },
   {
-    q: "Posso apostar jogando em group (party)?",
-    a: "A plataforma é projetada para apostas solo. Se detectarmos algum jogador do seu histórico no seu time na partida submetida, a aposta é automaticamente cancelada e o valor integralmente devolvido.",
+    q: "Preciso conectar minha conta Steam?",
+    a: "Não. O SkillMoney não exige conexão ou integração com a conta Steam. O jogador informa apenas seu ID público do Dota 2.",
   },
   {
-    q: "Como funciona o saque?",
-    a: "Saques via PIX a partir de R$ 20. Processado em até 5 minutos após solicitação, sem taxas.",
+    q: "Meu perfil precisa estar público?",
+    a: "Sim. O perfil do Dota 2 precisa estar público para que o sistema consiga consultar as partidas e estatísticas necessárias para a análise.",
   },
   {
-    q: "O sistema é justo?",
-    a: "Odds 100% algorítmicas, baseadas nos seus dados públicos do Dota 2. Nenhuma manipulação manual. O mesmo algoritmo se aplica a todos os jogadores.",
+    q: "Quantas partidas são analisadas?",
+    a: "O sistema utiliza as últimas 50 partidas elegíveis disponíveis para análise.",
   },
   {
-    q: "Meu perfil Steam precisa ser público?",
-    a: "Sim. O perfil precisa estar público para que o OpenDota consiga acessar o histórico de partidas.",
+    q: "As cotações são iguais para todos os jogadores?",
+    a: "Não. O Índice de Performance é calculado individualmente com base nas estatísticas de cada jogador. Por isso, as cotações podem variar de jogador para jogador.",
+  },
+  {
+    q: "Posso operar somente em kills ou assists?",
+    a: "Não. Toda operação deve obrigatoriamente ter a vitória do próprio jogador como condição principal.",
+  },
+  {
+    q: "Posso combinar vitória com estatísticas?",
+    a: "Sim. É possível combinar a vitória com um ou mais critérios estatísticos, como kills e assists, de acordo com as opções disponibilizadas pela plataforma.",
+  },
+  {
+    q: "Posso utilizar o mesmo ID do Dota 2 em duas contas?",
+    a: "Não. Cada ID do Dota 2 poderá estar vinculado a apenas uma conta SkillMoney.",
+  },
+  {
+    q: "Posso criar mais de uma conta?",
+    a: "Não. Cada CPF poderá estar vinculado a apenas uma conta SkillMoney.",
+  },
+  {
+    q: "De onde vêm os dados das partidas?",
+    a: "O SkillMoney utiliza dados públicos e/ou fontes especializadas em estatísticas de Dota 2 para realizar a análise de performance.",
   },
 ];
 

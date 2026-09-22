@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const TARGET_DATE = new Date("2026-11-01T14:00:00-03:00").getTime();
+const TARGET_DATE = new Date("2026-10-01T14:00:00-03:00").getTime();
 
 function getTimeLeft() {
   const diff = TARGET_DATE - Date.now();
@@ -71,7 +71,7 @@ export function CountdownReveal() {
         )}
 
         <p className="font-ui text-xs md:text-sm text-[var(--text-muted)] mt-6">
-          01/11 às 14h — o valor do prêmio em dinheiro real é anunciado neste exato momento.
+          01/10 às 14h — o valor do prêmio em dinheiro real é anunciado neste exato momento.
         </p>
       </div>
     </div>

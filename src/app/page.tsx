@@ -136,7 +136,7 @@ export default function LandingPage() {
       <section className="relative z-10 border-b border-[var(--border)] overflow-hidden">
         <div className="relative w-full min-h-[560px] md:min-h-0 md:aspect-[2/1]">
           <Image
-            src="/hero-bg.jpg"
+            src="/hero-bg.webp"
             alt="Jogador de Dota 2 competindo na SkillMoney"
             fill
             className="object-cover"
@@ -212,7 +212,7 @@ export default function LandingPage() {
       <section id="como-funciona" className="relative z-10 border-b border-[var(--border)] overflow-hidden">
         <div className="relative w-full min-h-[720px] md:min-h-0 md:aspect-[1774/887]">
           <Image
-            src="/como-funciona-bg.jpg"
+            src="/como-funciona-bg.webp"
             alt="Aplicativo SkillMoney com painel de desempenho, ao lado de cenário de batalha do Dota 2"
             fill
             className="object-cover object-top"
@@ -259,7 +259,7 @@ export default function LandingPage() {
       <section id="beneficios" className="relative z-10 border-b border-[var(--border)] overflow-hidden">
         <div className="relative w-full min-h-[720px] md:min-h-0 md:aspect-[1774/887]">
           <Image
-            src="/beneficios-bg.jpg"
+            src="/beneficios-bg.webp"
             alt="Guerreiro do Dota 2 em cenário de batalha"
             fill
             className="object-cover"
@@ -379,7 +379,7 @@ export default function LandingPage() {
       <section className="relative z-10 overflow-hidden">
         <div className="relative w-full min-h-[420px] md:min-h-0 md:aspect-[1774/887]">
           <Image
-            src="/final-cta-bg.jpg"
+            src="/final-cta-bg.webp"
             alt="Guerreiro diante de um dragão colossal em cenário de batalha do Dota 2"
             fill
             className="object-cover"

@@ -235,7 +235,7 @@ export default function LandingPage() {
                   Ganhar nunca foi <span className="neon-text">tão direto</span>
                 </h2>
                 <p className="font-ui text-sm md:text-base text-[var(--text-muted)] mb-6 md:mb-8 max-w-lg">
-                  Conecte seu Steam, veja suas odds calculadas do seu histórico real e ganhe com base na sua própria performance.
+                  Informe seu ID do Dota 2. Tenha um Índice de Performance individual, calculado a partir do seu histórico real, e obtenha resultados com base na sua própria performance.
                 </p>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">

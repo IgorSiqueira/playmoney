@@ -26,6 +26,19 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "SKILLMONEY — Aposte em Você Mesmo",
   description: "Plataforma de apostas na sua própria performance em jogos competitivos",
+  openGraph: {
+    title: "SKILLMONEY — Aposte em Você Mesmo",
+    description: "Plataforma de apostas na sua própria performance em jogos competitivos",
+    images: ["/hero-bg.webp"],
+    locale: "pt_BR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SKILLMONEY — Aposte em Você Mesmo",
+    description: "Plataforma de apostas na sua própria performance em jogos competitivos",
+    images: ["/hero-bg.webp"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

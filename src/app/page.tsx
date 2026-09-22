@@ -404,6 +404,9 @@ export default function LandingPage() {
               <Button asChild size="lg">
                 <Link href="/register">Comece agora →</Link>
               </Button>
+              <p className="font-ui text-xs text-[var(--text-muted)] mt-5">
+                Bônus de 50% no primeiro depósito · Mínimo R$ 20 · Máximo R$ 50
+              </p>
             </div>
           </div>
         </div>

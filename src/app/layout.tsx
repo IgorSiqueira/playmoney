@@ -26,6 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "SKILLMONEY — Aposte em Você Mesmo",
   description: "Plataforma de apostas na sua própria performance em jogos competitivos",
+  applicationName: "SkillMoney",
   openGraph: {
     title: "SKILLMONEY — Aposte em Você Mesmo",
     description: "Plataforma de apostas na sua própria performance em jogos competitivos",

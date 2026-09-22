@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "SkillMoney — Aposte em Você Mesmo",
+    name: "SkillMoney",
     short_name: "SkillMoney",
     description: "Plataforma de apostas na sua própria performance em jogos competitivos",
     start_url: "/",

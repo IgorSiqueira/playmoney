@@ -460,9 +460,17 @@ export default function LandingPage() {
             <span className="font-mono text-[11px] text-[var(--text-muted)]">
               © 2026 SkillMoney. Todos os direitos reservados.
             </span>
-            <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest uppercase">
-              Jogue com responsabilidade · +18
-            </span>
+            <div className="flex items-center gap-4">
+              <Link href="/termos" className="font-mono text-[11px] text-[var(--text-muted)] hover:text-[var(--text)] transition-colors underline">
+                Termos de Uso
+              </Link>
+              <Link href="/privacidade" className="font-mono text-[11px] text-[var(--text-muted)] hover:text-[var(--text)] transition-colors underline">
+                Privacidade
+              </Link>
+              <span className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest uppercase">
+                Jogue com responsabilidade · +18
+              </span>
+            </div>
           </div>
         </div>
       </footer>

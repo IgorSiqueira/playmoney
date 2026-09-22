@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -135,10 +136,12 @@ export default function SettingsPage() {
           ) : (
             <div className="space-y-3">
               <p className="font-ui text-sm text-[var(--text-muted)]">
-                Para apostar, você precisa confirmar que tem 18 anos ou mais e aceitar os Termos de Uso da plataforma.
+                Para apostar, você precisa confirmar que tem 18 anos ou mais e aceitar os{" "}
+                <Link href="/termos" target="_blank" className="underline hover:text-[var(--neon)]">Termos de Uso</Link>{" "}
+                da plataforma.
               </p>
               <div className="border border-[var(--border)] bg-[var(--surface-1)] p-3 space-y-1">
-                <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">▸ Este é um serviço de apostas simuladas para fins de entretenimento</p>
+                <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">▸ Este é um serviço de apostas com dinheiro real para maiores de 18 anos</p>
                 <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">▸ Você deve ter 18 anos ou mais para participar</p>
                 <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">▸ Apostas envolvem risco de perda financeira</p>
                 <p className="font-ui text-[12px] text-[var(--text-muted)] tracking-wide">▸ Jogue com responsabilidade</p>

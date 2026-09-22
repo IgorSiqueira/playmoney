@@ -10,7 +10,7 @@ export const authConfig: NextAuthConfig = {
       const isLoggedIn = !!auth?.user;
       const pathname = nextUrl.pathname;
 
-      const publicPaths = ["/", "/login", "/register"];
+      const publicPaths = ["/", "/login", "/register", "/termos", "/privacidade"];
       const isPublic = publicPaths.includes(pathname);
       const isApiAuth = pathname.startsWith("/api/auth");
       const isMaintenance = pathname.startsWith("/api/maintenance");

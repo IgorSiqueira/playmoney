@@ -36,6 +36,15 @@ export async function syncDota2Profile(userId: string) {
       JSON.stringify({ ...stats, odds, recentMatches: recentMatches.slice(0, 50) })
     );
 
+    // [Trust] Perfil detectado como privado agora: zera profilePublicSince —
+    // ele terá que tornar público de novo e acumular MIN_MATCH_HISTORY partidas
+    // a partir dali. Perfil público: só carimba a primeira vez que detectamos
+    // (não sobrescreve a cada sync, senão o relógio nunca avançaria).
+    const isPrivate = stats.profilePrivate === true;
+    const profilePublicSince = isPrivate
+      ? null
+      : (existing.profilePublicSince ?? new Date());
+
     return await prisma.gameProfile.update({
       where: { userId_game: { userId, game: "DOTA2" } },
       data: {
@@ -43,6 +52,7 @@ export async function syncDota2Profile(userId: string) {
         avatarUrl:   playerProfile.profile.avatarfull,
         stats:       statsJson,
         lastSyncAt:  new Date(),
+        profilePublicSince,
       },
     });
   } catch {

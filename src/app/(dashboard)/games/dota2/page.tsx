@@ -37,6 +37,7 @@ interface GameProfile {
     winRate: number; totalMatches: number; recentWinRate: number; averageKDA: number;
     averageKills: number; averageDeaths: number; averageAssists: number; averageGPM: number; averageXPM: number;
     rankTier?: number;
+    estimatedFromRank?: boolean;
     odds: {
       winOdds: number; loseOdds: number; winProbability: number; riskLevel: string;
       factors?: OddsFactors;
@@ -417,6 +418,12 @@ export default function Dota2Page() {
               {profile.stats?.rankTier && <Badge variant="warning">{getRankName(profile.stats.rankTier)}</Badge>}
             </div>
             <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest mb-4">STEAM ID · {profile.externalId}</div>
+            {profile.stats?.estimatedFromRank && (
+              <AlertBox variant="warning">
+                Ainda não encontramos partidas suas para consulta. As métricas abaixo são uma <strong>estimativa baseada na sua medalha</strong>,
+                não o seu desempenho real — jogue algumas partidas com o perfil público e sincronize novamente para odds precisas.
+              </AlertBox>
+            )}
             {profile.stats && (
               <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
                 {[

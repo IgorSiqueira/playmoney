@@ -113,7 +113,7 @@ export async function POST(req: Request) {
 
   const { stats, recentMatches } = await calculatePlayerStatsWithMatches(Number(gameProfile.externalId));
 
-  const historyGuard = guardMinMatchHistory(stats);
+  const historyGuard = guardMinMatchHistory(stats, recentMatches, gameProfile.profilePublicSince);
   if (!historyGuard.ok) return NextResponse.json({ error: historyGuard.error, code: historyGuard.code }, { status: 422 });
 
   // Usa dynamic odds (mesma fórmula do frontend) para consistência UI↔API

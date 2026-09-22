@@ -16,7 +16,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import type { PlayerStats } from "@/lib/opendota";
+import type { PlayerStats, PlayerRecentMatch } from "@/lib/opendota";
 
 // ── Limites configuráveis ──────────────────────────────────────────────────────
 export const LIMITS = {
@@ -119,15 +119,56 @@ export interface GuardResult {
 // ── Guards síncronos ───────────────────────────────────────────────────────────
 
 /**
- * [E3/E4] Exige histórico mínimo de partidas.
- * Impede que smurfs com 3-5 wins manipulem as odds por amostra insignificante.
+ * [E3/E4] Exige histórico mínimo de partidas jogadas *depois* que o perfil
+ * ficou público (profilePublicSince) — não o histórico total. Isso impede
+ * que o jogador deixe o perfil privado a maior parte do tempo e abra só o
+ * suficiente pra "carimbar" a liberação, e também impede que smurfs com
+ * poucas partidas manipulem as odds por amostra insignificante.
+ *
+ * Se o jogador fechar o perfil de novo, profilePublicSince é zerado (ver
+ * syncDota2Profile em game-sync.ts) e a contagem recomeça do zero na
+ * próxima vez que ele tornar público.
  */
-export function guardMinMatchHistory(stats: PlayerStats): GuardResult {
-  if (stats.totalMatches < LIMITS.MIN_MATCH_HISTORY) {
-    const error = stats.profilePrivate
-      ? `Seu perfil Steam está privado. Para apostar você precisa: 1) Abrir o Steam → Editar perfil → Privacidade → definir "Detalhes do jogo" como Público. 2) Jogar pelo menos ${LIMITS.MIN_MATCH_HISTORY} partidas com o perfil público. 3) Voltar aqui e sincronizar seu perfil novamente.`
-      : `Histórico insuficiente: você tem ${stats.totalMatches} partida${stats.totalMatches === 1 ? "" : "s"} pública${stats.totalMatches === 1 ? "" : "s"}, mas são necessárias pelo menos ${LIMITS.MIN_MATCH_HISTORY}. Jogue mais ${LIMITS.MIN_MATCH_HISTORY - stats.totalMatches} partida${LIMITS.MIN_MATCH_HISTORY - stats.totalMatches === 1 ? "" : "s"} e sincronize novamente.`;
-    return { ok: false, error, code: "INSUFFICIENT_HISTORY" };
+export function guardMinMatchHistory(
+  stats: PlayerStats,
+  recentMatches: PlayerRecentMatch[],
+  profilePublicSince: Date | null
+): GuardResult {
+  if (stats.profilePrivate) {
+    return {
+      ok: false,
+      error:
+        `Seu perfil do Dota 2 está privado para consulta. Para apostar, siga os dois passos: ` +
+        `1) No Steam → Editar perfil → Privacidade → defina "Detalhes do jogo" como Público. ` +
+        `2) Dentro do próprio Dota 2 → Configurações → Opções Avançadas → ative "Expor Dados de Partida Pública" ` +
+        `(sem isso, só a privacidade do Steam não é suficiente). ` +
+        `3) Jogue pelo menos ${LIMITS.MIN_MATCH_HISTORY} partidas depois de ativar. ` +
+        `4) Volte aqui e sincronize seu perfil novamente.`,
+      code: "PROFILE_PRIVATE",
+    };
+  }
+
+  if (!profilePublicSince) {
+    return {
+      ok: false,
+      error: "Ainda não conseguimos confirmar que seu perfil está público. Sincronize seu perfil novamente para atualizarmos essa informação.",
+      code: "PROFILE_NOT_CONFIRMED_PUBLIC",
+    };
+  }
+
+  const publicSinceMs = profilePublicSince.getTime();
+  const matchesSincePublic = recentMatches.filter((m) => m.start_time * 1000 >= publicSinceMs).length;
+
+  if (matchesSincePublic < LIMITS.MIN_MATCH_HISTORY) {
+    const missing = LIMITS.MIN_MATCH_HISTORY - matchesSincePublic;
+    return {
+      ok: false,
+      error:
+        `Seu perfil está público, mas você só tem ${matchesSincePublic} partida${matchesSincePublic === 1 ? "" : "s"} jogada${matchesSincePublic === 1 ? "" : "s"} desde então ` +
+        `— são necessárias pelo menos ${LIMITS.MIN_MATCH_HISTORY}. Jogue mais ${missing} partida${missing === 1 ? "" : "s"} mantendo o perfil público e sincronize novamente. ` +
+        `Partidas jogadas antes de tornar o perfil público não contam.`,
+      code: "INSUFFICIENT_HISTORY_SINCE_PUBLIC",
+    };
   }
   return { ok: true };
 }

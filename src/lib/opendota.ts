@@ -143,6 +143,40 @@ export interface PlayerStats {
   rankTier?: number;
   mmrEstimate?: number;
   profilePrivate?: boolean;
+  /** true quando as médias vieram da tabela por medalha (perfil público, 0 partidas), não do jogador */
+  estimatedFromRank?: boolean;
+}
+
+/**
+ * [Fallback por medalha] Médias aproximadas de kills/mortes/assists/GPM/XPM por
+ * faixa de rank, usadas apenas quando o perfil está público mas ainda não há
+ * nenhuma partida disponível para consulta (ex.: acabou de tornar público).
+ *
+ * Win rate fica fixo em 50% em todas as faixas — o matchmaking do Dota 2 é
+ * desenhado para manter isso próximo de 50% independente do nível do jogador;
+ * o que varia por medalha é execução (GPM/XPM/kills), não win rate.
+ *
+ * rank_tier da OpenDota: dezena = medalha (1=Arauto...8=Imortal), unidade = estrela.
+ * Ajuste os números aqui — nada mais precisa mudar.
+ */
+const RANK_TIER_AVERAGES: Record<string, { kills: number; deaths: number; assists: number; gpm: number; xpm: number }> = {
+  herald_guardian: { kills: 4, deaths: 7,   assists: 6,  gpm: 350, xpm: 430 },
+  crusader_archon:  { kills: 5, deaths: 6,   assists: 8,  gpm: 420, xpm: 500 },
+  legend_ancient:   { kills: 6, deaths: 5.5, assists: 10, gpm: 480, xpm: 560 },
+  divine:           { kills: 7, deaths: 5,   assists: 11, gpm: 540, xpm: 620 },
+  immortal:         { kills: 8, deaths: 4.5, assists: 12, gpm: 600, xpm: 680 },
+};
+
+function getRankTierAverages(rankTier?: number) {
+  const medal = rankTier ? Math.floor(rankTier / 10) : 0;
+  const bracket =
+    medal >= 8 ? "immortal" :
+    medal === 7 ? "divine" :
+    medal >= 5 ? "legend_ancient" :
+    medal >= 3 ? "crusader_archon" :
+    medal >= 1 ? "herald_guardian" :
+    "crusader_archon"; // sem rank/calibrando: usa a faixa do meio como neutro
+  return RANK_TIER_AVERAGES[bracket];
 }
 
 function steamId64ToAccountId(steamId64: string): number {
@@ -239,13 +273,25 @@ export async function calculatePlayerStatsWithMatches(accountId: number): Promis
   ]);
 
   if (!recentMatches.length) {
+    const isPrivate = profile?.profile?.fh_unavailable === true;
+    // Perfil público sem nenhuma partida disponível ainda: usa médias por medalha
+    // em vez de um chute único pra todo mundo. Perfil privado continua com os
+    // mesmos valores neutros de sempre — não é usado pra exibir odds reais.
+    const rankAvg = !isPrivate ? getRankTierAverages(profile?.rank_tier) : null;
+
     return {
       stats: {
-        winRate: 0.5, totalMatches: 0, recentWinRate: 0.5, averageKDA: 1,
-        averageKills: 5, averageDeaths: 5, averageAssists: 8, averageGPM: 400, averageXPM: 500,
+        winRate: 0.5, totalMatches: 0, recentWinRate: 0.5,
+        averageKDA: rankAvg ? (rankAvg.kills + rankAvg.assists) / Math.max(rankAvg.deaths, 1) : 1,
+        averageKills:   rankAvg?.kills   ?? 5,
+        averageDeaths:  rankAvg?.deaths  ?? 5,
+        averageAssists: rankAvg?.assists ?? 8,
+        averageGPM:     rankAvg?.gpm     ?? 400,
+        averageXPM:     rankAvg?.xpm     ?? 500,
         rankTier: profile?.rank_tier,
         mmrEstimate: profile?.mmr_estimate?.estimate,
-        profilePrivate: profile?.profile?.fh_unavailable === true,
+        profilePrivate: isPrivate,
+        estimatedFromRank: rankAvg !== null,
       },
       recentMatches: [],
     };

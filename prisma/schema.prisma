@@ -151,6 +151,10 @@ model GameProfile {
   avatarUrl   String?
   stats       Json?
   lastSyncAt  DateTime?
+  /// [Trust] Data em que detectamos o perfil ficando público pela última vez.
+  /// Zera (volta a null) sempre que o perfil é detectado como privado de novo —
+  /// usado para exigir MIN_MATCH_HISTORY partidas jogadas *depois* dessa data.
+  profilePublicSince DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 

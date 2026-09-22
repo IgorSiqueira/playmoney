@@ -90,6 +90,9 @@ export async function PUT(
     select: { externalId: true },
   });
 
+  // [Trust] Troca de conta Steam pelo admin = conta diferente, relógio reinicia do zero.
+  const profilePublicSince = stats.profilePrivate === true ? null : new Date();
+
   const gameProfile = await prisma.gameProfile.upsert({
     where: { userId_game: { userId: targetUserId, game: "DOTA2" } },
     update: {
@@ -98,6 +101,7 @@ export async function PUT(
       avatarUrl:   playerProfile.profile.avatarfull,
       stats:       statsJson,
       lastSyncAt:  new Date(),
+      profilePublicSince,
     },
     create: {
       userId:      targetUserId,
@@ -107,6 +111,7 @@ export async function PUT(
       avatarUrl:   playerProfile.profile.avatarfull,
       stats:       statsJson,
       lastSyncAt:  new Date(),
+      profilePublicSince,
     },
   });
 

@@ -117,7 +117,7 @@ export async function POST(req: Request) {
   // [E2] Bloquear troca de conta: se o usuário já tem um perfil com Steam ID diferente
   const ownProfile = await prisma.gameProfile.findUnique({
     where: { userId_game: { userId, game: "DOTA2" } },
-    select: { externalId: true },
+    select: { externalId: true, profilePublicSince: true },
   });
   if (ownProfile && ownProfile.externalId !== String(accountId)) {
     return NextResponse.json(
@@ -129,6 +129,10 @@ export async function POST(req: Request) {
     );
   }
 
+  // [Trust] Mesma lógica de syncDota2Profile: zera se privado, carimba só na 1ª vez público.
+  const isPrivate = stats.profilePrivate === true;
+  const profilePublicSince = isPrivate ? null : (ownProfile?.profilePublicSince ?? new Date());
+
   const gameProfile = await prisma.gameProfile.upsert({
     where: { userId_game: { userId, game: "DOTA2" } },
     update: {
@@ -136,6 +140,7 @@ export async function POST(req: Request) {
       avatarUrl: playerProfile.profile.avatarfull,
       stats: statsJson,
       lastSyncAt: new Date(),
+      profilePublicSince,
     },
     create: {
       userId,
@@ -145,6 +150,7 @@ export async function POST(req: Request) {
       avatarUrl: playerProfile.profile.avatarfull,
       stats: statsJson,
       lastSyncAt: new Date(),
+      profilePublicSince,
     },
   });
 

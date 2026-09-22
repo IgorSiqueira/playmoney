@@ -54,21 +54,9 @@ export function ChampionshipModal() {
         <X size={18} />
       </button>
 
-      {/* Vídeo do campeonato — canto direito, fora do bloco de texto */}
-      <div className="hidden lg:block absolute right-10 xl:right-16 top-1/2 -translate-y-1/2 z-10 w-[420px] xl:w-[480px]">
-        <div className="relative aspect-video border border-[var(--border-mid)] shadow-[0_0_40px_rgba(0,255,102,0.15)] overflow-hidden">
-          <iframe
-            className="absolute inset-0 w-full h-full"
-            src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}&controls=1&rel=0`}
-            title="Vídeo do Campeonato SkillMoney"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
-      </div>
-
-      <div className="relative z-10 h-full flex items-center px-6 md:px-16">
-        <div className="max-w-xl">
+      <div className="relative z-10 h-full flex flex-col lg:flex-row items-center gap-8 lg:gap-6 px-6 md:px-16 py-20 lg:py-0 overflow-y-auto">
+        {/* Coluna esquerda — texto (50%) */}
+        <div className="w-full lg:w-1/2 max-w-xl">
           <div className="font-display text-[11px] tracking-[0.3em] text-[var(--neon)] uppercase mb-3">▸ Evento especial</div>
           <h2 className="font-display font-black text-4xl md:text-6xl text-[var(--text-bright)] uppercase tracking-tight mb-4 leading-tight">
             Campeonato <span className="neon-text">SkillMoney</span>
@@ -109,6 +97,19 @@ export function ChampionshipModal() {
             >
               Agora não
             </button>
+          </div>
+        </div>
+
+        {/* Coluna direita — vídeo (50%) */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center">
+          <div className="relative w-full max-w-3xl aspect-video border border-[var(--border-mid)] shadow-[0_0_50px_rgba(0,255,102,0.15)] overflow-hidden">
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}&controls=1&rel=0`}
+              title="Vídeo do Campeonato SkillMoney"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            />
           </div>
         </div>
       </div>

@@ -63,16 +63,19 @@ const testimonials = [
     quote: "Finalmente uma plataforma que calcula odds a partir do meu histórico de verdade. Nada de número genérico.",
     name: "Lucas “Night”",
     rank: "Dota 2 — Immortal",
+    avatar: "https://i.pravatar.cc/100?img=12",
   },
   {
     quote: "Apostei na minha própria vitória, ganhei, e o PIX caiu antes de eu sair do pós-jogo. Simples assim.",
     name: "Mariana “Mika”",
     rank: "Dota 2 — Ancient",
+    avatar: "https://i.pravatar.cc/100?img=47",
   },
   {
     quote: "Já testei várias casas de aposta. Essa é a única que recompensa quem realmente joga bem.",
     name: "Rafael “Rafão”",
     rank: "Dota 2 — Legend",
+    avatar: "https://i.pravatar.cc/100?img=33",
   },
 ];
 
@@ -464,12 +467,14 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {testimonials.map((t) => (
-              <div key={t.name} className="border border-[var(--border)] bg-[var(--surface-2)] p-6">
+              <div key={t.name} className="rounded-lg bg-[var(--surface-2)] p-6">
                 <p className="font-ui text-sm text-[var(--text)] leading-relaxed mb-5">&ldquo;{t.quote}&rdquo;</p>
-                <div className="flex items-center gap-3 pt-4 border-t border-[var(--border)]">
-                  <div className="w-8 h-8 rounded-full bg-[var(--neon-dim)] border border-[var(--neon)] flex items-center justify-center">
-                    <span className="font-display text-xs font-bold text-[var(--neon)]">{t.name[0]}</span>
-                  </div>
+                <div className="flex items-center gap-3">
+                  <img
+                    src={t.avatar}
+                    alt={t.name}
+                    className="w-9 h-9 rounded-full object-cover"
+                  />
                   <div>
                     <div className="font-ui text-xs font-semibold text-[var(--text-bright)]">{t.name}</div>
                     <div className="font-ui text-[11px] text-[var(--text-muted)]">{t.rank}</div>

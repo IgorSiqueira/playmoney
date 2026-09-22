@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ParticlesBackground } from "@/components/ParticlesBackground";
-import { ChampionshipModal } from "@/components/shared/championship-modal";
 import {
   Target, BarChart3, ShieldCheck, Gamepad2,
   TrendingUp, Trophy, Users, Clock,
@@ -109,8 +108,6 @@ const faqs = [
 export default function LandingPage() {
   return (
     <div className="relative min-h-screen flex flex-col overflow-x-hidden bg-[var(--bg)]">
-      <ChampionshipModal />
-
       {/* ── Particles + ambient glows ─────────────────────────────────── */}
       <ParticlesBackground />
       <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>

@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const DISMISS_KEY = "campeonato-modal-dismissed";
+const YOUTUBE_VIDEO_ID = "sfcxifX8VZc";
 
 export function ChampionshipModal() {
   const [open, setOpen] = useState(false);
@@ -52,6 +53,19 @@ export function ChampionshipModal() {
       >
         <X size={18} />
       </button>
+
+      {/* Vídeo do campeonato — canto direito, fora do bloco de texto */}
+      <div className="hidden lg:block absolute right-10 xl:right-16 top-1/2 -translate-y-1/2 z-10 w-[420px] xl:w-[480px]">
+        <div className="relative aspect-video border border-[var(--border-mid)] shadow-[0_0_40px_rgba(0,255,102,0.15)] overflow-hidden">
+          <iframe
+            className="absolute inset-0 w-full h-full"
+            src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}&controls=1&rel=0`}
+            title="Vídeo do Campeonato SkillMoney"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </div>
 
       <div className="relative z-10 h-full flex items-center px-6 md:px-16">
         <div className="max-w-xl">

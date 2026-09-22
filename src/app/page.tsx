@@ -193,10 +193,6 @@ export default function LandingPage() {
               Analisamos seu <span className="text-[var(--text-bright)]">histórico real</span> de partidas para calcular um Índice de Performance individual,
               desenvolvido a partir dos seus próprios dados e do seu desempenho no Dota 2.
             </p>
-            <p className="font-ui text-xs text-[var(--text-muted)] mb-8 animate-glow-in anim-delay-2">
-              Mais que apostas. Um sistema justo para quem joga de verdade.
-            </p>
-
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-10 w-full sm:w-auto animate-glow-in anim-delay-3">
               <Button asChild size="lg" className="w-full sm:w-auto">
                 <Link href="/register">Comece agora →</Link>

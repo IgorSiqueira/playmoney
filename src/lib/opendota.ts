@@ -209,9 +209,21 @@ export async function fetchPlayerProfile(accountId: number): Promise<OpenDotaPla
   return res.json();
 }
 
+/**
+ * [Fix GPM/XPM] Por padrão a API só devolve um conjunto fixo de campos que
+ * NÃO inclui gold_per_min/xp_per_min — é preciso pedir cada campo via
+ * `project` explicitamente, o que troca a resposta para só os campos pedidos.
+ */
+const MATCH_FIELDS = [
+  "match_id", "player_slot", "radiant_win", "duration", "start_time",
+  "lobby_type", "game_mode", "hero_id", "kills", "deaths", "assists",
+  "gold_per_min", "xp_per_min",
+];
+
 export async function fetchRecentMatches(accountId: number, limit = 20): Promise<PlayerRecentMatch[]> {
+  const projectParams = MATCH_FIELDS.map((f) => `project=${f}`).join("&");
   const res = await fetchWithRetry(
-    `${BASE_URL}/players/${accountId}/matches?limit=${limit}&significant=0`,
+    `${BASE_URL}/players/${accountId}/matches?limit=${limit}&significant=0&${projectParams}`,
     { next: { revalidate: 300 } }
   );
   if (!res?.ok) return [];

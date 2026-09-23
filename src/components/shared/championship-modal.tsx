@@ -49,7 +49,7 @@ export function ChampionshipModal() {
         type="button"
         onClick={close}
         aria-label="Fechar"
-        className="absolute top-5 right-5 md:top-8 md:right-8 z-10 w-10 h-10 flex items-center justify-center border border-[var(--border-mid)] bg-[var(--bg)]/70 text-[var(--text-muted)] hover:text-[var(--text-bright)] hover:border-[var(--neon)] transition-colors"
+        className="absolute top-5 right-5 md:top-8 md:right-8 z-20 w-10 h-10 flex items-center justify-center border border-[var(--border-mid)] bg-[var(--bg)]/70 text-[var(--text-muted)] hover:text-[var(--text-bright)] hover:border-[var(--neon)] transition-colors"
       >
         <X size={18} />
       </button>

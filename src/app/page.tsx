@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ParticlesBackground } from "@/components/ParticlesBackground";
 import { ChampionshipModal } from "@/components/shared/championship-modal";
+import { auth } from "@/lib/auth";
 import {
   Target, BarChart3, ShieldCheck, Gamepad2,
   TrendingUp, Trophy, Users, Clock,
@@ -110,10 +111,13 @@ const faqs = [
   },
 ];
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const session = await auth();
+  const isLoggedIn = !!session?.user;
+
   return (
     <div className="relative min-h-screen flex flex-col overflow-x-hidden bg-[var(--bg)]">
-      <ChampionshipModal />
+      <ChampionshipModal isLoggedIn={isLoggedIn} />
 
       {/* ── Particles + ambient glows ─────────────────────────────────── */}
       <ParticlesBackground />

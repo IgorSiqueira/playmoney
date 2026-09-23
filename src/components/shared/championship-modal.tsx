@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 const DISMISS_KEY = "campeonato-modal-dismissed";
 const YOUTUBE_VIDEO_ID = "4lRZ4Z6o-6U";
 
-export function ChampionshipModal() {
+export function ChampionshipModal({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ export function ChampionshipModal() {
 
           <div className="flex items-center gap-5 flex-wrap">
             <Button asChild size="lg">
-              <Link href="/campeonato">Quero participar →</Link>
+              <Link href={isLoggedIn ? "/campeonato" : "/register"}>Quero participar →</Link>
             </Button>
             <button
               type="button"

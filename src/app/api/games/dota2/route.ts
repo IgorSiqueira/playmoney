@@ -87,10 +87,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "ID do Dota 2 fora do intervalo válido." }, { status: 400 });
   }
 
+  // [E2] Bloquear troca de conta: se o usuário já tem um perfil com ID do Dota 2 diferente
+  const ownProfile = await prisma.gameProfile.findUnique({
+    where: { userId_game: { userId, game: "DOTA2" } },
+    select: { externalId: true, profilePublicSince: true },
+  });
+
   const [playerProfile, recentMatches, stats] = await Promise.all([
     fetchPlayerProfile(accountId),
     fetchRecentMatches(accountId, 50),
-    calculatePlayerStats(accountId),
+    calculatePlayerStats(accountId, ownProfile?.profilePublicSince),
   ]);
 
   if (!playerProfile?.profile) {
@@ -114,11 +120,6 @@ export async function POST(req: Request) {
     );
   }
 
-  // [E2] Bloquear troca de conta: se o usuário já tem um perfil com ID do Dota 2 diferente
-  const ownProfile = await prisma.gameProfile.findUnique({
-    where: { userId_game: { userId, game: "DOTA2" } },
-    select: { externalId: true, profilePublicSince: true },
-  });
   if (ownProfile && ownProfile.externalId !== String(accountId)) {
     return NextResponse.json(
       {

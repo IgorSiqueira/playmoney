@@ -420,8 +420,9 @@ export default function Dota2Page() {
             <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-widest mb-4">ID DOTA 2 · {profile.externalId}</div>
             {profile.stats?.estimatedFromRank && (
               <AlertBox variant="warning">
-                Ainda não encontramos partidas suas para consulta. As métricas abaixo são uma <strong>estimativa baseada na sua medalha</strong>,
-                não o seu desempenho real — jogue algumas partidas com o perfil público e sincronize novamente para odds precisas.
+                Você já pode apostar! Como seu perfil ainda tem menos de 50 partidas confiáveis desde que ficou público
+                ({profile.stats.totalMatches ?? 0}/50), as métricas abaixo são uma <strong>estimativa baseada na sua medalha</strong>.
+                Assim que completar 50 partidas com o perfil público, as odds passam a usar seu desempenho real.
               </AlertBox>
             )}
             {profile.stats && (

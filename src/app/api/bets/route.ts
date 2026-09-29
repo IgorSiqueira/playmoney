@@ -111,9 +111,9 @@ export async function POST(req: Request) {
   const trustTierGuard = guardTrustTierMaxAmount(settledBetsCount, amount);
   if (!trustTierGuard.ok) return NextResponse.json({ error: trustTierGuard.error, code: trustTierGuard.code }, { status: 422 });
 
-  const { stats, recentMatches } = await calculatePlayerStatsWithMatches(Number(gameProfile.externalId));
+  const { stats, recentMatches } = await calculatePlayerStatsWithMatches(Number(gameProfile.externalId), gameProfile.profilePublicSince);
 
-  const historyGuard = guardMinMatchHistory(stats, recentMatches, gameProfile.profilePublicSince);
+  const historyGuard = guardMinMatchHistory(stats, gameProfile.profilePublicSince);
   if (!historyGuard.ok) return NextResponse.json({ error: historyGuard.error, code: historyGuard.code }, { status: 422 });
 
   // Usa dynamic odds (mesma fórmula do frontend) para consistência UI↔API

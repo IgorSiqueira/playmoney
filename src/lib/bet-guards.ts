@@ -20,8 +20,6 @@ import type { PlayerStats, PlayerRecentMatch } from "@/lib/opendota";
 
 // ── Limites configuráveis ──────────────────────────────────────────────────────
 export const LIMITS = {
-  /** [E3] Mínimo de partidas recentes para calcular odds confiáveis */
-  MIN_MATCH_HISTORY: 15,
   /** [E7] Retorno máximo por aposta (R$) */
   MAX_BET_PAYOUT: 10_000,
   /** [E8] Ganhos máximos por dia por usuário (R$) */
@@ -119,11 +117,13 @@ export interface GuardResult {
 // ── Guards síncronos ───────────────────────────────────────────────────────────
 
 /**
- * [E3/E4] Exige histórico mínimo de partidas jogadas *depois* que o perfil
- * ficou público (profilePublicSince) — não o histórico total. Isso impede
- * que o jogador deixe o perfil privado a maior parte do tempo e abra só o
- * suficiente pra "carimbar" a liberação, e também impede que smurfs com
- * poucas partidas manipulem as odds por amostra insignificante.
+ * [E3/E4] Só bloqueia a aposta quando o perfil está privado ou ainda não
+ * confirmamos que ele é público. Não exige mais um número mínimo de partidas
+ * jogadas depois que o perfil ficou público — enquanto o jogador não acumula
+ * REAL_STATS_MIN_MATCHES partidas confiáveis (ver opendota.ts), as odds já
+ * são calculadas com a média da medalha dele em vez do histórico real, então
+ * não há amostra insignificante para um smurf manipular nem motivo para
+ * bloquear a aposta.
  *
  * Se o jogador fechar o perfil de novo, profilePublicSince é zerado (ver
  * syncDota2Profile em game-sync.ts) e a contagem recomeça do zero na
@@ -131,7 +131,6 @@ export interface GuardResult {
  */
 export function guardMinMatchHistory(
   stats: PlayerStats,
-  recentMatches: PlayerRecentMatch[],
   profilePublicSince: Date | null
 ): GuardResult {
   if (stats.profilePrivate) {
@@ -142,8 +141,7 @@ export function guardMinMatchHistory(
         `1) No Steam → Editar perfil → Privacidade → defina "Detalhes do jogo" como Público. ` +
         `2) Dentro do próprio Dota 2 → Configurações → Opções Avançadas → ative "Expor Dados de Partida Pública" ` +
         `(sem isso, só a privacidade do Steam não é suficiente). ` +
-        `3) Jogue pelo menos ${LIMITS.MIN_MATCH_HISTORY} partidas depois de ativar. ` +
-        `4) Volte aqui e sincronize seu perfil novamente.`,
+        `3) Volte aqui e sincronize seu perfil novamente.`,
       code: "PROFILE_PRIVATE",
     };
   }
@@ -156,20 +154,6 @@ export function guardMinMatchHistory(
     };
   }
 
-  const publicSinceMs = profilePublicSince.getTime();
-  const matchesSincePublic = recentMatches.filter((m) => m.start_time * 1000 >= publicSinceMs).length;
-
-  if (matchesSincePublic < LIMITS.MIN_MATCH_HISTORY) {
-    const missing = LIMITS.MIN_MATCH_HISTORY - matchesSincePublic;
-    return {
-      ok: false,
-      error:
-        `Seu perfil está público, mas você só tem ${matchesSincePublic} partida${matchesSincePublic === 1 ? "" : "s"} jogada${matchesSincePublic === 1 ? "" : "s"} desde então ` +
-        `— são necessárias pelo menos ${LIMITS.MIN_MATCH_HISTORY}. Jogue mais ${missing} partida${missing === 1 ? "" : "s"} mantendo o perfil público e sincronize novamente. ` +
-        `Partidas jogadas antes de tornar o perfil público não contam.`,
-      code: "INSUFFICIENT_HISTORY_SINCE_PUBLIC",
-    };
-  }
   return { ok: true };
 }
 

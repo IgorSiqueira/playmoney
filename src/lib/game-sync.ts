@@ -20,7 +20,7 @@ export async function syncDota2Profile(userId: string) {
     const [playerProfile, recentMatches, stats] = await Promise.all([
       fetchPlayerProfile(accountId),
       fetchRecentMatches(accountId, 50),
-      calculatePlayerStats(accountId),
+      calculatePlayerStats(accountId, existing.profilePublicSince),
     ]);
 
     // OpenDota unavailable — just bump lastSyncAt to avoid blocking the user
@@ -37,8 +37,8 @@ export async function syncDota2Profile(userId: string) {
     );
 
     // [Trust] Perfil detectado como privado agora: zera profilePublicSince —
-    // ele terá que tornar público de novo e acumular MIN_MATCH_HISTORY partidas
-    // a partir dali. Perfil público: só carimba a primeira vez que detectamos
+    // ele terá que tornar público de novo e acumular partidas confiáveis a
+    // partir dali. Perfil público: só carimba a primeira vez que detectamos
     // (não sobrescreve a cada sync, senão o relógio nunca avançaria).
     const isPrivate = stats.profilePrivate === true;
     const profilePublicSince = isPrivate

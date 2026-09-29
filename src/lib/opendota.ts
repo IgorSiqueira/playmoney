@@ -299,27 +299,48 @@ export interface PlayerStatsWithMatches {
   recentMatches: PlayerRecentMatch[];
 }
 
-export async function calculatePlayerStats(accountId: number): Promise<PlayerStats> {
-  const { stats } = await calculatePlayerStatsWithMatches(accountId);
+/**
+ * [Odds por medalha até 50 partidas confiáveis] Em vez de bloquear apostas até
+ * o jogador acumular um mínimo de partidas depois de tornar o perfil público,
+ * usamos a média da medalha dele (mesmo fallback de perfil sem partidas) enquanto
+ * essa contagem não chega em REAL_STATS_MIN_MATCHES. A partir daí, as odds passam
+ * a ser calculadas de verdade com o histórico real do próprio jogador.
+ */
+const REAL_STATS_MIN_MATCHES = 50;
+
+export async function calculatePlayerStats(accountId: number, profilePublicSince?: Date | null): Promise<PlayerStats> {
+  const { stats } = await calculatePlayerStatsWithMatches(accountId, profilePublicSince);
   return stats;
 }
 
-export async function calculatePlayerStatsWithMatches(accountId: number): Promise<PlayerStatsWithMatches> {
+export async function calculatePlayerStatsWithMatches(
+  accountId: number,
+  profilePublicSince?: Date | null
+): Promise<PlayerStatsWithMatches> {
   const [profile, recentMatches] = await Promise.all([
     fetchPlayerProfile(accountId),
     fetchRecentMatches(accountId, 50),
   ]);
 
-  if (!recentMatches.length) {
-    const isPrivate = profile?.profile?.fh_unavailable === true;
-    // Perfil público sem nenhuma partida disponível ainda: usa médias por medalha
-    // em vez de um chute único pra todo mundo. Perfil privado continua com os
-    // mesmos valores neutros de sempre — não é usado pra exibir odds reais.
+  const isPrivate = !recentMatches.length && profile?.profile?.fh_unavailable === true;
+
+  // Só contam como confiáveis as partidas jogadas depois que o perfil ficou
+  // público (mesmo critério do guard de histórico) — evita que partidas
+  // antigas, parseadas enquanto o perfil era privado, entrem no cálculo.
+  const trustedMatches = profilePublicSince
+    ? recentMatches.filter((m) => m.start_time * 1000 >= profilePublicSince.getTime())
+    : recentMatches;
+
+  if (trustedMatches.length < REAL_STATS_MIN_MATCHES) {
+    // Perfil público mas ainda sem partidas confiáveis suficientes: usa médias
+    // por medalha em vez de um chute único pra todo mundo. Perfil privado
+    // continua com os mesmos valores neutros de sempre — não é usado pra
+    // exibir odds reais.
     const rankAvg = !isPrivate ? getRankTierAverages(profile?.rank_tier) : null;
 
     return {
       stats: {
-        winRate: 0.5, totalMatches: 0, recentWinRate: 0.5,
+        winRate: 0.5, totalMatches: trustedMatches.length, recentWinRate: 0.5,
         averageKDA: rankAvg ? (rankAvg.kills + rankAvg.assists) / Math.max(rankAvg.deaths, 1) : 1,
         averageKills:   rankAvg?.kills   ?? 5,
         averageDeaths:  rankAvg?.deaths  ?? 5,
@@ -331,28 +352,28 @@ export async function calculatePlayerStatsWithMatches(accountId: number): Promis
         profilePrivate: isPrivate,
         estimatedFromRank: rankAvg !== null,
       },
-      recentMatches: [],
+      recentMatches,
     };
   }
 
-  const wins = recentMatches.filter((m) => {
+  const wins = trustedMatches.filter((m) => {
     const isRadiant = m.player_slot < 128;
     return isRadiant === m.radiant_win;
   });
 
-  const recentWinRate = wins.length / recentMatches.length;
+  const recentWinRate = wins.length / trustedMatches.length;
 
-  const avgKDA    = recentMatches.reduce((a, m) => a + (m.kills + m.assists) / Math.max(m.deaths, 1), 0) / recentMatches.length;
-  const avgKills  = recentMatches.reduce((a, m) => a + m.kills,          0) / recentMatches.length;
-  const avgDeaths = recentMatches.reduce((a, m) => a + m.deaths,         0) / recentMatches.length;
-  const avgAssts  = recentMatches.reduce((a, m) => a + m.assists,        0) / recentMatches.length;
-  const avgGPM    = recentMatches.reduce((a, m) => a + (m.gold_per_min ?? 0), 0) / recentMatches.length;
-  const avgXPM    = recentMatches.reduce((a, m) => a + (m.xp_per_min    ?? 0), 0) / recentMatches.length;
+  const avgKDA    = trustedMatches.reduce((a, m) => a + (m.kills + m.assists) / Math.max(m.deaths, 1), 0) / trustedMatches.length;
+  const avgKills  = trustedMatches.reduce((a, m) => a + m.kills,          0) / trustedMatches.length;
+  const avgDeaths = trustedMatches.reduce((a, m) => a + m.deaths,         0) / trustedMatches.length;
+  const avgAssts  = trustedMatches.reduce((a, m) => a + m.assists,        0) / trustedMatches.length;
+  const avgGPM    = trustedMatches.reduce((a, m) => a + (m.gold_per_min ?? 0), 0) / trustedMatches.length;
+  const avgXPM    = trustedMatches.reduce((a, m) => a + (m.xp_per_min    ?? 0), 0) / trustedMatches.length;
 
   return {
     stats: {
       winRate: recentWinRate,
-      totalMatches: recentMatches.length,
+      totalMatches: trustedMatches.length,
       recentWinRate,
       averageKDA: avgKDA,
       averageKills:   parseFloat(avgKills.toFixed(1)),

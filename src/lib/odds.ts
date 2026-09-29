@@ -62,8 +62,10 @@ export function calculateDynamicOdds(
 ): DynamicOddsResult {
   const isWin = (m: PlayerRecentMatch) => (m.player_slot < 128) === m.radiant_win;
 
-  if (matches.length === 0) {
-    // No match data — fall back to stats-only calculation
+  if (matches.length === 0 || stats.estimatedFromRank) {
+    // Sem partidas, ou ainda sem partidas confiáveis suficientes (perfil
+    // recém-público): odds calculadas só a partir da média da medalha,
+    // ignorando forma/streak de partidas que não contam para o histórico.
     const base = calculateOdds(stats);
     return {
       ...base,

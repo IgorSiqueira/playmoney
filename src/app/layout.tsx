@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SKILLMONEY — Aposte em Você Mesmo",
     description: "Plataforma de apostas na sua própria performance em jogos competitivos",
-    images: ["/hero-bg.webp"],
+    images: ["/hero-bg-2.webp"],
     locale: "pt_BR",
     type: "website",
   },
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SKILLMONEY — Aposte em Você Mesmo",
     description: "Plataforma de apostas na sua própria performance em jogos competitivos",
-    images: ["/hero-bg.webp"],
+    images: ["/hero-bg-2.webp"],
   },
   appleWebApp: {
     capable: true,

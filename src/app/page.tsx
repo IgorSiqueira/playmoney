@@ -165,7 +165,7 @@ export default async function LandingPage() {
       <section className="relative z-10 border-b border-[var(--border)] overflow-hidden">
         <div className="relative w-full min-h-[560px] md:min-h-0 md:aspect-[2/1]">
           <Image
-            src="/hero-bg.webp"
+            src="/hero-bg-2.webp"
             alt="Jogador de Dota 2 competindo na SkillMoney"
             fill
             className="object-cover"
@@ -286,7 +286,7 @@ export default async function LandingPage() {
       <section id="beneficios" className="relative z-10 border-b border-[var(--border)] overflow-hidden">
         <div className="relative w-full min-h-[720px] md:min-h-0 md:aspect-[1774/887]">
           <Image
-            src="/beneficios-bg.webp"
+            src="/beneficios-bg-2.webp"
             alt="Guerreiro do Dota 2 em cenário de batalha"
             fill
             className="object-cover object-right md:object-center"

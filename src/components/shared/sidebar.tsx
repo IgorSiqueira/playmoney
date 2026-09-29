@@ -52,7 +52,7 @@ export function Sidebar({ user }: SidebarProps) {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 py-4 px-2 space-y-0.5">
+      <nav className="flex-1 min-h-0 overflow-y-auto py-4 px-2 space-y-0.5">
         <div className="font-ui text-[11px] font-semibold text-[var(--text-muted)] px-3 mb-3 uppercase tracking-wide">
           Navegação
         </div>

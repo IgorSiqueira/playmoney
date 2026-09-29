@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { fetchPlayerProfile, fetchRecentMatches, calculatePlayerStats, normalizePlayerId } from "@/lib/opendota";
+import { fetchPlayerProfile, fetchRecentMatches, calculatePlayerStats, normalizePlayerId, computeProfilePublicSince } from "@/lib/opendota";
 import { calculateDynamicOdds } from "@/lib/odds";
 import { syncDota2Profile } from "@/lib/game-sync";
 
@@ -131,7 +131,7 @@ export async function POST(req: Request) {
 
   // [Trust] Mesma lógica de syncDota2Profile: zera se privado, carimba só na 1ª vez público.
   const isPrivate = stats.profilePrivate === true;
-  const profilePublicSince = isPrivate ? null : (ownProfile?.profilePublicSince ?? new Date());
+  const profilePublicSince = isPrivate ? null : (ownProfile?.profilePublicSince ?? computeProfilePublicSince(recentMatches));
 
   const gameProfile = await prisma.gameProfile.upsert({
     where: { userId_game: { userId, game: "DOTA2" } },

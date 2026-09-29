@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { fetchPlayerProfile, fetchRecentMatches, calculatePlayerStats } from "@/lib/opendota";
+import { fetchPlayerProfile, fetchRecentMatches, calculatePlayerStats, computeProfilePublicSince } from "@/lib/opendota";
 import { calculateDynamicOdds } from "@/lib/odds";
 
 /**
@@ -43,7 +43,7 @@ export async function syncDota2Profile(userId: string) {
     const isPrivate = stats.profilePrivate === true;
     const profilePublicSince = isPrivate
       ? null
-      : (existing.profilePublicSince ?? new Date());
+      : (existing.profilePublicSince ?? computeProfilePublicSince(recentMatches));
 
     return await prisma.gameProfile.update({
       where: { userId_game: { userId, game: "DOTA2" } },

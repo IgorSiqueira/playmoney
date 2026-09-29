@@ -230,6 +230,21 @@ export async function fetchRecentMatches(accountId: number, limit = 20): Promise
   return res.json();
 }
 
+/**
+ * [Fix histórico] Ao carimbar profilePublicSince pela 1ª vez, usar "agora"
+ * ignora qualquer histórico de partidas que o jogador já tinha público antes
+ * de conectar na plataforma — um jogador com 50 partidas públicas de longa
+ * data ficava obrigado a jogar mais MIN_MATCH_HISTORY partidas do zero.
+ * Em vez disso, se já existem partidas públicas disponíveis, usamos a data da
+ * mais antiga entre elas como carimbo — elas já provam que o perfil estava
+ * público desde então. Só cai em "agora" quando não há nenhuma partida ainda.
+ */
+export function computeProfilePublicSince(recentMatches: PlayerRecentMatch[]): Date {
+  if (!recentMatches.length) return new Date();
+  const earliestStartTime = Math.min(...recentMatches.map((m) => m.start_time));
+  return new Date(earliestStartTime * 1000);
+}
+
 export async function fetchHeroNames(): Promise<Record<number, string>> {
   try {
     const res = await fetch("https://api.opendota.com/api/heroes", {

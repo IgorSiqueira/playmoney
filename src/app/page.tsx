@@ -238,7 +238,7 @@ export default async function LandingPage() {
       <section id="como-funciona" className="relative z-10 border-b border-[var(--border)] overflow-hidden">
         <div className="relative w-full min-h-[720px] md:min-h-0 md:aspect-[1774/887]">
           <Image
-            src="/como-funciona-bg.webp"
+            src="/como-funciona-bg-2.webp"
             alt="Aplicativo SkillMoney com painel de desempenho, ao lado de cenário de batalha do Dota 2"
             fill
             className="object-cover object-top"
